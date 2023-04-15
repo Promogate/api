@@ -41,13 +41,15 @@ export class UserRepository implements CreateUserRepository, FindUserByEmailRepo
       return {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        password: user.password
       }
     }
 
     return {
       id: user.id,
-      email: user.email
+      email: user.email,
+      password: user.password
     }
     
   }

@@ -25,7 +25,7 @@ export namespace FindUserByEmailRepository {
     email: string
   };
 
-  export type Output = Omit<User, 'password'> | null
+  export type Output = Partial<User>
 }
 
 export interface FindUserByIdRepository {
