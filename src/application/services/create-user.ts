@@ -1,6 +1,7 @@
 import { CreateUserRepository } from '@/data/contracts';
 import { CreateUser } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
+import { hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 
 export class CreateUserService implements CreateUser {
@@ -9,9 +10,11 @@ export class CreateUserService implements CreateUser {
   ) {}
 
   async execute(input: CreateUser.Input): Promise<CreateUser.Output> {
-    const { id } = await this.userRepository.create(input)
+    const hashedPassword = await hash(input.password, 10);
 
-    const token = sign({ id }, TOKEN_SECRET, { expiresIn: '1h' })
+    const { id } = await this.userRepository.create({...input, password: hashedPassword});
+
+    const token = sign({ id }, TOKEN_SECRET, { expiresIn: '1h' });
 
     return {
       token
