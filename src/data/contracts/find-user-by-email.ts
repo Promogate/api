@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 export interface FindUserByEmailRepository {
   findByEmail: (input: FindUserByEmailRepository.Input) => Promise<FindUserByEmailRepository.Output>
 }
@@ -7,9 +9,5 @@ export namespace FindUserByEmailRepository {
     email: string
   };
 
-  export type Output = {
-    id: string,
-    name?: string,
-    email: string
-  };
+  export type Output = Omit<User, 'password'> | null
 }
