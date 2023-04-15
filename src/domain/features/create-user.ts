@@ -1,5 +1,5 @@
 export interface CreateUser {
-  execute: () => Promise<CreateUser.Output>
+  execute: (input: CreateUser.Input) => Promise<CreateUser.Output>
 }
 
 export namespace CreateUser {
