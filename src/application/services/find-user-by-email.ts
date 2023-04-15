@@ -19,7 +19,7 @@ export class FindUserByEmailService implements FindUserByEmail {
 
     return {
       id: user.id,
-      name: user.name,
+      name: user.name ? user.name : null,
       email: user.email
     }
   }
