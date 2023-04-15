@@ -9,7 +9,5 @@ export namespace CreateUser {
     password: string
   }
 
-  export type Output = {
-    token: string
-  }
+  export type Output = void
 }

@@ -4,25 +4,20 @@ import { prisma } from '@/main/config';
 
 export class UserRepository implements CreateUserRepository, FindUserByEmailRepository, FindUserByIdRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
-    const userAlreadyExists = await this.findByEmail({ email: input.email })
+    const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email }});
 
     if (userAlreadyExists) {
-      throw new UserAlredyExistsError()
+      throw new UserAlredyExistsError();
     }
 
     try {
-
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: {
           name: input.name,
           email: input.email,
           password: input.password
         }
       })
-
-      return {
-        id: user.id
-      }
     } catch (error: unknown) {
       throw new CreateUserFailed()
     }
