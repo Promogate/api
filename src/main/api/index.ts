@@ -8,6 +8,8 @@ dotenv.config();
 
 import express from 'express';
 
+import '../shared/containers';
+
 import { userRouter } from '@/infra/routers';
 import { errorHandler } from '@/main/utils';
 
