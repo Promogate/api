@@ -1,7 +1,9 @@
 import { CreateUserRepository, FindUserByEmailRepository } from '@/data/contracts';
 import { CreateUserFailed, UserAlredyExistsError } from '@/domain/error';
 import { prisma } from '@/main/config';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class UserRepository implements CreateUserRepository, FindUserByEmailRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     try {
