@@ -1,9 +1,7 @@
 import { CreateUserRepository, FindUserByEmailRepository, FindUserByIdRepository } from '@/data/contracts';
 import { CreateUserFailed, UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
-import { injectable } from 'tsyringe';
 
-@injectable()
 export class UserRepository implements CreateUserRepository, FindUserByEmailRepository, FindUserByIdRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     const userAlreadyExists = await this.findByEmail({ email: input.email })
@@ -31,9 +29,9 @@ export class UserRepository implements CreateUserRepository, FindUserByEmailRepo
   }
 
   async findByEmail(input: FindUserByEmailRepository.Input): Promise<FindUserByEmailRepository.Output> {
-    const user = await prisma.user.findFirst({ where: { email: input.email } })
+    const user = await prisma.user.findUnique({ where: { email: input.email } })
 
-    if (!user) {
+    if (user === null) {
       throw new UserNotFound()
     }
 
