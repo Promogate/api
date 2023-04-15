@@ -1,1 +1,1 @@
-console.log("Is working!")
+console.log("Is working! with lint staged")
