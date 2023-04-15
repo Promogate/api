@@ -14,7 +14,11 @@ export class FindUserByEmailService implements FindUserByEmail {
       throw new UserNotFound()
     }
 
-    return user
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    }
   }
 
 }
