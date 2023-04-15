@@ -14,7 +14,7 @@ export class CreateSessionService implements CreateSession {
   ) { }
 
   async execute(input: CreateSession.Input): Promise<CreateSession.Output> {
-    const user = await this.userRepository.findByEmail({ email: input.password })
+    const user = await this.userRepository.findByEmail({ email: input.email })
 
     const passwordMatch = await compare(input.password, user.password as string)
     if (!passwordMatch) {
