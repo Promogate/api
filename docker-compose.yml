@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    container_name: coupon-db
+    environment:
+      - POSTGRES_USER=coupondb
+      - POSTGRES_PASSWORD=coupondb
+      - POSTGRES_DB=coupondb
+    ports:
+      - '5434:5432'
