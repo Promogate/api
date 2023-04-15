@@ -6,12 +6,13 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class UserRepository implements CreateUserRepository, FindUserByEmailRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
-    try {
-      const userAlreadyExists = await this.findByEmail({ email: input.email })
+    const userAlreadyExists = await this.findByEmail({ email: input.email })
 
-      if (userAlreadyExists) {
-        throw new UserAlredyExistsError()
-      }
+    if (userAlreadyExists) {
+      throw new UserAlredyExistsError()
+    }
+    
+    try {
 
       const user = await prisma.user.create({
         data: {

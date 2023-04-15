@@ -1,14 +1,17 @@
+import { FindUserByEmailRepository } from '@/data/contracts';
 import { UserNotFound } from '@/domain/error';
 import { FindUserByEmail } from '@/domain/features';
-import { UserRepository } from '@/infra/repositories';
-import { container, injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export class FindUserByEmailService implements FindUserByEmail {
-  async execute (input: FindUserByEmail.Input): Promise<FindUserByEmail.Output> {
-    const userRepository = container.resolve(UserRepository);
-    
-    const user = await userRepository.findByEmail(input);
+  constructor(
+    @inject('UserRepository')
+    private readonly userRepository: FindUserByEmailRepository
+  ) {}
+
+  async execute (input: FindUserByEmail.Input): Promise<FindUserByEmail.Output> {    
+    const user = await this.userRepository.findByEmail(input);
 
     if (user === null) {
       throw new UserNotFound()
