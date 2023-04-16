@@ -10,13 +10,14 @@ import express from 'express';
 
 import '../shared/containers';
 
-import { userRouter } from '@/infra/routers';
+import { apiKeyRouter, userRouter } from '@/infra/routers';
 import { errorHandler } from '@/main/utils';
 
 const app = express();
 app.use(express.json());
 
 app.use('/users', userRouter);
+app.use('/api-keys', apiKeyRouter)
 app.use(errorHandler)
 
 

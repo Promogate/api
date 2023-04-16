@@ -12,8 +12,8 @@ export class AccessKeysRepository implements SaveAccessKeysRepository {
         }
       })
       return saved
-    } catch {
-      throw new Error('Error when save apit key')
+    } catch (err: any) {
+      throw new Error(err.message)
     }
   }
 
