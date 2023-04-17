@@ -1,8 +1,8 @@
-export interface SaveRefreshToken {
-  save: (input: SaveRefreshToken.Input) => Promise<SaveRefreshToken.Output>
+export interface SaveRefreshTokenRepository {
+  save: (input: SaveRefreshTokenRepository.Input) => Promise<SaveRefreshTokenRepository.Output>
 }
 
-export namespace SaveRefreshToken {
+export namespace SaveRefreshTokenRepository {
   export type Input = {
     userId: string
     token: string
