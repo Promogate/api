@@ -11,3 +11,19 @@ export namespace SaveRefreshTokenRepository {
 
   export type Output = void
 }
+
+export interface FindRefreshTokenRepository {
+  find: (input: FindRefreshTokenRepository.Input) => Promise<FindRefreshTokenRepository.Output>
+}
+
+export namespace FindRefreshTokenRepository {
+  export type Input = {
+    refreshToken: string
+  }
+
+  export type Output = {
+    id: string
+    refreshToken: string
+    expirationDate: string
+  }
+}
