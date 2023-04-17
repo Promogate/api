@@ -22,9 +22,11 @@ export class CreateSessionService implements CreateSession {
     }
 
     const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '15m' });
+    const refreshToken = ''
 
     return {
-      token
+      token,
+      refreshToken
     }
   }
 }

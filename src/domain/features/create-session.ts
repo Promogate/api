@@ -10,5 +10,6 @@ export namespace CreateSession {
 
   export type Output = {
     token: string
+    refreshToken: string
   }
 }
