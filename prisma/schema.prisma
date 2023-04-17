@@ -16,6 +16,7 @@ model User {
   email       String       @unique
   password    String
   access_keys AccessKeys[]
+  refresh_token RefreshToken?
 
   @@map("users")
 }
@@ -29,4 +30,15 @@ model AccessKeys {
   userId          String?
 
   @@map("access_keys")
+}
+
+model RefreshToken {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  expiration_date DateTime
+
+  userId          String @unique
+  User            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_token")
 }
