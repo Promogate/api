@@ -1,5 +1,5 @@
 import { FindRefreshTokenRepository, SaveRefreshTokenRepository } from '@/data/contracts';
-import { RefreshTokenNotFoundError, SaveRefreshTokenError } from '@/domain/error';
+import { SaveRefreshTokenError } from '@/domain/error';
 import { prisma } from '@/main/config';
 
 export class RefreshTokenRepository implements SaveRefreshTokenRepository, FindRefreshTokenRepository {
@@ -26,7 +26,7 @@ export class RefreshTokenRepository implements SaveRefreshTokenRepository, FindR
       })
 
       if (refreshToken === null) {
-        throw new RefreshTokenNotFoundError()
+        return null
       }
 
       return {

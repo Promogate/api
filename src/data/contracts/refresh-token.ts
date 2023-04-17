@@ -25,5 +25,5 @@ export namespace FindRefreshTokenRepository {
     id: string
     refreshToken: string
     expirationDate: string
-  }
+  } | null
 }
