@@ -34,7 +34,7 @@ model AccessKeys {
 
 model RefreshToken {
   id              String   @id @default(uuid())
-  key             String   @unique
+  token             String   @unique
   expiration_date DateTime
 
   userId          String @unique
