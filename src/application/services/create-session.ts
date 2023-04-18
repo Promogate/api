@@ -21,7 +21,7 @@ export class CreateSessionService implements CreateSession {
       throw new AuthenticationFailed()
     }
 
-    const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '15m' });
+    const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '120m' });
 
     return {
       token

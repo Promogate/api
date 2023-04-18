@@ -49,6 +49,6 @@ model Offer {
   destination_link String
   store_image      String
   
-  Resources   Resources @relation(fields: [resourcesId], references: [id])
+  Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
   resourcesId String
 }

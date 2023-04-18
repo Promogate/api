@@ -15,7 +15,10 @@ export class UserRepository implements CreateUserRepository, FindUserByEmailRepo
         data: {
           name: input.name,
           email: input.email,
-          password: input.password
+          password: input.password,
+          resources: {
+            create: {}
+          }
         }
       })
     } catch (error: unknown) {
