@@ -33,8 +33,22 @@ model AccessKeys {
 }
 
 model Resources {
-  id String @id @default(uuid())
+  id     String  @id @default(uuid())
+  offers Offer[]
 
   User   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+}
+
+model Offer {
+  id               String  @id @default(uuid())
+  image            String
+  title            String
+  old_price        String?
+  price            String
+  destination_link String
+  store_image      String
+  
+  Resources   Resources @relation(fields: [resourcesId], references: [id])
+  resourcesId String
 }
