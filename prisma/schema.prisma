@@ -16,7 +16,7 @@ model User {
   email       String       @unique
   password    String
   access_keys AccessKeys[]
-  refresh_token RefreshToken?
+  resources   Resources?
 
   @@map("users")
 }
@@ -26,19 +26,15 @@ model AccessKeys {
   key             String   @unique
   expiration_date DateTime
 
-  User            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String?
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
 
   @@map("access_keys")
 }
 
-model RefreshToken {
-  id              String   @id @default(uuid())
-  token             String   @unique
-  expiration_date DateTime
+model Resources {
+  id String @id @default(uuid())
 
-  userId          String @unique
-  User            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("refresh_token")
+  User   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
 }

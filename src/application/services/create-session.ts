@@ -3,10 +3,8 @@ import { AuthenticationFailed } from '@/domain/error';
 import { CreateSession } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
 import { compare } from 'bcrypt';
-import dayjs from 'dayjs';
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
-import { v4 as uuid } from 'uuid';
 
 @injectable()
 export class CreateSessionService implements CreateSession {
@@ -27,19 +25,8 @@ export class CreateSessionService implements CreateSession {
 
     const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '15m' });
 
-    const now = dayjs()
-    const expirationDate = now.add(30, 'days').format();
-    const refreshToken = uuid()
-
-    await this.refreshTokenRepository.save({
-      userId: user.id as string,
-      token: refreshToken,
-      expirationDate
-     })
-
     return {
-      token,
-      refreshToken
+      token
     }
   }
 }
