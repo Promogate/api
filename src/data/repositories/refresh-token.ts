@@ -1,8 +1,8 @@
-import { FindRefreshTokenRepository, SaveRefreshTokenRepository } from '@/data/contracts';
+import { FindRefreshTokenRepository, SaveRefreshTokenRepository, UpdateRefreshTokenRepository } from '@/data/contracts';
 import { SaveRefreshTokenError } from '@/domain/error';
 import { prisma } from '@/main/config';
 
-export class RefreshTokenRepository implements SaveRefreshTokenRepository, FindRefreshTokenRepository {
+export class RefreshTokenRepository implements SaveRefreshTokenRepository, FindRefreshTokenRepository, UpdateRefreshTokenRepository {
   async save(input: SaveRefreshTokenRepository.Input): Promise<SaveRefreshTokenRepository.Output> {
     try {
       await prisma.refreshToken.create({
@@ -36,6 +36,21 @@ export class RefreshTokenRepository implements SaveRefreshTokenRepository, FindR
       }
     } catch {
       throw new Error('')
+    }
+  }
+
+  async update (input: UpdateRefreshTokenRepository.Input): Promise<UpdateRefreshTokenRepository.Output> {
+    try {
+      await prisma.refreshToken.update({
+        where: {
+          userId: input.userId
+        }, data: {
+          token: input.refreshToken,
+          expiration_date: input.expirationDate
+        }
+      })
+    } catch {
+      throw new Error('Unable to update refresh token');
     }
   }
 }

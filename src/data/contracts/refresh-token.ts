@@ -27,3 +27,17 @@ export namespace FindRefreshTokenRepository {
     expirationDate: string
   } | null
 }
+
+export interface UpdateRefreshTokenRepository {
+  update: (input: UpdateRefreshTokenRepository.Input) => Promise<UpdateRefreshTokenRepository.Output>
+}
+
+export namespace UpdateRefreshTokenRepository {
+  export type Input = {
+    userId: string
+    refreshToken: string
+    expirationDate: string
+  }
+
+  export type Output = void
+}
