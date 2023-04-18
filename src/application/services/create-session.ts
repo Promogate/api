@@ -1,4 +1,4 @@
-import { FindUserByEmailRepository, SaveRefreshTokenRepository } from '@/data/contracts';
+import { FindUserByEmailRepository } from '@/data/contracts';
 import { AuthenticationFailed } from '@/domain/error';
 import { CreateSession } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
@@ -11,8 +11,6 @@ export class CreateSessionService implements CreateSession {
   constructor(
     @inject('UserRepository')
     private readonly userRepository: FindUserByEmailRepository,
-    @inject('RefreshTokenRepository')
-    private readonly refreshTokenRepository: SaveRefreshTokenRepository
   ) { }
 
   async execute(input: CreateSession.Input): Promise<CreateSession.Output> {
