@@ -1,10 +1,16 @@
 import {
   CreateUserRepository,
+  FindAPIKeyRepository,
   FindUserByEmailRepository,
   FindUserByIdRepository,
-  SaveAccessKeysRepository
+  SaveAccessKeysRepository,
+  SaveOfferRepository
 } from '@/data/contracts';
-import { AccessKeysRepository, UserRepository } from '@/data/repositories';
+import {
+  AccessKeysRepository,
+  ResourcesRepository,
+  UserRepository
+} from '@/data/repositories';
 import { container } from 'tsyringe';
 
 container.registerSingleton<
@@ -13,4 +19,9 @@ container.registerSingleton<
   FindUserByIdRepository
 >('UserRepository', UserRepository);
 
-container.registerSingleton<SaveAccessKeysRepository>('AccessKeysRepository', AccessKeysRepository)
+container.registerSingleton<
+  SaveAccessKeysRepository &
+  FindAPIKeyRepository
+>('AccessKeysRepository', AccessKeysRepository)
+
+container.registerSingleton<SaveOfferRepository>('ResourcesRepository', ResourcesRepository)
