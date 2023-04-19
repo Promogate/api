@@ -9,5 +9,5 @@ export namespace FindAPIKeyRepository {
     apiKey: string
   }
 
-  export type Output = AccessKeys | null
+  export type Output = AccessKeys
 }
