@@ -1,9 +1,10 @@
-import { Offer } from '@prisma/client'
+import { Offer } from '@prisma/client';
 
 export interface ListOffers {
-  execute: () => Promise<ListOffers.Output>
+  execute: (input: ListOffers.Input) => Promise<ListOffers.Output>
 }
 
 export namespace ListOffers {
-  export type Output = Offer[]
+  export type Input = { apiKey: string };
+  export type Output = Offer[];
 }
