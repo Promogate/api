@@ -9,6 +9,7 @@ export namespace CreateOffer {
     oldPrice: string
     destinationLink: string
     storeImage: string
+    expirationDate: string
   }
 
   export type Output = void
