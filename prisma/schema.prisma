@@ -48,7 +48,7 @@ model Offer {
   price            String
   destination_link String
   store_image      String
-  expiration_date  DateTime?
+  expiration_date  String?
 
   Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
   resourcesId String
