@@ -9,9 +9,11 @@ import { Router } from 'express';
 
 const userRouter = Router()
 
+userRouter.post('/signin', createSessionController.handle);
+
+userRouter.use(verifyToken);
 userRouter.post('/create', createUserController.handle);
 userRouter.get('/', verifyToken,findUserByEmailController.handle);
 userRouter.get('/:id', verifyToken,findUserByIdController.handle);
-userRouter.post('/signin', createSessionController.handle);
 
 export { userRouter };
