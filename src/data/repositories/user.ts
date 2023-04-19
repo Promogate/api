@@ -81,7 +81,7 @@ export class UserRepository implements
   }
 
   async findByIdIncludingResources(input: FindUserByIdIncludingResourcesRepository.Input): Promise<FindUserByIdIncludingResourcesRepository.Output> {
-    const user = await prisma.user.findFirst({ 
+    const user = await prisma.user.findUnique({ 
       where: { 
         id: input.id
       },
@@ -92,6 +92,10 @@ export class UserRepository implements
 
     if (!user) {
       throw new UserNotFound()
+    }
+
+    if (!user.resources) {
+      throw new Error('Failed to find resources from this user.')
     }
 
     if (user.name) {
