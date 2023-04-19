@@ -1,4 +1,3 @@
-import { AccessKeys } from '@prisma/client'
 
 export interface FindAPIKeyRepository {
   find: (input: FindAPIKeyRepository.Input) => Promise<FindAPIKeyRepository.Output>
@@ -9,5 +8,10 @@ export namespace FindAPIKeyRepository {
     apiKey: string
   }
 
-  export type Output = AccessKeys
+  export type Output = {
+    id: string;
+    key: string;
+    expiration_date: Date;
+    userId: string;
+}
 }
