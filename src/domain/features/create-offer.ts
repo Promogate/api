@@ -6,6 +6,7 @@ export namespace CreateOffer {
   export type Input = {
     image: string
     title: string
+    price: string
     oldPrice: string
     destinationLink: string
     storeImage: string
