@@ -1,10 +1,11 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import '../config/module-alias';
 
 import 'express-async-errors';
 import 'reflect-metadata';
 
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 import express from 'express';
 
