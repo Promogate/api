@@ -1,3 +1,5 @@
+import { Offer } from '@prisma/client'
+
 export interface SaveOfferRepository {
   saveOffer: (input: SaveOfferRepository.Input) => Promise<SaveOfferRepository.Output>
 }
@@ -15,4 +17,12 @@ export namespace SaveOfferRepository {
   }
 
   export type Output = void
+}
+
+export interface ListOffersRepository {
+  listOffers: () => Promise<ListOffersRepository.Output>
+}
+
+export namespace ListOffersRepository {
+  export type Output = Offer[]
 }
