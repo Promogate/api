@@ -29,7 +29,10 @@ export class AccessKeysRepository implements SaveAccessKeysRepository, FindAPIKe
         throw new Error('Invalid API Key');
       }
 
-      return accessKeys
+      return {
+        ...accessKeys,
+        userId: accessKeys.userId as string,
+      }
     } catch (err: any) {
       throw new Error(err.message);
     }

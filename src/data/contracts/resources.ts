@@ -20,9 +20,10 @@ export namespace SaveOfferRepository {
 }
 
 export interface ListOffersRepository {
-  listOffers: () => Promise<ListOffersRepository.Output>
+  listOffers: (input: ListOffersRepository.Input) => Promise<ListOffersRepository.Output>
 }
 
 export namespace ListOffersRepository {
+  export type Input = { resourceId: string }
   export type Output = Offer[]
 }
