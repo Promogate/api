@@ -16,8 +16,8 @@ export class ResourcesRepository implements SaveOfferRepository {
           expiration_date: input.expirationDate
         }
       });
-    } catch {
-      throw new Error('Failed to create a new offer');
+    } catch (err: any) {
+      throw new Error(err.message);
     }
   }
 }
