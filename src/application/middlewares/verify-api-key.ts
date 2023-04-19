@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 
 export function verifyAPIKey (req: Request, res: Response, next: NextFunction) {
-  const { apiKey } = req.params as { apiKey: string };
 
-  if (!apiKey) {
+  if (!req.headers['x-api-key'] || req.headers['x-api-key'] === '') {
     return res.status(401).json({
       message: 'API key is missing!'
-    })
+    });
   }
 
+  console.log(req.headers['x-api-key']);
   next()
 }

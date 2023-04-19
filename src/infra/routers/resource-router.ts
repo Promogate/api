@@ -3,6 +3,6 @@ import { Router } from 'express';
 
 const resourceRouter = Router();
 
-resourceRouter.get('/offer/create', verifyAPIKey)
+resourceRouter.post('/offer/create', verifyAPIKey)
 
 export { resourceRouter };
