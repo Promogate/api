@@ -1,10 +1,19 @@
-import { CreateUserRepository, FindUserByEmailRepository, FindUserByIdRepository } from '@/data/contracts';
+import {
+  CreateUserRepository,
+  FindUserByEmailRepository,
+  FindUserByIdIncludingResourcesRepository,
+  FindUserByIdRepository
+} from '@/data/contracts';
 import { CreateUserFailed, UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
 
-export class UserRepository implements CreateUserRepository, FindUserByEmailRepository, FindUserByIdRepository {
+export class UserRepository implements
+  CreateUserRepository,
+  FindUserByEmailRepository,
+  FindUserByIdRepository,
+  FindUserByIdIncludingResourcesRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
-    const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email }});
+    const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
 
     if (userAlreadyExists) {
       throw new UserAlredyExistsError();
@@ -47,10 +56,10 @@ export class UserRepository implements CreateUserRepository, FindUserByEmailRepo
       email: user.email,
       password: user.password
     }
-    
+
   }
 
-  async findById (input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
+  async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
     const user = await prisma.user.findFirst({ where: { id: input.id } });
 
     if (!user) {
@@ -67,7 +76,37 @@ export class UserRepository implements CreateUserRepository, FindUserByEmailRepo
 
     return {
       id: user.id,
-      email: user.email
+      email: user.email,
+    }
+  }
+
+  async findByIdIncludingResources(input: FindUserByIdIncludingResourcesRepository.Input): Promise<FindUserByIdIncludingResourcesRepository.Output> {
+    const user = await prisma.user.findFirst({ 
+      where: { 
+        id: input.id
+      },
+      include: {
+        resources: true
+      }
+    });
+
+    if (!user) {
+      throw new UserNotFound()
+    }
+
+    if (user.name) {
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        resources: user.resources
+      }
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      resources: user.resources
     }
   }
 }
