@@ -8,6 +8,5 @@ export function verifyAPIKey (req: Request, res: Response, next: NextFunction) {
     });
   }
 
-  console.log(req.headers['x-api-key']);
   next()
 }

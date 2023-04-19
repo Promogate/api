@@ -13,7 +13,7 @@ export class ResourcesRepository implements SaveOfferRepository {
           price: input.price,
           store_image: input.storeImage,
           destination_link: input.destinationLink,
-          expiration_date: input.expirationDate
+          expiration_date: input.expirationDate,
         }
       });
     } catch (err: any) {
