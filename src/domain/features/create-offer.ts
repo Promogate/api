@@ -10,6 +10,7 @@ export namespace CreateOffer {
     destinationLink: string
     storeImage: string
     expirationDate: string
+    apiKey: string
   }
 
   export type Output = void
