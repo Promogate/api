@@ -4,7 +4,7 @@ export interface CreateApiKey {
 
 export namespace CreateApiKey {
   export type Input = {
-    userId: string
+    id: string
   }
 
   export type Output = {

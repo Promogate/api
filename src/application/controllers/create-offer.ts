@@ -7,7 +7,7 @@ class CreateOfferController {
     const createOfferService = container.resolve(CreateOfferService)
     await createOfferService.execute({ 
       ...req.body, 
-      apiKey: req.headers['x-api-api'] as string 
+      apiKey: req.headers['x-api-key'] as string 
     });
     return res.status(201).send()
   }

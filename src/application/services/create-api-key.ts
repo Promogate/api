@@ -14,11 +14,11 @@ export class CreateApiKeyService implements CreateApiKey {
 
   async execute (input: CreateApiKey.Input): Promise<CreateApiKey.Output> {
     const { apiKey } = uuidAPIKey.create();
-    const key = apiKey.replace(/[-]/g, '');
+    const key = apiKey.replace(/[-]/g, '')
     const now = dayjs()
     const expirationDate = now.add(1, 'year').format();
 
-    await this.accessKeysRepository.save({ userId: input.userId, key, expirationDate })
+    await this.accessKeysRepository.save({ userId: input.id, key, expirationDate })
 
     return {
       key
