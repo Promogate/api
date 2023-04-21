@@ -7,6 +7,7 @@ import 'express-async-errors';
 import 'reflect-metadata';
 
 
+import cors from 'cors';
 import express from 'express';
 
 import '../shared/containers';
@@ -16,6 +17,7 @@ import { errorHandler } from '@/main/utils';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use('/users', userRouter);
 app.use('/api-keys', apiKeyRouter)

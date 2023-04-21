@@ -13,3 +13,19 @@ export namespace SaveAccessKeysRepository {
 
   export type Output = AccessKeys
 }
+
+export interface ListAPIKeysRepository {
+  list: (input: ListAPIKeysRepository.Input) => Promise<ListAPIKeysRepository.Output>
+}
+
+export namespace ListAPIKeysRepository {
+  export type Input = {
+    userId: string
+  }
+
+  export type Output = Array<{
+    id: string
+    key: string
+    expiration_date: string
+  }>
+}

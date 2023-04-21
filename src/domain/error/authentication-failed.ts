@@ -1,6 +1,6 @@
 export class AuthenticationFailed extends Error {
   constructor () {
-    super('Authentication Failed. Email or password are incorrect. Try again')
+    super('Email ou senha estão incorretos.')
     this.name = 'AuthenticationFailed'
 
     return {
