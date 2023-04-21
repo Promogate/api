@@ -4,6 +4,7 @@ export * from './create-session';
 export * from './create-user';
 export * from './find-user-by-email';
 export * from './find-user-by-id';
+export * from './list-api-keys';
 export * from './list-offers';
 export * from './revalidate-refresh-token';
 export * from './verify-refresh-token';
