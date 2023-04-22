@@ -10,6 +10,6 @@ export namespace ListAPIKeys {
   export type Output = Array<{
     id: string
     key: string
-    expirationDate: string
+    expiration_date: Date
   }>
 }

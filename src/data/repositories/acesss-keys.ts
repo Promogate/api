@@ -1,7 +1,10 @@
-import { FindAPIKeyRepository, SaveAccessKeysRepository } from '@/data/contracts';
+import { FindAPIKeyRepository, ListAPIKeysRepository, SaveAccessKeysRepository } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
-export class AccessKeysRepository implements SaveAccessKeysRepository, FindAPIKeyRepository {
+export class AccessKeysRepository implements
+  SaveAccessKeysRepository,
+  FindAPIKeyRepository,
+  ListAPIKeysRepository {
   async save(input: SaveAccessKeysRepository.Input): Promise<SaveAccessKeysRepository.Output> {
     try {
       const saved = await prisma.accessKeys.create({
@@ -17,7 +20,7 @@ export class AccessKeysRepository implements SaveAccessKeysRepository, FindAPIKe
     }
   }
 
-  async find (input: FindAPIKeyRepository.Input): Promise<FindAPIKeyRepository.Output> {
+  async find(input: FindAPIKeyRepository.Input): Promise<FindAPIKeyRepository.Output> {
     try {
       const accessKeys = await prisma.accessKeys.findFirst({
         where: {
@@ -36,5 +39,20 @@ export class AccessKeysRepository implements SaveAccessKeysRepository, FindAPIKe
     } catch (err: any) {
       throw new Error(err.message);
     }
+  }
+
+  async list (input: ListAPIKeysRepository.Input): Promise<ListAPIKeysRepository.Output> {
+    try {
+      const keys = await prisma.accessKeys.findMany({
+        where: {
+          userId: input.userId
+        }
+      })
+
+      return keys
+    } catch (error: any) {
+      throw new Error('Failed to list keys from repository')
+    }
+    //
   }
 }

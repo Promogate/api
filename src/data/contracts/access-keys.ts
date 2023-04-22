@@ -26,6 +26,6 @@ export namespace ListAPIKeysRepository {
   export type Output = Array<{
     id: string
     key: string
-    expiration_date: string
+    expiration_date: Date
   }>
 }
