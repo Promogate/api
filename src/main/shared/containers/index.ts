@@ -4,6 +4,7 @@ import {
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository,
+  ListAPIKeysRepository,
   ListOffersRepository,
   SaveAccessKeysRepository,
   SaveOfferRepository
@@ -24,7 +25,8 @@ container.registerSingleton<
 
 container.registerSingleton<
   SaveAccessKeysRepository &
-  FindAPIKeyRepository
+  FindAPIKeyRepository &
+  ListAPIKeysRepository
 >('AccessKeysRepository', AccessKeysRepository)
 
 container.registerSingleton<
