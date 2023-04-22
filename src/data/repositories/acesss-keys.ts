@@ -1,10 +1,16 @@
-import { FindAPIKeyRepository, ListAPIKeysRepository, SaveAccessKeysRepository } from '@/data/contracts';
+import {
+  DeleteApiKeyRepository,
+  FindAPIKeyRepository,
+  ListAPIKeysRepository,
+  SaveAccessKeysRepository
+} from '@/data/contracts';
 import { prisma } from '@/main/config';
 
 export class AccessKeysRepository implements
   SaveAccessKeysRepository,
   FindAPIKeyRepository,
-  ListAPIKeysRepository {
+  ListAPIKeysRepository,
+  DeleteApiKeyRepository {
   async save(input: SaveAccessKeysRepository.Input): Promise<SaveAccessKeysRepository.Output> {
     try {
       const saved = await prisma.accessKeys.create({
@@ -41,7 +47,7 @@ export class AccessKeysRepository implements
     }
   }
 
-  async list (input: ListAPIKeysRepository.Input): Promise<ListAPIKeysRepository.Output> {
+  async list(input: ListAPIKeysRepository.Input): Promise<ListAPIKeysRepository.Output> {
     try {
       const keys = await prisma.accessKeys.findMany({
         where: {
@@ -54,5 +60,17 @@ export class AccessKeysRepository implements
       throw new Error('Failed to list keys from repository')
     }
     //
+  }
+
+  async delete (input: DeleteApiKeyRepository.Input): Promise<DeleteApiKeyRepository.Output> {
+    try {
+      await prisma.accessKeys.delete({
+        where: {
+          id: input.id
+        }
+      })
+    } catch {
+      throw new Error('Failed to delete the api key from repository');
+    }
   }
 }
