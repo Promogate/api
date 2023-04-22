@@ -29,3 +29,16 @@ export namespace ListAPIKeysRepository {
     expiration_date: Date
   }>
 }
+
+
+export interface DeleteApiKeyRepository {
+  delete: (input: DeleteApiKeyRepository.Input) => Promise<DeleteApiKeyRepository.Output>
+}
+
+export namespace DeleteApiKeyRepository {
+  export type Input = {
+    id: string
+  }
+
+  export type Output = void
+}
