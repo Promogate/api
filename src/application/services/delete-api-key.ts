@@ -10,6 +10,6 @@ export class DeleteApiKeyService implements DeleteAPIKey {
   ) {}
 
   async execute (input: DeleteAPIKey.Input): Promise<void> {
-    await this.apiRepository.delete(input);
+    await this.apiRepository.delete({ id: input.id });
   }
 }
