@@ -1,6 +1,7 @@
 import { FindOfferById } from '@/domain/features';
+import { injectable } from 'tsyringe';
 
-
+@injectable()
 export class FindOfferByIdService implements FindOfferById {
   async execute (input: FindOfferById.Input): Promise<FindOfferById.Output> {
     //
