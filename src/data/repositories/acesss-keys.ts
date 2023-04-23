@@ -59,7 +59,6 @@ export class AccessKeysRepository implements
     } catch (error: any) {
       throw new Error('Failed to list keys from repository')
     }
-    //
   }
 
   async delete (input: DeleteApiKeyRepository.Input): Promise<DeleteApiKeyRepository.Output> {
@@ -68,9 +67,9 @@ export class AccessKeysRepository implements
         where: {
           id: input.id
         }
-      })
-    } catch {
-      throw new Error('Failed to delete the api key from repository');
+      });
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   }
 }
