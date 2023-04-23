@@ -11,10 +11,10 @@ export namespace FindOfferById {
     id: string,
     title: string,
     image: string,
-    old_price: string,
+    old_price: string | null,
     price: string,
     destination_link: string,
     store_image: string,
-    expiration_date: string,
+    expiration_date: string | null,
   }
 }
