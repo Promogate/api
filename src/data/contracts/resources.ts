@@ -27,3 +27,24 @@ export namespace ListOffersRepository {
   export type Input = { resourceId: string }
   export type Output = Offer[]
 }
+
+export interface FindOfferByIdRepository {
+  findOfferById: (input: FindOfferByIdRepository.Input) => Promise<FindOfferByIdRepository.Output>
+}
+
+export namespace FindOfferByIdRepository {
+  export type Input = {
+    id: string
+  }
+
+  export type Output = {
+    id: string,
+    title: string,
+    image: string,
+    old_price: string,
+    price: string,
+    destination_link: string,
+    store_image: string,
+    expiration_date: string,
+  }
+}
