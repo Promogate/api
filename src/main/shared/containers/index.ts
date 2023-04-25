@@ -1,4 +1,5 @@
 import {
+  AddOfferClickRepository,
   CreateUserRepository,
   DeleteApiKeyRepository,
   FindAPIKeyRepository,
@@ -13,6 +14,7 @@ import {
 } from '@/data/contracts';
 import {
   AccessKeysRepository,
+  AnalyticsRepository,
   ResourcesRepository,
   UserRepository
 } from '@/data/repositories';
@@ -30,10 +32,14 @@ container.registerSingleton<
   FindAPIKeyRepository &
   ListAPIKeysRepository &
   DeleteApiKeyRepository
->('AccessKeysRepository', AccessKeysRepository)
+>('AccessKeysRepository', AccessKeysRepository);
 
 container.registerSingleton<
   SaveOfferRepository &
   ListOffersRepository &
   FindOfferByIdRepository
->('ResourcesRepository', ResourcesRepository)
+>('ResourcesRepository', ResourcesRepository);
+
+container.registerSingleton<
+  AddOfferClickRepository
+>('AnalyticsRepository', AnalyticsRepository);
