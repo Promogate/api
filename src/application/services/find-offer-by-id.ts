@@ -1,4 +1,4 @@
-import { FindOfferByIdRepository } from '@/data/contracts';
+import { AddOfferClickRepository, FindOfferByIdRepository } from '@/data/contracts';
 import { FindOfferById } from '@/domain/features';
 import { inject, injectable } from 'tsyringe';
 
@@ -6,11 +6,17 @@ import { inject, injectable } from 'tsyringe';
 export class FindOfferByIdService implements FindOfferById {
   constructor (
     @inject('ResourcesRepository')
-    private readonly offerRepository: FindOfferByIdRepository
+    private readonly offerRepository: FindOfferByIdRepository,
+    @inject('AnalyticsRepository')
+    private readonly analyticsRepository: AddOfferClickRepository
   ) {}
 
   async execute (input: FindOfferById.Input): Promise<FindOfferById.Output> {
-    const offer = await this.offerRepository.findOfferById({ id: input.id, methods: input.methods });
+    const offer = await this.offerRepository.findOfferById({ id: input.id });
+
+    if (input.methods && input.methods['addClick']) {
+      await this.analyticsRepository.addClick({ id: input.id })
+    }
 
     return {
       id: offer.id,
