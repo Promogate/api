@@ -35,7 +35,6 @@ export interface FindOfferByIdRepository {
 export namespace FindOfferByIdRepository {
   export type Input = {
     id: string,
-    methods?: Record<string, unknown>
   }
 
   export type Output = {
