@@ -1,8 +1,8 @@
-import { AddOfferClickRepository } from '@/data/contracts';
+import { AddOfferClickRepository, GetOffersClicksRepository } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
-export class AnalyticsRepository implements AddOfferClickRepository {
+export class AnalyticsRepository implements AddOfferClickRepository, GetOffersClicksRepository {
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
     try {
       const offer = await prisma.offer.findUnique({
@@ -31,4 +31,15 @@ export class AnalyticsRepository implements AddOfferClickRepository {
     }
   }
 
+  async getClicks(input: GetOffersClicksRepository.Input): Promise<GetOffersClicksRepository.Output> {
+    const clicks = await prisma.resourcesAnalyticsClicks.count({
+      where: {
+        resource_id: input.resourceId
+      }
+    })
+
+    return {
+      clicks: clicks
+    }
+  }
 }

@@ -9,3 +9,17 @@ export namespace AddOfferClickRepository {
 
   export type Output = void
 }
+
+export interface GetOffersClicksRepository {
+  getClicks: (input: GetOffersClicksRepository.Input) => Promise<GetOffersClicksRepository.Output>
+}
+
+export namespace GetOffersClicksRepository {
+  export type Input = {
+    resourceId: string
+  }
+
+  export type Output = {
+    clicks: number
+  }
+}
