@@ -70,5 +70,5 @@ model ResourcesAnalyticsClicks {
   created_at  DateTime @default(now())
 
   resources_analytics    ResourcesAnalytics @relation(fields: [resources_analytics_id], references: [id], onDelete: Cascade)
-  resources_analytics_id String             @unique
+  resources_analytics_id String
 }
