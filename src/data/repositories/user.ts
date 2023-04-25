@@ -26,7 +26,11 @@ export class UserRepository implements
           email: input.email,
           password: input.password,
           resources: {
-            create: {}
+            create: {
+              resources_analytics: {
+                create: {}
+              }
+            }
           }
         }
       })
