@@ -41,7 +41,7 @@ model Resources {
 }
 
 model Offer {
-  id               String    @id @default(uuid())
+  id               String  @id @default(uuid())
   image            String
   title            String
   old_price        String?
@@ -49,6 +49,7 @@ model Offer {
   destination_link String
   store_image      String
   expiration_date  String?
+  extendedData     Json?
 
   Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
   resourcesId String
