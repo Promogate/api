@@ -33,8 +33,9 @@ model AccessKeys {
 }
 
 model Resources {
-  id     String  @id @default(uuid())
-  offers Offer[]
+  id                  String              @id @default(uuid())
+  offers              Offer[]
+  resources_analytics ResourcesAnalytics?
 
   User   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
@@ -49,8 +50,25 @@ model Offer {
   destination_link String
   store_image      String
   expiration_date  String?
-  clicks           Int     @default(0)
 
   Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
   resourcesId String
+}
+
+model ResourcesAnalytics {
+  id     String                     @id @default(uuid())
+  clicks ResourcesAnalyticsClicks[]
+
+  resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
+  resourcesId String    @unique
+}
+
+model ResourcesAnalyticsClicks {
+  id          String   @id @default(uuid())
+  offer_id    String
+  resource_id String
+  created_at  DateTime @default(now())
+
+  resources_analytics    ResourcesAnalytics @relation(fields: [resources_analytics_id], references: [id], onDelete: Cascade)
+  resources_analytics_id String             @unique
 }
