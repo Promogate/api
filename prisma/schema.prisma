@@ -49,7 +49,7 @@ model Offer {
   destination_link String
   store_image      String
   expiration_date  String?
-  extendedData     Json?
+  clicks           Int     @default(0)
 
   Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
   resourcesId String

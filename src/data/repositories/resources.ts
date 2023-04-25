@@ -1,6 +1,7 @@
 import { FindOfferByIdRepository, ListOffersRepository, SaveOfferRepository } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class ResourcesRepository implements 
   SaveOfferRepository,
   ListOffersRepository,
@@ -46,6 +47,7 @@ export class ResourcesRepository implements
         }
       });
 
+      
       if (offer === null) throw new Error('Failed to find offer in repo');
 
       return {
@@ -56,7 +58,8 @@ export class ResourcesRepository implements
         old_price: offer.old_price,
         destination_link: offer.destination_link,
         store_image: offer.store_image,
-        expiration_date: offer.expiration_date
+        expiration_date: offer.expiration_date,
+        resourceId: offer.resourcesId
       }
     } catch (err: any) {
       throw new Error(err.message)

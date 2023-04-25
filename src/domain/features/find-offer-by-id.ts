@@ -5,6 +5,7 @@ export interface FindOfferById {
 export namespace FindOfferById {
   export type Input = {
     id: string,
+    methods?: Record<string, unknown>;
   }
 
   export type Output = {
@@ -16,5 +17,6 @@ export namespace FindOfferById {
     destination_link: string,
     store_image: string,
     expiration_date: string | null,
+    resourceId: string
   }
 }

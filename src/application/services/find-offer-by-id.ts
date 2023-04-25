@@ -10,7 +10,7 @@ export class FindOfferByIdService implements FindOfferById {
   ) {}
 
   async execute (input: FindOfferById.Input): Promise<FindOfferById.Output> {
-    const offer = await this.offerRepository.findOfferById({ id: input.id });
+    const offer = await this.offerRepository.findOfferById({ id: input.id, methods: input.methods });
 
     return {
       id: offer.id,
@@ -21,6 +21,7 @@ export class FindOfferByIdService implements FindOfferById {
       destination_link: offer.destination_link,
       store_image: offer.store_image,
       expiration_date: offer.expiration_date,
+      resourceId: offer.resourceId
     }
   }
 }

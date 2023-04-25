@@ -34,7 +34,8 @@ export interface FindOfferByIdRepository {
 
 export namespace FindOfferByIdRepository {
   export type Input = {
-    id: string
+    id: string,
+    methods?: Record<string, unknown>
   }
 
   export type Output = {
@@ -46,5 +47,6 @@ export namespace FindOfferByIdRepository {
     destination_link: string,
     store_image: string,
     expiration_date: string | null,
+    resourceId: string
   }
 }
