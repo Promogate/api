@@ -1,5 +1,4 @@
-import { User } from '@/domain/models'
-import { Resources } from '@prisma/client'
+import { Resources, User } from '@prisma/client'
 
 export interface CreateUserRepository {
   create: (input: CreateUserRepository.Input) => Promise<CreateUserRepository.Ouput>
@@ -7,7 +6,7 @@ export interface CreateUserRepository {
 
 export namespace CreateUserRepository {
   export type Input = {
-    name?: string
+    name: string
     email: string
     password: string
   }
@@ -24,7 +23,19 @@ export namespace FindUserByEmailRepository {
     email: string
   };
 
-  export type Output = Partial<User>
+  export type Output = Omit<User, 'password'>
+}
+
+export interface FindUserByEmailIncludingPasswordRepository {
+  findByEmailIncludingPassword: (input: FindUserByEmailIncludingPasswordRepository.Input) => Promise<FindUserByEmailIncludingPasswordRepository.Output>
+}
+
+export namespace FindUserByEmailIncludingPasswordRepository {
+  export type Input = {
+    email: string
+  };
+
+  export type Output = User
 }
 
 export interface FindUserByIdRepository {

@@ -1,4 +1,4 @@
-import { FindUserByEmailRepository } from '@/data/contracts';
+import { FindUserByEmailIncludingPasswordRepository } from '@/data/contracts';
 import { AuthenticationFailed } from '@/domain/error';
 import { CreateSession } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
@@ -10,11 +10,11 @@ import { inject, injectable } from 'tsyringe';
 export class CreateSessionService implements CreateSession {
   constructor(
     @inject('UserRepository')
-    private readonly userRepository: FindUserByEmailRepository,
+    private readonly userRepository: FindUserByEmailIncludingPasswordRepository,
   ) { }
 
   async execute(input: CreateSession.Input): Promise<CreateSession.Output> {
-    const user = await this.userRepository.findByEmail({ email: input.email })
+    const user = await this.userRepository.findByEmailIncludingPassword({ email: input.email })
 
     const passwordMatch = await compare(input.password, user.password as string)
     if (!passwordMatch) {

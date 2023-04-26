@@ -1,17 +1,20 @@
 import {
   CreateUserRepository,
+  FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository
 } from '@/data/contracts';
 import { CreateUserFailed, UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
+import { generatApiKey, generateExpirationDate } from '@/main/utils';
 
 export class UserRepository implements
   CreateUserRepository,
   FindUserByEmailRepository,
   FindUserByIdRepository,
-  FindUserByIdIncludingResourcesRepository {
+  FindUserByIdIncludingResourcesRepository,
+  FindUserByEmailIncludingPasswordRepository {
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
 
@@ -29,9 +32,15 @@ export class UserRepository implements
             create: {
               resources_analytics: {
                 create: {}
-              }
+              },
             }
-          }
+          },
+          api_keys: {
+            create: {
+              key: generatApiKey(),
+              expiration_date: generateExpirationDate(1, 'year'),
+            }
+          },
         }
       })
     } catch (error: unknown) {
@@ -45,22 +54,31 @@ export class UserRepository implements
     if (user === null) {
       throw new UserNotFound()
     }
-
-    if (user.name) {
-      return {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        password: user.password
-      }
-    }
-
+    
     return {
       id: user.id,
       email: user.email,
+      name: user.name,
+      role: user.role,
+      created_at: user.created_at
+    }
+  }
+
+  async findByEmailIncludingPassword (input: FindUserByEmailIncludingPasswordRepository.Input): Promise<FindUserByEmailIncludingPasswordRepository.Output> {
+    const user = await prisma.user.findUnique({ where: { email: input.email } })
+
+    if (user === null) {
+      throw new UserNotFound()
+    }
+    
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      created_at: user.created_at,
       password: user.password
     }
-
   }
 
   async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
@@ -70,23 +88,18 @@ export class UserRepository implements
       throw new UserNotFound()
     }
 
-    if (user.name) {
-      return {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      }
-    }
-
     return {
       id: user.id,
       email: user.email,
+      name: user.name,
+      role: user.role,
+      created_at: user.created_at
     }
   }
 
   async findByIdIncludingResources(input: FindUserByIdIncludingResourcesRepository.Input): Promise<FindUserByIdIncludingResourcesRepository.Output> {
-    const user = await prisma.user.findUnique({ 
-      where: { 
+    const user = await prisma.user.findUnique({
+      where: {
         id: input.id
       },
       include: {
@@ -102,18 +115,12 @@ export class UserRepository implements
       throw new Error('Failed to find resources from this user.')
     }
 
-    if (user.name) {
-      return {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        resources: user.resources
-      }
-    }
-
     return {
       id: user.id,
       email: user.email,
+      name: user.name,
+      role: user.role,
+      created_at: user.created_at,
       resources: user.resources
     }
   }

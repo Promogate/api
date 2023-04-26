@@ -4,7 +4,7 @@ export interface CreateUser {
 
 export namespace CreateUser {
   export type Input = {
-    name?: string
+    name: string
     email: string
     password: string
   }

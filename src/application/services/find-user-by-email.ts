@@ -13,9 +13,11 @@ export class FindUserByEmailService implements FindUserByEmail {
     const user = await this.userRepository.findByEmail(input);
 
     return {
-      id: user.id as string,
-      name: user.name ? user.name : null,
-      email: user.email as string
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      created_at: user.created_at
     }
   }
 

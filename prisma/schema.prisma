@@ -11,38 +11,50 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  name        String?
-  email       String       @unique
-  password    String
-  access_keys AccessKeys[]
-  resources   Resources?
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  password   String
+  api_keys   ApiKey?
+  resources  Resources?
+  role       Role       @default(FREE)
+  created_at DateTime   @default(now())
 
   @@map("users")
 }
 
-model AccessKeys {
+enum Role {
+  MASTER
+  FREE
+  PREMIUM
+}
+
+model ApiKey {
   id              String   @id @default(uuid())
   key             String   @unique
+  created_at      DateTime @default(now())
   expiration_date DateTime
 
-  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String?
+  User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @unique
 
-  @@map("access_keys")
+  @@map("api_keys")
 }
 
 model Resources {
   id                  String              @id @default(uuid())
   offers              Offer[]
+  created_at          DateTime            @default(now())
   resources_analytics ResourcesAnalytics?
 
-  User   User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
+  User    User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @unique
+
+  @@map("resources")
 }
 
 model Offer {
-  id               String  @id @default(uuid())
+  id               String       @id @default(uuid())
   image            String
   title            String
   old_price        String?
@@ -50,25 +62,35 @@ model Offer {
   destination_link String
   store_image      String
   expiration_date  String?
+  created_at       DateTime     @default(now())
+  offer_clicks     OfferClicks?
 
-  Resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
-  resourcesId String
+  Resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
+  resources_id String
+
+  @@map("offers")
 }
 
 model ResourcesAnalytics {
-  id     String                     @id @default(uuid())
-  clicks ResourcesAnalyticsClicks[]
+  id           String        @id @default(uuid())
+  offer_clicks OfferClicks[]
 
-  resources   Resources @relation(fields: [resourcesId], references: [id], onDelete: Cascade)
-  resourcesId String    @unique
+  resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
+  resources_id String    @unique
+
+  @@map("resources_analytics")
 }
 
-model ResourcesAnalyticsClicks {
+model OfferClicks {
   id          String   @id @default(uuid())
-  offer_id    String
   resource_id String
   created_at  DateTime @default(now())
 
   resources_analytics    ResourcesAnalytics @relation(fields: [resources_analytics_id], references: [id], onDelete: Cascade)
   resources_analytics_id String
+
+  offer    Offer  @relation(fields: [offer_id], references: [id])
+  offer_id String @unique
+
+  @@map("offer_clicks")
 }

@@ -10,7 +10,7 @@ export class ResourcesRepository implements
     try {
       await prisma.offer.create({
         data: {
-          resourcesId: input.resourceId,
+          resources_id: input.resourceId,
           image: input.image,
           title: input.title,
           old_price: input.oldPrice,
@@ -29,7 +29,7 @@ export class ResourcesRepository implements
     try {
       const offers = await prisma.offer.findMany({
         where: {
-          resourcesId: input.resourceId
+          resources_id: input.resourceId
         }
       })
 
@@ -59,7 +59,7 @@ export class ResourcesRepository implements
         destination_link: offer.destination_link,
         store_image: offer.store_image,
         expiration_date: offer.expiration_date,
-        resourceId: offer.resourcesId
+        resourceId: offer.resources_id
       }
     } catch (err: any) {
       throw new Error(err.message)

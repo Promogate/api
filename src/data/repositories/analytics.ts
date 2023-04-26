@@ -13,17 +13,17 @@ export class AnalyticsRepository implements AddOfferClickRepository, GetOffersCl
       
       const resourcesAnalytics = await prisma.resourcesAnalytics.findUnique({
         where: {
-          resourcesId: offer.resourcesId
+          resources_id: offer.resources_id
         }
       })
 
       if (resourcesAnalytics === null) throw new Error('ResourceAnalytics not found via analytics repository')
 
-      await prisma.resourcesAnalyticsClicks.create({
+      await prisma.offerClicks.create({
         data: {
           resources_analytics_id: resourcesAnalytics.id,
           offer_id: offer.id,
-          resource_id: offer.resourcesId
+          resource_id: offer.resources_id
         }
       })
     } catch (error: any) {
@@ -32,7 +32,7 @@ export class AnalyticsRepository implements AddOfferClickRepository, GetOffersCl
   }
 
   async getClicks(input: GetOffersClicksRepository.Input): Promise<GetOffersClicksRepository.Output> {
-    const clicks = await prisma.resourcesAnalyticsClicks.count({
+    const clicks = await prisma.offerClicks.count({
       where: {
         resource_id: input.resourceId
       }

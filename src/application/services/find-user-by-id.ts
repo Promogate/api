@@ -19,8 +19,10 @@ export class FindUserByIdService implements FindUserById {
 
     return {
       id: user.id,
-      name: user.name ? user.name : null,
-      email: user.email
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at
     }
   }
 
