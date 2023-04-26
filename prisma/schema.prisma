@@ -63,7 +63,7 @@ model Offer {
   store_image      String
   expiration_date  String?
   created_at       DateTime     @default(now())
-  offer_clicks     OfferClicks?
+  offer_clicks     OfferClicks[]
 
   Resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String
@@ -90,7 +90,7 @@ model OfferClicks {
   resources_analytics_id String
 
   offer    Offer  @relation(fields: [offer_id], references: [id])
-  offer_id String @unique
+  offer_id String 
 
   @@map("offer_clicks")
 }
