@@ -6,5 +6,6 @@ const analyticsRouter = Router();
 
 analyticsRouter.use(verifyToken);
 analyticsRouter.get('/clicks', getOffersClicksController.handle);
+analyticsRouter.get('/offers');
 
 export { analyticsRouter };
