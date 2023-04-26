@@ -25,16 +25,16 @@ export class CreateOfferService implements CreateOffer {
       id: userId as string
     })
 
-    const expirationDate = dayjs(input.expirationDate).format('DD/MM/YYYY').toString();
+    const expirationDate = dayjs(input.expiration_date).format('DD/MM/YYYY').toString();
 
     await this.resourcesRepository.saveOffer({
       image: input.image,
       title: input.title,
       price: input.price,
       oldPrice: input.oldPrice,
-      expirationDate,
-      storeImage: input.storeImage,
-      destinationLink: input.destinationLink,
+      expiration_date: expirationDate,
+      store_image: input.store_image,
+      destination_link: input.destination_link,
       resourceId: resources.id
     })
   }

@@ -15,9 +15,9 @@ export class ResourcesRepository implements
           title: input.title,
           old_price: input.oldPrice,
           price: input.price,
-          store_image: input.storeImage,
-          destination_link: input.destinationLink,
-          expiration_date: input.expirationDate,
+          store_image: input.store_image,
+          destination_link: input.destination_link,
+          expiration_date: input.expiration_date,
         }
       });
     } catch (err: any) {

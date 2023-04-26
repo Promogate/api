@@ -8,9 +8,9 @@ export namespace CreateOffer {
     title: string
     price: string
     oldPrice: string
-    destinationLink: string
-    storeImage: string
-    expirationDate: string
+    destination_link: string
+    store_image: string
+    expiration_date: string
     apiKey: string
   }
 

@@ -11,9 +11,9 @@ export namespace SaveOfferRepository {
     title: string
     oldPrice?: string
     price: string
-    destinationLink: string
-    storeImage: string
-    expirationDate: string
+    destination_link: string
+    store_image: string
+    expiration_date: string
   }
 
   export type Output = void
