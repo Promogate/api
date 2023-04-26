@@ -6,6 +6,7 @@ import {
 } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
+/*eslint-disable @typescript-eslint/no-explicit-any */
 export class AccessKeysRepository implements
   SaveAccessKeysRepository,
   FindAPIKeyRepository,
@@ -13,9 +14,9 @@ export class AccessKeysRepository implements
   DeleteApiKeyRepository {
   async save(input: SaveAccessKeysRepository.Input): Promise<SaveAccessKeysRepository.Output> {
     try {
-      const saved = await prisma.accessKeys.create({
+      const saved = await prisma.apiKey.create({
         data: {
-          userId: input.userId,
+          user_id: input.userId,
           key: input.key,
           expiration_date: input.expirationDate
         }
@@ -28,7 +29,7 @@ export class AccessKeysRepository implements
 
   async find(input: FindAPIKeyRepository.Input): Promise<FindAPIKeyRepository.Output> {
     try {
-      const accessKeys = await prisma.accessKeys.findFirst({
+      const accessKeys = await prisma.apiKey.findFirst({
         where: {
           key: input.apiKey
         }
@@ -40,7 +41,7 @@ export class AccessKeysRepository implements
 
       return {
         ...accessKeys,
-        userId: accessKeys.userId as string,
+        userId: accessKeys.user_id as string,
       }
     } catch (err: any) {
       throw new Error(err.message);
@@ -49,9 +50,9 @@ export class AccessKeysRepository implements
 
   async list(input: ListAPIKeysRepository.Input): Promise<ListAPIKeysRepository.Output> {
     try {
-      const keys = await prisma.accessKeys.findMany({
+      const keys = await prisma.apiKey.findMany({
         where: {
-          userId: input.userId
+          user_id: input.userId
         }
       })
 
@@ -63,7 +64,7 @@ export class AccessKeysRepository implements
 
   async delete (input: DeleteApiKeyRepository.Input): Promise<DeleteApiKeyRepository.Output> {
     try {
-      await prisma.accessKeys.delete({
+      await prisma.apiKey.delete({
         where: {
           id: input.id
         }
