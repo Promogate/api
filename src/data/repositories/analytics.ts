@@ -5,29 +5,32 @@ import { prisma } from '@/main/config';
 export class AnalyticsRepository implements AddOfferClickRepository, GetOffersClicksRepository {
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
     try {
-      const offer = await prisma.offer.findUnique({
-        where: { id: input.id }
-      });
-
-      if (offer === null) throw new Error('Offer not found via analytics repository')
-      
-      const resourcesAnalytics = await prisma.resourcesAnalytics.findUnique({
+      const offer = await prisma.offer.findFirstOrThrow({
         where: {
-          resources_id: offer.resources_id
+          id: input.id
+        }, include: {
+          Resources: {
+            include: {
+              resources_analytics: {
+                select: {
+                  id: true,
+                  resources_id: true
+                }
+              }
+            }
+          }
         }
       })
-
-      if (resourcesAnalytics === null) throw new Error('ResourceAnalytics not found via analytics repository')
 
       await prisma.offerClicks.create({
         data: {
-          resources_analytics_id: resourcesAnalytics.id,
+          resource_id: offer.Resources.id,
           offer_id: offer.id,
-          resource_id: offer.resources_id
+          resources_analytics_id: offer.Resources.resources_analytics?.id as string
         }
       })
     } catch (error: any) {
-      throw new Error('Failed to add click')
+      throw new Error(error.message)
     }
   }
 
