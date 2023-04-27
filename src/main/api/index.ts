@@ -13,12 +13,14 @@ import express from 'express';
 import '../shared/containers';
 
 import {
-  analyticsRouter,
   apiKeyRouter,
   resourceRouter,
   userRouter
 } from '@/infra/routers';
-import { dashboardResourceRouter } from '@/infra/routers/dashboard';
+import {
+  analyticsRouter,
+  dashboardResourceRouter
+} from '@/infra/routers/dashboard';
 import { errorHandler } from '@/main/utils';
 
 const app = express();
@@ -26,10 +28,11 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/dashboard', dashboardResourceRouter)
+app.use('/dashboard/analytics', analyticsRouter)
+
 app.use('/users', userRouter);
 app.use('/api-keys', apiKeyRouter)
 app.use('/resources', resourceRouter)
-app.use('/analytics', analyticsRouter)
 app.use(errorHandler)
 
 
