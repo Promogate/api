@@ -8,7 +8,7 @@ import {
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository,
-  GetOffersClicksRepository,
+  GetOffersClicksRepository, GetOffersWithClicksCountRepo,
   ListAPIKeysRepository,
   ListOffersRepository,
   SaveAccessKeysRepository,
@@ -45,5 +45,6 @@ container.registerSingleton<
 
 container.registerSingleton<
   AddOfferClickRepository &
-  GetOffersClicksRepository
+  GetOffersClicksRepository &
+  GetOffersWithClicksCountRepo
 >('AnalyticsRepository', AnalyticsRepository);

@@ -1,8 +1,15 @@
-import { AddOfferClickRepository, GetOffersClicksRepository } from '@/data/contracts';
+import {
+  AddOfferClickRepository,
+  GetOffersClicksRepository,
+  GetOffersWithClicksCountRepo
+} from '@/data/contracts';
 import { prisma } from '@/main/config';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
-export class AnalyticsRepository implements AddOfferClickRepository, GetOffersClicksRepository {
+export class AnalyticsRepository implements
+  AddOfferClickRepository,
+  GetOffersClicksRepository,
+  GetOffersWithClicksCountRepo {
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
     try {
       const offer = await prisma.offer.findFirstOrThrow({
@@ -44,5 +51,27 @@ export class AnalyticsRepository implements AddOfferClickRepository, GetOffersCl
     return {
       clicks: clicks
     }
+  }
+
+  async getOffersWithClicksCount(input: GetOffersWithClicksCountRepo.Input): Promise<GetOffersWithClicksCountRepo.Output> {
+    const offers = await prisma.offer.findMany({
+      where: {
+        Resources: {
+          user_id: input.user_id
+        }
+      }, include: {
+        _count: {
+          select: {
+            offer_clicks: true,
+          }
+        }
+      }, orderBy: {
+        offer_clicks: {
+          _count: 'desc'
+        }
+      }
+    })
+
+    return offers
   }
 }
