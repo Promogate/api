@@ -15,7 +15,7 @@ export class FindOfferByIdService implements FindOfferById {
     const offer = await this.offerRepository.findOfferById({ id: input.id });
 
     if (input.methods && input.methods['addClick']) {
-      await this.analyticsRepository.addClick({ id: input.id })
+      await this.analyticsRepository.addClick({ id: offer.id })
     }
 
     return {
