@@ -89,7 +89,7 @@ model OfferClicks {
   resources_analytics    ResourcesAnalytics @relation(fields: [resources_analytics_id], references: [id], onDelete: Cascade)
   resources_analytics_id String
 
-  offer    Offer  @relation(fields: [offer_id], references: [id])
+  offer    Offer  @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   offer_id String 
 
   @@map("offer_clicks")
