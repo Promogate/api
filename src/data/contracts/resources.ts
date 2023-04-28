@@ -19,6 +19,28 @@ export namespace SaveOfferRepository {
   export type Output = void
 }
 
+export interface SaveOffersFromCSVRepository {
+  saveOffersFromCSV: (input: SaveOffersFromCSVRepository.Input) => Promise<SaveOffersFromCSVRepository.Output>
+}
+
+export namespace SaveOffersFromCSVRepository {
+  export type Input = {
+    offers: Array<{
+      resources_id: string
+      image: string
+      title: string
+      oldPrice?: string
+      price: string
+      destination_link: string
+      store_image: string
+      expiration_date: string
+    }>,
+    resource_id: string
+  }
+
+  export type Output = void
+}
+
 export interface ListOffersRepository {
   listOffers: (input: ListOffersRepository.Input) => Promise<ListOffersRepository.Output>
 }
