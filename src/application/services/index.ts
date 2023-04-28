@@ -11,4 +11,4 @@ export * from './get-offers-clicks';
 export * from './get-offers-with-clicks-count';
 export * from './list-api-keys';
 export * from './list-offers';
-export * from './upload-file';
+export * from './upload-offers-from-csv';
