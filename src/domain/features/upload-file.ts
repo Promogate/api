@@ -7,11 +7,6 @@ interface IUploadFile {
   size: number;
 }
 
-interface ICSVFile {
-  name: string;
-  data: Buffer;
-}
-
 interface IUploadFileDTO {
   json: unknown[];
 }

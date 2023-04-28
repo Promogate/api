@@ -12,7 +12,8 @@ import {
   ListAPIKeysRepository,
   ListOffersRepository,
   SaveAccessKeysRepository,
-  SaveOfferRepository
+  SaveOfferRepository,
+  SaveOffersFromCSVRepository
 } from '@/data/contracts';
 import {
   AccessKeysRepository,
@@ -40,7 +41,8 @@ container.registerSingleton<
 container.registerSingleton<
   SaveOfferRepository &
   ListOffersRepository &
-  FindOfferByIdRepository
+  FindOfferByIdRepository &
+  SaveOffersFromCSVRepository
 >('ResourcesRepository', ResourcesRepository);
 
 container.registerSingleton<
