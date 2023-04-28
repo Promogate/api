@@ -13,17 +13,17 @@ interface ICSVFile {
 }
 
 interface IUploadFileDTO {
-  csv: ICSVFile;
   json: unknown[];
 }
 
-export interface UploadFile {
-  execute: (input: UploadFile.Input) => Promise<UploadFile.Output>;
+export interface UploadOffersFromCSV {
+  execute: (input: UploadOffersFromCSV.Input) => Promise<UploadOffersFromCSV.Output>;
 }
 
-export namespace UploadFile {
+export namespace UploadOffersFromCSV {
   export type Input = {
-    file: IUploadFile
+    file: IUploadFile,
+    user_id: string,
   }
 
   export type Output = IUploadFileDTO
