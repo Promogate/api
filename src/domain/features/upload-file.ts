@@ -7,18 +7,12 @@ interface IUploadFile {
   size: number;
 }
 
-interface IFile {
-  originalname: string;
-  filename: string;
-}
-
 interface ICSVFile {
   name: string;
   data: Buffer;
 }
 
 interface IUploadFileDTO {
-  file: IFile;
   csv: ICSVFile;
   json: unknown[];
 }
