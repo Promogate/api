@@ -1,4 +1,3 @@
-export * from './convert-csv-to-json';
 export * from './create-api-key';
 export * from './create-offer';
 export * from './create-session';
@@ -11,3 +10,4 @@ export * from './get-offers-clicks';
 export * from './get-offers-with-clicks-count';
 export * from './list-api-keys';
 export * from './list-offers';
+export * from './upload-offers-from-csv';
