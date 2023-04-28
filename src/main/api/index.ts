@@ -15,6 +15,7 @@ import '../shared/containers';
 import {
   apiKeyRouter,
   resourceRouter,
+  testingRoute,
   userRouter
 } from '@/infra/routers';
 import {
@@ -26,6 +27,8 @@ import { errorHandler } from '@/main/utils';
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.use('/testing', testingRoute)
 
 app.use('/dashboard', dashboardResourceRouter)
 app.use('/dashboard/analytics', analyticsRouter)
