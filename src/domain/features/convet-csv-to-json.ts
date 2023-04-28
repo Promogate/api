@@ -12,5 +12,5 @@ export namespace ConvertCSVToJSON {
     csv: ICSVFile
   }
 
-  export type Output = Record<string, unknown>
+  export type Output = unknown[]
 }
