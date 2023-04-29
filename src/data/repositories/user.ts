@@ -23,7 +23,7 @@ export class UserRepository implements
     }
 
     try {
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           name: input.name,
           email: input.email,
@@ -43,6 +43,10 @@ export class UserRepository implements
           },
         }
       })
+
+      return {
+        user_id: user.id
+      }
     } catch (error: unknown) {
       throw new CreateUserFailed()
     }

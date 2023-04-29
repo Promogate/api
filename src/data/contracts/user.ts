@@ -11,7 +11,9 @@ export namespace CreateUserRepository {
     password: string
   }
 
-  export type Ouput = void
+  export type Ouput = {
+    user_id: string
+  }
 }
 
 export interface FindUserByEmailRepository {
