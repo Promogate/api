@@ -1,4 +1,4 @@
-import { AccessKeys } from '@prisma/client'
+import { ApiKey } from '@prisma/client'
 
 export interface SaveAccessKeysRepository {
   save: (input: SaveAccessKeysRepository.Input) => Promise<SaveAccessKeysRepository.Output>
@@ -11,7 +11,7 @@ export namespace SaveAccessKeysRepository {
     expirationDate: string
   }
 
-  export type Output = AccessKeys
+  export type Output = ApiKey
 }
 
 export interface ListAPIKeysRepository {
