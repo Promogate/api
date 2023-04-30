@@ -20,7 +20,6 @@ export class UploadOffersFromCSVService implements UploadOffersFromCSV {
     const user = await this.userRepo.findByIdIncludingResources({ id: input.user_id })
 
     const csvFile: ICSVFile = {
-      name: input.file.originalname,
       data: input.file.buffer,
     };
 

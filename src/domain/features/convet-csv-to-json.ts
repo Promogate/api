@@ -1,5 +1,4 @@
 export interface ICSVFile {
-  name: string;
   data: Buffer;
 }
 
