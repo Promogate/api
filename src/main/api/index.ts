@@ -6,7 +6,6 @@ import '../config/module-alias';
 import 'express-async-errors';
 import 'reflect-metadata';
 
-
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 
