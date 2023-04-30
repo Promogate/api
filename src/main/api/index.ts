@@ -8,7 +8,7 @@ import 'reflect-metadata';
 
 
 import cors from 'cors';
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import '../shared/containers';
 
@@ -28,6 +28,9 @@ const app = express();
 app.use(cors({ origin: ['https://coupon-website-nu.vercel.app/', 'http://localhost:3000', 'https://promogate.app', '*'] }));
 app.use(express.json());
 
+app.use('/', (req: Request, res: Response) => {
+  return res.status(200).json({ status: 'is working!' })
+})
 app.use('/testing', testingRoute)
 
 app.use('/dashboard', dashboardResourceRouter)
