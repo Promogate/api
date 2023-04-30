@@ -29,7 +29,7 @@ app.use(cors({ origin: ['https://coupon-website-nu.vercel.app/', 'http://localho
 app.use(express.json());
 
 app.use('/', (req: Request, res: Response) => {
-  return res.status(200).json({ status: 'is working!' })
+  return res.status(200).json({ status: 'Is Working!' })
 })
 app.use('/testing', testingRoute)
 
