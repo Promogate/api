@@ -23,6 +23,8 @@ import {
 } from '@/infra/routers/dashboard';
 import { errorHandler } from '@/main/utils';
 
+const PORT = process.env.PORT || 8080
+
 const app = express();
 app.use(cors({ origin: ['https://coupon-website-nu.vercel.app/', 'http://localhost:3000', 'https://promogate.app', '*'] }));
 app.use(express.json());
@@ -41,4 +43,4 @@ app.use('/resources', resourceRouter)
 app.use(errorHandler)
 
 
-app.listen(8080, () => console.log('Server is running!'));
+app.listen(PORT, () => console.log('Server is running!'));
