@@ -26,7 +26,7 @@ import { errorHandler } from '@/main/utils';
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: ['https://coupon-website-nu.vercel.app/', 'http://localhost:3000', 'https://promogate.app'] }));
 
 app.use('/testing', testingRoute)
 
@@ -39,4 +39,4 @@ app.use('/resources', resourceRouter)
 app.use(errorHandler)
 
 
-app.listen(8080, () => console.log('Server is running on port: 8080'));
+app.listen(8080, () => console.log('Server is running!'));
