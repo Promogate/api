@@ -1,7 +1,6 @@
 import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
-  CreateUserRepository,
-  FindUserByEmailIncludingPasswordRepository,
+  CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository

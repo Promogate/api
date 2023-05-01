@@ -1,7 +1,4 @@
-import {
-  FindUserByIdIncludingResourcesRepository,
-  ListOffersRepository
-} from '@/data/contracts';
+import { FindOffersByAPIKeyRepository } from '@/data/contracts';
 import { ListOffers } from '@/domain/features';
 import { inject, injectable } from 'tsyringe';
 
@@ -9,14 +6,11 @@ import { inject, injectable } from 'tsyringe';
 export class ListOffersService implements ListOffers {
   constructor(
     @inject('ResourcesRepository')
-    private readonly resourcesRepository: ListOffersRepository,
-    @inject('UserRepository')
-    private readonly userRepository: FindUserByIdIncludingResourcesRepository
+    private readonly resourcesRepository: FindOffersByAPIKeyRepository,
   ) { }
 
   async execute(input: ListOffers.Input): Promise<ListOffers.Output> {
-    const { resources: { id: resourceId } } = await this.userRepository.findByIdIncludingResources({ id: input.user_id })
-    const offers = await this.resourcesRepository.listOffers({ resourceId })
+    const offers = await this.resourcesRepository.findOffersByAPIKey({ api_key: input.api_key })
 
     return offers
   }

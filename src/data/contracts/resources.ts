@@ -71,3 +71,15 @@ export namespace FindOfferByIdRepository {
     resourceId: string
   }
 }
+
+export interface FindOffersByAPIKeyRepository {
+  findOffersByAPIKey: (input: FindOffersByAPIKeyRepository.Input) => Promise<FindOffersByAPIKeyRepository.Ouput>
+}
+
+export namespace FindOffersByAPIKeyRepository {
+  export type Input = {
+    api_key: string
+  }
+
+  export type Ouput = Offer[]
+}

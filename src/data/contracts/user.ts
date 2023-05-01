@@ -64,3 +64,15 @@ export namespace FindUserByIdIncludingResourcesRepository {
 
   export type Output = (Omit<User, 'password'> & {resources: Resources})
 }
+
+export interface FindUserByAPIKeyRepository {
+  findByAPIKey: (input: FindUserByAPIKeyRepository.Input) => Promise<FindUserByAPIKeyRepository.Ouput>
+}
+
+export namespace FindUserByAPIKeyRepository {
+  export type Input = {
+    api_key: string
+  }
+
+  export type Ouput = User
+}
