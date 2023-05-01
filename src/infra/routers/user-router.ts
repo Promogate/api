@@ -13,7 +13,8 @@ userRouter.post('/signin', createSessionController.handle);
 userRouter.post('/create', createUserController.handle);
 
 userRouter.use(verifyToken)
-userRouter.get('/', verifyToken,findUserByEmailController.handle);
-userRouter.get('/:id', verifyToken,findUserByIdController.handle);
+userRouter.get('/me')
+userRouter.get('/',findUserByEmailController.handle);
+userRouter.get('/:id',findUserByIdController.handle);
 
 export { userRouter };
