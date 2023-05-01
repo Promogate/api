@@ -1,3 +1,4 @@
+import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
   CreateUserRepository,
   FindUserByEmailIncludingPasswordRepository,
@@ -5,9 +6,8 @@ import {
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository
 } from '@/data/contracts';
-import { CreateUserFailed, UserAlredyExistsError, UserNotFound } from '@/domain/error';
+import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
-import { generatApiKey, generateExpirationDate } from '@/main/utils';
 
 export class UserRepository implements
   CreateUserRepository,
@@ -15,6 +15,7 @@ export class UserRepository implements
   FindUserByIdRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByEmailIncludingPasswordRepository {
+
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
 
@@ -28,17 +29,15 @@ export class UserRepository implements
           name: input.name,
           email: input.email,
           password: input.password,
-          resources: {
+          api_key: {
             create: {
-              resources_analytics: {
-                create: {}
-              },
+              key: generateApiKey(),
+              expiration_date: generateExpirationDate(1, 'year'),
             }
           },
-          api_keys: {
+          resources: {
             create: {
-              key: generatApiKey(),
-              expiration_date: generateExpirationDate(1, 'year'),
+              analytics: {}
             }
           },
         }
@@ -47,8 +46,8 @@ export class UserRepository implements
       return {
         user_id: user.id
       }
-    } catch (error: unknown) {
-      throw new CreateUserFailed()
+    } catch (error: unknown & any) {
+      throw new Error(error.message)
     }
   }
 

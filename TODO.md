@@ -1,2 +1,2 @@
-[] Which type of device is most used in website?
-[] Where the customers are coming from and which marketing channels are driving the highest quality traffic?
+[] Sign token with Role attribute;
+[] Separate dashboard routes from customer routes by folders;
