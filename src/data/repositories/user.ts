@@ -36,10 +36,17 @@ export class UserRepository implements
             }
           },
           resources: {
-            create: {
-              analytics: {}
-            }
+            create: {}
           },
+        }, include: {
+          resources: true
+        }
+      })
+
+      await prisma.analytics.create({
+        data: {
+          user_id: user.id,
+          resources_id: String(user.resources?.id),
         }
       })
 
