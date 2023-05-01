@@ -90,8 +90,8 @@ model OfferClicks {
   resource_id String
   created_at  DateTime @default(now())
 
-  resources_analytics    Analytics @relation(fields: [resources_analytics_id], references: [id], onDelete: Cascade)
-  resources_analytics_id String
+  analytics    Analytics @relation(fields: [analytics_id], references: [id], onDelete: Cascade)
+  analytics_id String
 
   offer    Offer  @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   offer_id String

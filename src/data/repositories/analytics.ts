@@ -10,15 +10,16 @@ export class AnalyticsRepository implements
   AddOfferClickRepository,
   GetOffersClicksRepository,
   GetOffersWithClicksCountRepo {
+    
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
     try {
       const offer = await prisma.offer.findFirstOrThrow({
         where: {
           id: input.id
         }, include: {
-          Resources: {
+          resources: {
             include: {
-              resources_analytics: {
+              analytics: {
                 select: {
                   id: true,
                   resources_id: true
@@ -31,9 +32,9 @@ export class AnalyticsRepository implements
 
       await prisma.offerClicks.create({
         data: {
-          resource_id: offer.Resources.id,
+          resource_id: offer.resources.id,
           offer_id: offer.id,
-          resources_analytics_id: offer.Resources.resources_analytics?.id as string
+          analytics_id: offer.resources.analytics?.id as string
         }
       })
     } catch (error: any) {
@@ -56,7 +57,7 @@ export class AnalyticsRepository implements
   async getOffersWithClicksCount(input: GetOffersWithClicksCountRepo.Input): Promise<GetOffersWithClicksCountRepo.Output> {
     const offers = await prisma.offer.findMany({
       where: {
-        Resources: {
+        resources: {
           user_id: input.user_id
         }
       }, include: {
