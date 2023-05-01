@@ -52,7 +52,8 @@ export class UserRepository implements
       })
 
       return {
-        user_id: user.id
+        user_id: user.id,
+        role: user.role
       }
     } catch (error: any) {
       throw new Error(error.message)

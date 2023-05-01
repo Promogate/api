@@ -12,7 +12,8 @@ export namespace CreateUserRepository {
   }
 
   export type Ouput = {
-    user_id: string
+    user_id: string,
+    role: string
   }
 }
 

@@ -15,9 +15,9 @@ export class CreateUserService implements CreateUser {
   async execute(input: CreateUser.Input): Promise<CreateUser.Output> {
     const hashedPassword = await hash(input.password, 10);
 
-    const { user_id } = await this.userRepository.create({...input, password: hashedPassword});
+    const user = await this.userRepository.create({...input, password: hashedPassword});
 
-    const token = sign({ id: user_id }, TOKEN_SECRET, { expiresIn: '1d' });
+    const token = sign({ id: user.user_id, role: user.role  }, TOKEN_SECRET, { expiresIn: '1d' });
 
     return {
       token
