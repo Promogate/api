@@ -15,7 +15,7 @@ model User {
   name       String
   email      String     @unique
   password   String
-  api_key   ApiKey?
+  api_key    ApiKey?
   resources  Resources?
   analytics  Analytics?
   role       Role       @default(FREE)
@@ -35,7 +35,6 @@ model ApiKey {
   key             String     @unique
   created_at      DateTime   @default(now())
   expiration_date DateTime
-  resource        Resources?
 
   User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique
@@ -51,9 +50,6 @@ model Resources {
 
   user    User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique
-
-  api_key    ApiKey? @relation(fields: [api_key_id], references: [id], onDelete: Cascade)
-  api_key_id String  @unique
 
   @@map("resources")
 }
