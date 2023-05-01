@@ -9,6 +9,7 @@ import {
 import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class UserRepository implements
   CreateUserRepository,
   FindUserByEmailRepository,
@@ -53,7 +54,7 @@ export class UserRepository implements
       return {
         user_id: user.id
       }
-    } catch (error: unknown & any) {
+    } catch (error: any) {
       throw new Error(error.message)
     }
   }
