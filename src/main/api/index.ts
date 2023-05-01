@@ -26,7 +26,7 @@ import { errorHandler } from '@/main/utils';
 const PORT = process.env.PORT || 8080
 
 const app = express();
-app.use(cors({ origin: ['https://coupon-website-nu.vercel.app/', 'http://localhost:3000', 'https://promogate.app', '*'] }));
+app.use(cors());
 app.use(express.json());
 
 app.use('/testing', testingRoute)

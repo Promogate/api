@@ -69,7 +69,7 @@ export class AnalyticsRepository implements
         offer_clicks: {
           _count: 'desc'
         }
-      }
+      }, take: 10
     })
 
     return offers
