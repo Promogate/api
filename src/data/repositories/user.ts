@@ -1,4 +1,3 @@
-import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
   CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
@@ -28,31 +27,12 @@ export class UserRepository implements
         data: {
           name: input.name,
           email: input.email,
-          password: input.password,
-          api_key: {
-            create: {
-              key: generateApiKey(),
-              expiration_date: generateExpirationDate(1, 'year'),
-            }
-          },
-          resources: {
-            create: {}
-          },
-        }, include: {
-          resources: true
-        }
-      })
-
-      await prisma.analytics.create({
-        data: {
-          user_id: user.id,
-          resources_id: String(user.resources?.id),
+          password: input.password
         }
       })
 
       return {
-        user_id: user.id,
-        role: user.role
+        user_id: user.id
       }
     } catch (error: any) {
       throw new Error(error.message)
@@ -60,23 +40,27 @@ export class UserRepository implements
   }
 
   async findByEmail(input: FindUserByEmailRepository.Input): Promise<FindUserByEmailRepository.Output> {
-    const user = await prisma.user.findUnique({ where: { email: input.email } })
+    const user = await prisma.user.findUnique({ 
+      where: { 
+        email: input.email 
+      }, include: {
+        user_profile: true
+      }
+    })
 
     if (user === null) {
       throw new UserNotFound()
     }
     
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      created_at: user.created_at
-    }
+    return user
   }
 
   async findByEmailIncludingPassword (input: FindUserByEmailIncludingPasswordRepository.Input): Promise<FindUserByEmailIncludingPasswordRepository.Output> {
-    const user = await prisma.user.findUnique({ where: { email: input.email } })
+    const user = await prisma.user.findUnique({ 
+      where: { 
+        email: input.email 
+      } 
+    })
 
     if (user === null) {
       throw new UserNotFound()
@@ -86,9 +70,8 @@ export class UserRepository implements
       id: user.id,
       email: user.email,
       name: user.name,
-      role: user.role,
-      created_at: user.created_at,
-      password: user.password
+      password: user.password,
+      created_at: user.created_at
     }
   }
 
@@ -103,7 +86,6 @@ export class UserRepository implements
       id: user.id,
       email: user.email,
       name: user.name,
-      role: user.role,
       created_at: user.created_at
     }
   }
@@ -114,7 +96,11 @@ export class UserRepository implements
         id: input.id
       },
       include: {
-        resources: true
+        user_profile: {
+          include: {
+            resources: true
+          }
+        }
       }
     });
 
@@ -122,7 +108,7 @@ export class UserRepository implements
       throw new UserNotFound()
     }
 
-    if (!user.resources) {
+    if (!user.user_profile?.resources) {
       throw new Error('Failed to find resources from this user.')
     }
 
@@ -130,9 +116,8 @@ export class UserRepository implements
       id: user.id,
       email: user.email,
       name: user.name,
-      role: user.role,
       created_at: user.created_at,
-      resources: user.resources
+      resources: user.user_profile.resources
     }
   }
 }

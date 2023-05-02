@@ -1,7 +1,5 @@
 import {
-  FindOfferByIdRepository,
-  FindOffersByAPIKeyRepository,
-  ListOffersRepository,
+  FindOfferByIdRepository, ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
@@ -12,25 +10,7 @@ export class ResourcesRepository implements
   SaveOfferRepository,
   ListOffersRepository,
   FindOfferByIdRepository,
-  SaveOffersFromCSVRepository,
-  FindOffersByAPIKeyRepository {
-  
-  async findOffersByAPIKey(input: FindOffersByAPIKeyRepository.Input): Promise<FindOffersByAPIKeyRepository.Ouput> {
-    const offers = await prisma.offer.findMany({
-      where: {
-        resources: {
-          user: {
-            api_key: {
-              key: input.api_key
-            }
-          }
-        }
-      }
-    })
-
-
-    return offers
-  }
+  SaveOffersFromCSVRepository {
 
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
     try {
