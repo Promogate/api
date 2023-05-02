@@ -1,8 +1,8 @@
-export interface GetUserWithToken {
-  execute(input: GetUserWithToken.Input): Promise<GetUserWithToken.Output>
+export interface IGetUserWithToken {
+  execute(input: IGetUserWithToken.Input): Promise<IGetUserWithToken.Output>
 }
 
-export namespace GetUserWithToken {
+export namespace IGetUserWithToken {
   export type Input = {
     token: string
   }
