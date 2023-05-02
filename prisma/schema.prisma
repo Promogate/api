@@ -11,17 +11,28 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
-  email      String     @unique
+  email      String   @unique
   password   String
-  api_key    ApiKey?
-  resources  Resources?
-  analytics  Analytics?
-  role       Role       @default(FREE)
-  created_at DateTime   @default(now())
+  created_at DateTime @default(now())
+
+  user_profile UserProfile?
 
   @@map("users")
+}
+
+model UserProfile {
+  id          String     @id @default(uuid())
+  store_image String
+  store_name  String     @unique
+  resources   Resources?
+  analytics   Analytics?
+  api_key     ApiKey?
+  role        Role       @default(FREE)
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @unique
 }
 
 enum Role {
@@ -31,13 +42,13 @@ enum Role {
 }
 
 model ApiKey {
-  id              String     @id @default(uuid())
-  key             String     @unique
-  created_at      DateTime   @default(now())
+  id              String   @id @default(uuid())
+  key             String   @unique
+  created_at      DateTime @default(now())
   expiration_date DateTime
 
-  User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id String @unique
+  user_profile    UserProfile @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
+  user_profile_id String      @unique
 
   @@map("api_key")
 }
@@ -48,8 +59,8 @@ model Resources {
   created_at DateTime   @default(now())
   analytics  Analytics?
 
-  user    User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id String @unique
+  user_profile    UserProfile? @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
+  user_profile_id String       @unique
 
   @@map("resources")
 }
@@ -79,8 +90,8 @@ model Analytics {
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String    @unique
 
-  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id String @unique
+  user_profile    UserProfile @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
+  user_profile_id String      @unique
 
   @@map("analytics")
 }
