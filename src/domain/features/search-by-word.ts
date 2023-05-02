@@ -6,6 +6,7 @@ export interface ISearchByWord {
 
 export namespace ISearchByWord {
   export type Input = {
+    api_key: string,
     word: string
   }
 
