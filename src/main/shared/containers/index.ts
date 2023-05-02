@@ -1,24 +1,16 @@
 import {
-  AddOfferClickRepository,
   CreateUserRepository,
-  DeleteApiKeyRepository,
-  FindAPIKeyRepository,
-  FindOfferByIdRepository,
-  FindOffersByAPIKeyRepository,
-  FindUserByEmailIncludingPasswordRepository,
+  FindOfferByIdRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository,
-  GetOffersClicksRepository, GetOffersWithClicksCountRepo,
-  ListAPIKeysRepository,
+  ISignInRepo,
   ListOffersRepository,
-  SaveAccessKeysRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
 import {
-  AccessKeysRepository,
-  AnalyticsRepository,
+  AuthenticationRepository,
   ResourcesRepository,
   UserRepository
 } from '@/data/repositories';
@@ -33,22 +25,12 @@ container.registerSingleton<
 >('UserRepository', UserRepository);
 
 container.registerSingleton<
-  SaveAccessKeysRepository &
-  FindAPIKeyRepository &
-  ListAPIKeysRepository &
-  DeleteApiKeyRepository
->('AccessKeysRepository', AccessKeysRepository);
-
-container.registerSingleton<
   SaveOfferRepository &
   ListOffersRepository &
   FindOfferByIdRepository &
-  SaveOffersFromCSVRepository &
-  FindOffersByAPIKeyRepository
+  SaveOffersFromCSVRepository
 >('ResourcesRepository', ResourcesRepository);
 
 container.registerSingleton<
-  AddOfferClickRepository &
-  GetOffersClicksRepository &
-  GetOffersWithClicksCountRepo
->('AnalyticsRepository', AnalyticsRepository);
+  ISignInRepo
+>('AuthenticationRepository', AuthenticationRepository)
