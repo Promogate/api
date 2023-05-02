@@ -12,5 +12,6 @@ export * from './get-offers-with-clicks-count';
 export * from './list-api-keys';
 export * from './list-offers';
 export * from './revalidate-refresh-token';
+export * from './search-by-word';
 export * from './upload-file';
 export * from './verify-refresh-token';
