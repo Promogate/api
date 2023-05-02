@@ -1,9 +1,10 @@
 import {
   createSessionController,
   createUserController,
-  findUserByIdController
+  findUserByEmailController,
+  findUserByIdController,
+  getUserWithTokenController
 } from '@/application/controllers';
-import { findUserByEmailController } from '@/application/controllers/find-user-by-email';
 import { verifyToken } from '@/application/middlewares';
 import { Router } from 'express';
 
@@ -13,7 +14,7 @@ userRouter.post('/signin', createSessionController.handle);
 userRouter.post('/create', createUserController.handle);
 
 userRouter.use(verifyToken)
-userRouter.get('/me')
+userRouter.get('/me', getUserWithTokenController.handle)
 userRouter.get('/',findUserByEmailController.handle);
 userRouter.get('/:id',findUserByIdController.handle);
 
