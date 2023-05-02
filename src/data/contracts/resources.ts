@@ -83,3 +83,16 @@ export namespace FindOffersByAPIKeyRepository {
 
   export type Ouput = Offer[]
 }
+
+export interface ISearchOfferByWord {
+  searchByWord(input: ISearchOfferByWord.Input): Promise<ISearchOfferByWord.Output>
+}
+
+export namespace ISearchOfferByWord {
+  export type Input = {
+    api_key: string,
+    word: string
+  }
+
+  export type Output = Offer[]
+}
