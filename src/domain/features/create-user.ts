@@ -10,6 +10,8 @@ export namespace CreateUser {
   }
 
   export type Output = {
-    token: string
+    token: string;
+    user: string;
+    profile: string;
   }
 }

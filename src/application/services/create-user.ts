@@ -20,7 +20,9 @@ export class CreateUserService implements CreateUser {
     const token = sign({ id: user.user_id }, TOKEN_SECRET, { expiresIn: '1d' });
 
     return {
-      token
+      token,
+      user: user.user_id,
+      profile: user.profile_id ?? ''
     }
   }
 }

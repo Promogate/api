@@ -8,7 +8,7 @@ class CreateProfileController {
     const body = req.body as { store_name: string, store_image: string }
     const createProfileService = container.resolve(CreateProfileService);
     const { profile } = await createProfileService.execute({...body, user: id});
-    return res.status(201).json();
+    return res.status(201).json({ profile });
   }
 }
 
