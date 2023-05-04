@@ -4,12 +4,14 @@ import {
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository, ICheckProfileRepository, ICreateProfileRepository,
+  IGetProfileRepository,
   ISignInRepo,
   ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
 import {
+  AnalyticsRepository,
   AuthenticationRepository,
   ResourcesRepository,
   UserRepository
@@ -32,6 +34,10 @@ container.registerSingleton<
   FindOfferByIdRepository &
   SaveOffersFromCSVRepository
 >('ResourcesRepository', ResourcesRepository);
+
+container.registerSingleton<
+  IGetProfileRepository
+>('AnalyticsRepository', AnalyticsRepository)
 
 container.registerSingleton<
   ISignInRepo
