@@ -1,4 +1,5 @@
 import {
+  createProfileController,
   createSessionController,
   createUserController,
   findUserByEmailController,
@@ -12,9 +13,10 @@ const userRouter = Router()
 
 userRouter.post('/signin', createSessionController.handle);
 userRouter.post('/create', createUserController.handle);
+userRouter.post('/profile/create/:id', createProfileController.handle);
 
-userRouter.use(verifyToken)
-userRouter.get('/me', getUserWithTokenController.handle)
+userRouter.use(verifyToken);
+userRouter.get('/me', getUserWithTokenController.handle);
 userRouter.get('/',findUserByEmailController.handle);
 userRouter.get('/:id',findUserByIdController.handle);
 
