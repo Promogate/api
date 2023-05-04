@@ -1,3 +1,4 @@
+import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
   CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
@@ -37,13 +38,40 @@ export class UserRepository implements
         data: {
           store_image: input.store_image,
           store_name: input.store_name,
+          resources: {
+            create: {}
+          },
+          api_key: {
+            create: {
+              key: generateApiKey(),
+              expiration_date: generateExpirationDate(1, 'year'),
+            }
+          },
           user: {
             connect: {
               id: input.user,
             }
-          }
+          },
+        }, include: {
+          resources: true,
+          api_key: true
         }
       });
+
+      await prisma.analytics.create({
+        data: {
+          user_profile: {
+            connect: {
+              id: profile.id
+            }
+          },
+          resources: {
+            connect: {
+              id: String(profile.resources?.id)
+            }
+          }
+        }
+      })
 
       return {
         profile: profile.id
