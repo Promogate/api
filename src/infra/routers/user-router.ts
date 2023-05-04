@@ -12,7 +12,7 @@ import { Router } from 'express';
 const userRouter = Router()
 
 userRouter.post('/signin', createSessionController.handle);
-userRouter.post('/create', createUserController.handle);
+userRouter.post('/signup', createUserController.handle);
 userRouter.post('/profile/create/:id', createProfileController.handle);
 
 userRouter.use(verifyToken);
