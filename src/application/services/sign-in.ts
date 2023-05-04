@@ -14,7 +14,7 @@ export class SignInService implements ISignIn {
   async execute(input: ISignIn.Input): Promise<ISignIn.Output> {
     const user = await this.authenticationRepo.signIn(input)
     
-    const token = sign({ user: user.id }, TOKEN_SECRET, { expiresIn: '1d' })
+    const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '1d' })
 
     return {
       token,
