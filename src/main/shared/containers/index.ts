@@ -3,7 +3,7 @@ import {
   FindOfferByIdRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
-  FindUserByIdRepository,
+  FindUserByIdRepository, ICheckProfileRepository, ICreateProfileRepository,
   ISignInRepo,
   ListOffersRepository,
   SaveOfferRepository,
@@ -21,7 +21,9 @@ container.registerSingleton<
   FindUserByEmailRepository &
   FindUserByIdRepository &
   FindUserByIdIncludingResourcesRepository &
-  FindUserByEmailIncludingPasswordRepository
+  FindUserByEmailIncludingPasswordRepository &
+  ICreateProfileRepository &
+  ICheckProfileRepository
 >('UserRepository', UserRepository);
 
 container.registerSingleton<
