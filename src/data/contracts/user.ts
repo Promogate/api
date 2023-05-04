@@ -12,7 +12,8 @@ export namespace CreateUserRepository {
   }
 
   export type Ouput = {
-    user_id: string
+    user_id: string;
+    profile_id: string;
   }
 }
 
@@ -76,4 +77,34 @@ export namespace FindUserByAPIKeyRepository {
   }
 
   export type Ouput = User
+}
+
+export interface ICreateProfileRepository {
+  createProfile(input: ICreateProfileRepository.Input): Promise<ICreateProfileRepository.Output>
+}
+
+export namespace ICreateProfileRepository {
+  export type Input = {
+    user: string;
+    store_image: string;
+    store_name: string;
+  }
+
+  export type Output = {
+    profile: string;
+  }
+}
+
+export interface ICheckProfileRepository {
+  checkProfile(input: ICheckProfileRepository.Input): Promise<ICheckProfileRepository.Output>
+}
+
+export namespace ICheckProfileRepository {
+  export type Input = {
+    store_name: string
+  }
+
+  export type Output = {
+    profile: UserProfile | null
+  }
 }
