@@ -24,7 +24,9 @@ export class CreateSessionService implements CreateSession {
     const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '1d' });
 
     return {
-      token
+      token,
+      user: user.id,
+      profile: user.user_profile?.id ?? ''
     }
   }
 }

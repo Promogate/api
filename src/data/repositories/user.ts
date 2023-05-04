@@ -98,20 +98,16 @@ export class UserRepository implements
     const user = await prisma.user.findUnique({ 
       where: { 
         email: input.email 
-      } 
-    })
+      }, include: {
+        user_profile: true
+      }
+    });
 
     if (user === null) {
-      throw new UserNotFound()
+      throw new UserNotFound();
     }
     
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      password: user.password,
-      created_at: user.created_at
-    }
+    return user;
   }
 
   async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
