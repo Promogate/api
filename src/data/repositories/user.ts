@@ -2,7 +2,9 @@ import {
   CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
-  FindUserByIdRepository
+  FindUserByIdRepository,
+  ICheckProfileRepository,
+  ICreateProfileRepository
 } from '@/data/contracts';
 import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
@@ -13,7 +15,43 @@ export class UserRepository implements
   FindUserByEmailRepository,
   FindUserByIdRepository,
   FindUserByIdIncludingResourcesRepository,
-  FindUserByEmailIncludingPasswordRepository {
+  FindUserByEmailIncludingPasswordRepository,
+  ICreateProfileRepository,
+  ICheckProfileRepository {
+
+  async checkProfile(input: ICheckProfileRepository.Input): Promise<ICheckProfileRepository.Output> {
+    const profile = await prisma.userProfile.findFirst({
+      where: {
+        store_name: input.store_name,
+      }
+    })
+
+    return {
+      profile: profile
+    }
+  }
+
+  async createProfile(input: ICreateProfileRepository.Input): Promise<ICreateProfileRepository.Output> {
+    try {
+      const profile = await prisma.userProfile.create({
+        data: {
+          store_image: input.store_image,
+          store_name: input.store_name,
+          user: {
+            connect: {
+              id: input.user,
+            }
+          }
+        }
+      });
+
+      return {
+        profile: profile.id
+      }
+    } catch (err: any) {
+      throw new Error(err.message)
+    }
+  }
 
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
@@ -32,7 +70,8 @@ export class UserRepository implements
       })
 
       return {
-        user_id: user.id
+        user_id: user.id,
+        profile_id: ''
       }
     } catch (error: any) {
       throw new Error(error.message)
