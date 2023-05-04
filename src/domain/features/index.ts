@@ -11,6 +11,7 @@ export * from './find-user-by-email';
 export * from './find-user-by-id';
 export * from './get-offers-clicks';
 export * from './get-offers-with-clicks-count';
+export * from './get-profile';
 export * from './list-api-keys';
 export * from './list-offers';
 export * from './revalidate-refresh-token';
