@@ -79,9 +79,9 @@ export class UserRepository implements
   }
 
   async findByEmail(input: FindUserByEmailRepository.Input): Promise<FindUserByEmailRepository.Output> {
-    const user = await prisma.user.findUnique({ 
-      where: { 
-        email: input.email 
+    const user = await prisma.user.findUnique({
+      where: {
+        email: input.email
       }, include: {
         user_profile: true
       }
@@ -90,14 +90,14 @@ export class UserRepository implements
     if (user === null) {
       throw new UserNotFound()
     }
-    
+
     return user
   }
 
-  async findByEmailIncludingPassword (input: FindUserByEmailIncludingPasswordRepository.Input): Promise<FindUserByEmailIncludingPasswordRepository.Output> {
-    const user = await prisma.user.findUnique({ 
-      where: { 
-        email: input.email 
+  async findByEmailIncludingPassword(input: FindUserByEmailIncludingPasswordRepository.Input): Promise<FindUserByEmailIncludingPasswordRepository.Output> {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: input.email
       }, include: {
         user_profile: true
       }
@@ -106,23 +106,28 @@ export class UserRepository implements
     if (user === null) {
       throw new UserNotFound();
     }
-    
+
     return user;
   }
 
   async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
-    const user = await prisma.user.findFirst({ where: { id: input.id } });
+    const user = await prisma.user.findFirst({
+      where: {
+        id: input.id
+      }, select: {
+        id: true,
+        email: true,
+        name: true,
+        created_at: true,
+        user_profile: true
+      }
+    });
 
     if (!user) {
       throw new UserNotFound()
     }
 
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      created_at: user.created_at
-    }
+    return user
   }
 
   async findByIdIncludingResources(input: FindUserByIdIncludingResourcesRepository.Input): Promise<FindUserByIdIncludingResourcesRepository.Output> {

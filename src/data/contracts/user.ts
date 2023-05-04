@@ -40,7 +40,7 @@ export namespace FindUserByEmailIncludingPasswordRepository {
     email: string
   };
 
-  export type Output = User
+  export type Output = (User & { user_profile: UserProfile | null;})
 }
 
 export interface FindUserByIdRepository {
@@ -52,7 +52,9 @@ export namespace FindUserByIdRepository {
     id: string
   }
 
-  export type Output = Omit<User, 'password'> | null
+  export type Output = (Omit<User, 'password'> & { 
+    user_profile: UserProfile | null;
+   })
 }
 
 export interface FindUserByIdIncludingResourcesRepository {

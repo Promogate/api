@@ -4,8 +4,8 @@ import { container } from 'tsyringe';
 
 class CreateUserController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const service = container.resolve(CreateUserService);
-    const result = await service.execute(req.body);
+    const createUserService = container.resolve(CreateUserService);
+    const result = await createUserService.execute(req.body);
     return res.status(201).json(result)
   }
 }
