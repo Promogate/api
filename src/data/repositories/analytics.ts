@@ -1,13 +1,59 @@
 import {
   AddOfferClickRepository,
-  GetOffersClicksRepository
+  GetOffersClicksRepository,
+  IGetProfileRepository
 } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class AnalyticsRepository implements
   AddOfferClickRepository,
-  GetOffersClicksRepository {
+  GetOffersClicksRepository,
+  IGetProfileRepository {
+
+  async getProfile(input: IGetProfileRepository.Input): Promise<IGetProfileRepository.Ouput> {
+    const profile = await prisma.userProfile.findFirst({
+      where: {
+        id: input.id
+      }, select: {
+        id: true,
+        store_name: true,
+        store_image: true,
+        api_key: true,
+        role: true,
+        user_id: true,
+        analytics: {
+          select: {
+            _count: {
+              select: {
+                offer_clicks: true,
+              },
+            },
+          },
+        },
+        resources: {
+          select: {
+            offers: {
+              take: 10,
+              select: {
+                _count: {
+                  select: {
+                    offer_clicks: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!profile) {
+      throw new Error('Não foi possível encontrar o perfil.')
+    }
+
+    return profile
+  }
     
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
     try {

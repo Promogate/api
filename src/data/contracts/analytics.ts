@@ -37,7 +37,19 @@ export namespace GetOffersWithClicksCountRepo {
 
   export type Output = (Offer & {
     _count: {
-        offer_clicks: number;
+      offer_clicks: number;
     };
-})[]
+  })[]
+}
+
+export interface IGetProfileRepository {
+  getProfile(input: IGetProfileRepository.Input): Promise<IGetProfileRepository.Ouput>
+}
+
+export namespace IGetProfileRepository {
+  export type Input = {
+    id: string
+  }
+
+  export type Ouput = any
 }
