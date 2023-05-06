@@ -15,7 +15,7 @@ import {
   analyticsRouter,
   apiKeyRouter,
   authenticationRouter,
-  testingRoute,
+  dashboardRouter,
   userRouter
 } from '@/infra/routers';
 
@@ -27,9 +27,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/testing', testingRoute);
 app.use(authenticationRouter);
-app.use('/analytics', analyticsRouter)
+app.use('/dashboard', dashboardRouter);
+app.use('/analytics', analyticsRouter);
 app.use('/users', userRouter);
 app.use('/api-keys', apiKeyRouter);
 app.use(errorHandler);
