@@ -46,7 +46,7 @@ export interface ListOffersRepository {
 }
 
 export namespace ListOffersRepository {
-  export type Input = { resourceId: string }
+  export type Input = { user_id: string }
   export type Output = Offer[]
 }
 

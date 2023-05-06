@@ -35,7 +35,11 @@ export class ResourcesRepository implements
     try {
       const offers = await prisma.offer.findMany({
         where: {
-          resources_id: input.resourceId,
+          resources: {
+            user_profile: {
+              user_id: input.user_id
+            }
+          }
         }, take: 10
       })
 
