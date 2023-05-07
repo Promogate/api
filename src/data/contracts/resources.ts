@@ -108,3 +108,15 @@ export namespace IGetShowcaseOffersRepo {
 
   export type Output = any
 }
+
+export interface IGetStoreDataRepo {
+  getStore(input: IGetStoreDataRepo.Input): Promise<IGetStoreDataRepo.Output>
+}
+
+export namespace IGetStoreDataRepo {
+  export type Input = {
+    store_name: string
+  }
+
+  export type Output = any
+}
