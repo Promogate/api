@@ -1,5 +1,5 @@
 import {
-  FindOfferByIdRepository, IGetShowcaseOffersRepo, ListOffersRepository,
+  FindOfferByIdRepository, IGetShowcaseOffersRepo, IGetStoreDataRepo, ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
@@ -11,7 +11,20 @@ export class ResourcesRepository implements
   ListOffersRepository,
   FindOfferByIdRepository,
   SaveOffersFromCSVRepository,
-  IGetShowcaseOffersRepo {
+  IGetShowcaseOffersRepo,
+  IGetStoreDataRepo {
+  
+  async getStore(input: IGetStoreDataRepo.Input): Promise<any> {
+    const store = await prisma.userProfile.findUnique({
+      where: {
+        store_name: input.store_name
+      }
+    });
+
+    if (!store) throw new Error('Loja não encontrada!');
+
+    return store;
+  }
 
   async getOffers(input: IGetShowcaseOffersRepo.Input): Promise<IGetShowcaseOffersRepo.Output> {
     const showcaseOffers = await prisma.offer.findMany({
