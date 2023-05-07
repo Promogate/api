@@ -16,6 +16,7 @@ import {
   apiKeyRouter,
   authenticationRouter,
   dashboardRouter,
+  resourcesRouter,
   userRouter
 } from '@/infra/routers';
 
@@ -28,6 +29,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(authenticationRouter);
+app.use('/resources', resourcesRouter)
 app.use('/dashboard', dashboardRouter);
 app.use('/analytics', analyticsRouter);
 app.use('/users', userRouter);

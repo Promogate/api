@@ -35,7 +35,7 @@ export class AnalyticsRepository implements
           select: {
             offers: {
               take: 10,
-              select: {
+              include: {
                 _count: {
                   select: {
                     offer_clicks: true

@@ -5,6 +5,7 @@ import {
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository, ICheckProfileRepository, ICreateProfileRepository,
   IGetProfileRepository,
+  IGetShowcaseOffersRepo,
   ISignInRepo,
   ListOffersRepository,
   SaveOfferRepository,
@@ -32,7 +33,8 @@ container.registerSingleton<
   SaveOfferRepository &
   ListOffersRepository &
   FindOfferByIdRepository &
-  SaveOffersFromCSVRepository
+  SaveOffersFromCSVRepository &
+  IGetShowcaseOffersRepo
 >('ResourcesRepository', ResourcesRepository);
 
 container.registerSingleton<
