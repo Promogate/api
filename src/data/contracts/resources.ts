@@ -96,3 +96,15 @@ export namespace ISearchOfferByWord {
 
   export type Output = Offer[]
 }
+
+export interface IGetShowcaseOffersRepo {
+  getOffers(input: IGetShowcaseOffersRepo.Input): Promise<IGetShowcaseOffersRepo.Output>
+}
+
+export namespace IGetShowcaseOffersRepo {
+  export type Input = {
+    store_name: string
+  }
+
+  export type Output = any
+}
