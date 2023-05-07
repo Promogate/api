@@ -5,6 +5,6 @@ export interface ListOffers {
 }
 
 export namespace ListOffers {
-  export type Input = { api_key: string };
+  export type Input = { user_id: string };
   export type Output = Offer[];
 }
