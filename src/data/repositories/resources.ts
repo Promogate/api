@@ -1,5 +1,5 @@
 import {
-  FindOfferByIdRepository, ListOffersRepository,
+  FindOfferByIdRepository, IGetShowcaseOffersRepo, ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
@@ -10,7 +10,22 @@ export class ResourcesRepository implements
   SaveOfferRepository,
   ListOffersRepository,
   FindOfferByIdRepository,
-  SaveOffersFromCSVRepository {
+  SaveOffersFromCSVRepository,
+  IGetShowcaseOffersRepo {
+
+  async getOffers(input: IGetShowcaseOffersRepo.Input): Promise<IGetShowcaseOffersRepo.Output> {
+    const showcaseOffers = await prisma.offer.findMany({
+      where: {
+        resources: {
+          user_profile: {
+            store_name: input.store_name,
+          }
+        }
+      }
+    })
+
+    return showcaseOffers
+  }
 
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
     try {
