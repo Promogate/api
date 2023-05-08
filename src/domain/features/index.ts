@@ -18,6 +18,7 @@ export * from './list-api-keys';
 export * from './list-offers';
 export * from './revalidate-refresh-token';
 export * from './search-by-word';
+export * from './update-offer';
 export * from './upload-file';
 export * from './user';
 export * from './verify-refresh-token';
