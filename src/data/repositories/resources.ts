@@ -52,6 +52,7 @@ export class ResourcesRepository implements
           store_image: input.store_image,
           destination_link: input.destination_link,
           expiration_date: input.expiration_date,
+          store_name: ''
         }
       });
     } catch (err: any) {
@@ -107,7 +108,7 @@ export class ResourcesRepository implements
   async saveOffersFromCSV (input: SaveOffersFromCSVRepository.Input): Promise<SaveOffersFromCSVRepository.Output> {
     try {
       const offersWithResourceId = input.offers.map((el) => {
-        return {...el, resources_id: input.resource_id}
+        return {...el, resources_id: input.resource_id, store_name: ''}
       })
 
       await prisma.offer.createMany({
