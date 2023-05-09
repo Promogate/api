@@ -6,13 +6,13 @@ export function verifyToken (req: Request & { user?: string }, res: Response, ne
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({ code: 'token.invalid', message: 'Token is missing!' })
+    return res.status(401).json({ code: 'token.invalid', message: 'Token não encontrado' })
   }
   
   const [, token] = authorization.split(' ');
   
   if (token === undefined) {
-    return res.status(401).json({ code: 'token.invalid', message: 'Token is missing!' })
+    return res.status(401).json({ code: 'token.invalid', message: 'Token não encontrado' })
   }
 
   try {
@@ -22,6 +22,6 @@ export function verifyToken (req: Request & { user?: string }, res: Response, ne
 
     next();
   } catch {
-    return res.status(401).json({ code: 'token.invalid', message: 'Token is invalid!' })
+    return res.status(401).json({ code: 'token.invalid', message: 'Token inválido' })
   }
 }
