@@ -75,7 +75,68 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
       message: 'Algo deu erro ao tentar criar uma nova oferta'
     })
   }
+});
 
+resourcesRouter.put('/:resourcesId/offer/:offerId/connect/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
+  const { resourcesId } = req.params as { resourcesId: string };
+
+  const body = req.body as  { categoryId: string, offerId: string };
+
+  try {
+    const offer = await prisma.categoriesOnOffer.create({
+      data: {
+        resource_id: resourcesId,
+        offer_id: body.offerId,
+        category_id: body.categoryId,
+      }
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Categoria adicionada com sucesso à oferta',
+      offer
+    });
+
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu errado ao tentar atualizar a oferta'
+    })
+  }
+});
+
+resourcesRouter.get('/:resourcesId/offers', async (req: VerifiedTokenRequest, res: Response) => {
+  const { resourcesId } = req.params as { resourcesId: string };
+  try {
+    const offers = await prisma.offer.findMany({
+      where: {
+        resources_id: resourcesId,
+      }, include: {
+        categories: {
+          select: {
+            category: {
+              include: {
+                sub_categories: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Ofertas encontradas',
+      offers
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu errado ao tentar atualizar a oferta'
+    })
+  }
 });
 
 resourcesRouter.post('/:resourceId/category/create', async (req: VerifiedTokenRequest, res: Response) => {
@@ -157,6 +218,5 @@ resourcesRouter.post('/category/:categoryId/subcategory/create', async (req: Ver
     });
   }
 })
-
 
 export { resourcesRouter };
