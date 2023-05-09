@@ -15,7 +15,7 @@ export namespace FindOfferById {
     old_price: string | null,
     price: string,
     destination_link: string,
-    store_image: string,
+    store_image: string | null,
     expiration_date: string | null,
     resourceId: string
   }
