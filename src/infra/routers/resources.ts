@@ -7,6 +7,7 @@ import { VerifiedTokenRequest } from '@/domain/models';
 import { prisma } from '@/main/config';
 import { Response, Router } from 'express';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 const resourcesRouter = Router();
 
 type CreateOfferBody = {
@@ -67,10 +68,10 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
       offer
     })
 
-  } catch (err: any) {
+  } catch (error: any) {
     return res.status(400).json({
       status: 'error',
-      error: err.message,
+      error: error.message,
       message: 'Algo deu erro ao tentar criar uma nova oferta'
     })
   }
@@ -95,10 +96,36 @@ resourcesRouter.post('/:resourceId/category/create', async (req: VerifiedTokenRe
       category
     });
 
-  } catch (err: any) {
+  } catch (error: any) {
     return res.status(400).json({
       status: 'error',
-      error: err.message,
+      error: error.message,
+      message: 'Falha ao tentar criar uma nova categoria.'
+    });
+  }
+});
+
+resourcesRouter.get('/:resourceId/categories', async (req: VerifiedTokenRequest, res: Response) => {
+  const { resourceId } = req.params as { resourceId: string };
+  try {
+    const categories = await prisma.category.findMany({
+      where: {
+        resources_id: resourceId,
+      },
+      include: {
+        sub_categories: true
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Categorias encontradas',
+      categories
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
       message: 'Falha ao tentar criar uma nova categoria.'
     });
   }
@@ -122,10 +149,10 @@ resourcesRouter.post('/category/:categoryId/subcategory/create', async (req: Ver
       subcategory
     });
 
-  } catch (err: any) {
+  } catch (error: any) {
     return res.status(400).json({
       status: 'error',
-      error: err.message,
+      error: error.message,
       message: 'Falha ao tentar criar uma nova subcategoria.'
     });
   }
