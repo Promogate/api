@@ -116,7 +116,7 @@ export class UserRepository implements
     })
 
     if (user === null) {
-      throw new UserNotFound()
+      throw new Error('Usuário ou email estão incorretos. Tente novamente.')
     }
 
     return user
@@ -132,7 +132,7 @@ export class UserRepository implements
     });
 
     if (user === null) {
-      throw new UserNotFound();
+      throw new Error('Usuário ou email estão incorretos. Tente novamente.')
     }
 
     return user;
