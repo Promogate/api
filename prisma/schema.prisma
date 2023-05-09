@@ -33,7 +33,7 @@ model UserProfile {
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique
-  
+
   @@map("user_profile")
 }
 
@@ -58,6 +58,7 @@ model ApiKey {
 model Resources {
   id         String     @id @default(uuid())
   offers     Offer[]
+  categories Category[]
   created_at DateTime   @default(now())
   analytics  Analytics?
 
@@ -68,21 +69,59 @@ model Resources {
 }
 
 model Offer {
-  id               String        @id @default(uuid())
+  id               String              @id @default(uuid())
   image            String
   title            String
   old_price        String?
   price            String
   destination_link String
-  store_image      String
+  store_image      String?
+  store_name       String
+  description      String?
   expiration_date  String?
-  created_at       DateTime      @default(now())
+  created_at       DateTime            @default(now())
+  is_featured      Boolean             @default(false)
+  is_free_shipping Boolean             @default(false)
   offer_clicks     OfferClicks[]
+  categories       CategoriesOnOffer[]
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String
 
   @@map("offers")
+}
+
+model Category {
+  id             String        @id @default(uuid())
+  name           String
+  sub_categories SubCategory[]
+
+  resources    Resources           @relation(fields: [resources_id], references: [id], onDelete: Cascade)
+  resources_id String
+  offers       CategoriesOnOffer[]
+
+  @@map("categories")
+}
+
+model CategoriesOnOffer {
+  offer       Offer    @relation(fields: [offer_id], references: [id])
+  offer_id    String
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+  resource_id String
+  created_at  DateTime @default(now())
+
+  @@id([offer_id, category_id])
+}
+
+model SubCategory {
+  id   String @id @default(uuid())
+  name String
+
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  category_id String
+
+  @@map("sub_categories")
 }
 
 model Analytics {
