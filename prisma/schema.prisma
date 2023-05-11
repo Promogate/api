@@ -80,6 +80,7 @@ model Offer {
   description      String?
   expiration_date  String?
   created_at       DateTime            @default(now())
+  is_on_showcase   Boolean             @default(false)
   is_featured      Boolean             @default(false)
   is_free_shipping Boolean             @default(false)
   offer_clicks     OfferClicks[]

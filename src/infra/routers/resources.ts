@@ -1,11 +1,10 @@
 import {
-  getShowcaseOffersController,
   getStoreDataController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
 import { VerifiedTokenRequest } from '@/domain/models';
 import { prisma } from '@/main/config';
-import { Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 const resourcesRouter = Router();
@@ -21,6 +20,7 @@ type CreateOfferBody = {
   description: string | null;
   expiration_date: string | null;
   is_featured: boolean | undefined;
+  is_on_showcase: boolean | undefined;
   is_free_shipping: boolean | undefined;
 }
 
@@ -32,8 +32,126 @@ type CreateSubcategoryBody = {
   name: string;
 }
 
-resourcesRouter.get('/offers/:store', getShowcaseOffersController.handle);
+resourcesRouter.get('/offers/:store', async (req: Request, res: Response) => {
+  const { store } = req.params as { store: string };
+
+  try {
+    const user_profile = await prisma.userProfile.findFirst({
+      where: {
+        store_name: {
+          equals: store,
+          mode: 'insensitive'
+        }
+      }, include: {
+        resources: {
+          select: {
+            offers: {
+              take: 50,
+              where: {
+                is_on_showcase: {
+                  equals: true,
+                }
+              }, include: {
+                _count: {
+                  select: {
+                    offer_clicks: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Ofertas encontradas',
+      user_profile
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar criar uma nova oferta'
+    })
+  }
+});
+
 resourcesRouter.get('/store/:store', getStoreDataController.handle);
+
+resourcesRouter.get('/:resourceId/offer/:offerId', async (req: Request, res: Response) => {
+  const { offerId, resourceId } = req.params as { offerId: string, resourceId: string };
+  const { utm_click } = req.query as { utm_click?: string };
+
+  try {
+    const offer = prisma.offer.findUnique({
+      where: {
+        id: offerId
+      }, include: {
+        _count: {
+          select: {
+            offer_clicks: true,
+          }
+        },
+        resources: {
+          select: {
+            user_profile: {
+              select: {
+                store_name: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!offer) {
+      return res.status(400).json({
+        status: 'error',
+        error: 'Oferta não encontrada',
+        message: 'Algo deu erro ao tentar criar uma nova oferta'
+      })
+    }
+
+    if (utm_click) {
+      const resource = prisma.analytics.update({
+        where: {
+          resources_id: resourceId,
+        }, data: {
+          offer_clicks: {
+            create: {
+              resource_id: resourceId,
+              offer_id: offerId,
+            }
+          }
+        }
+      })
+
+      const transaction = await prisma.$transaction([offer, resource])
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Oferta encontrada',
+        offer: transaction[0]
+      })
+    }
+
+    const transaction = await prisma.$transaction([offer])
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Oferta encontrada',
+      offer: transaction[0]
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar criar uma nova oferta'
+    })
+  }
+})
 
 resourcesRouter.use(verifyToken);
 
@@ -53,6 +171,7 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
         store_image: body.store_image,
         is_featured: body.is_featured,
         is_free_shipping: body.is_free_shipping,
+        is_on_showcase: body.is_on_showcase,
         expiration_date: body.expiration_date,
         resources: {
           connect: {
@@ -76,6 +195,33 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
     })
   }
 });
+
+resourcesRouter.put('/offer/:offerId/update/showcase', async (req: VerifiedTokenRequest, res: Response) => {
+  const { offerId } = req.params as { offerId: string };
+  const body = req.body as { is_on_showcase: boolean };
+  
+  try {
+    const offer = await prisma.offer.update({
+      where: {
+        id: offerId,
+      }, data: {
+        is_on_showcase: body.is_on_showcase
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Oferta atualizada com sucesso com sucesso!',
+      offer
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar atualizar a oferta'
+    })
+  }
+})
 
 resourcesRouter.put('/:resourcesId/offer/:offerId/connect/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
   const { resourcesId } = req.params as { resourcesId: string };
