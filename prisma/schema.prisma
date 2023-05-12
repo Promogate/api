@@ -69,22 +69,23 @@ model Resources {
 }
 
 model Offer {
-  id               String              @id @default(uuid())
-  image            String
-  title            String
-  old_price        String?
-  price            String
-  destination_link String
-  store_image      String?
-  store_name       String
-  description      String?
-  expiration_date  String?
-  created_at       DateTime            @default(now())
-  is_on_showcase   Boolean             @default(false)
-  is_featured      Boolean             @default(false)
-  is_free_shipping Boolean             @default(false)
-  offer_clicks     OfferClicks[]
-  categories       CategoriesOnOffer[]
+  id                 String              @id @default(uuid())
+  image              String
+  title              String
+  old_price          String?
+  price              String
+  destination_link   String
+  store_image        String?
+  store_name         String
+  description        String?
+  expiration_date    String?
+  created_at         DateTime            @default(now())
+  is_on_showcase     Boolean             @default(false)
+  is_featured        Boolean             @default(false)
+  is_free_shipping   Boolean             @default(false)
+  offer_clicks       OfferClicks[]
+  destination_clicks DestinationClicks[]
+  categories         CategoriesOnOffer[]
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String
@@ -126,8 +127,9 @@ model SubCategory {
 }
 
 model Analytics {
-  id           String        @id @default(uuid())
-  offer_clicks OfferClicks[]
+  id                 String              @id @default(uuid())
+  offer_clicks       OfferClicks[]
+  destination_clicks DestinationClicks[]
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String    @unique
@@ -150,4 +152,19 @@ model OfferClicks {
   offer_id String
 
   @@map("offer_clicks")
+}
+
+model DestinationClicks {
+  id               String   @id @default(uuid())
+  resource_id      String
+  destination_link String
+  created_at       DateTime @default(now())
+
+  analytics    Analytics @relation(fields: [analytics_id], references: [id], onDelete: Cascade)
+  analytics_id String
+
+  offer    Offer  @relation(fields: [offer_id], references: [id], onDelete: Cascade)
+  offer_id String
+
+  @@map("destination_clicks")
 }
