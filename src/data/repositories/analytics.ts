@@ -27,6 +27,7 @@ export class AnalyticsRepository implements
             _count: {
               select: {
                 offer_clicks: true,
+                destination_clicks: true,
               },
             },
           },
@@ -41,11 +42,16 @@ export class AnalyticsRepository implements
                     offer_clicks: true
                   }
                 },
+              },
+              orderBy: {
+                offer_clicks: {
+                  _count: 'desc'
+                }
               }
             }
           }
         },
-      }
+      },
     })
 
     if (!profile) {
