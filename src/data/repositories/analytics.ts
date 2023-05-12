@@ -40,11 +40,11 @@ export class AnalyticsRepository implements
                   select: {
                     offer_clicks: true
                   }
-                }
+                },
               }
             }
           }
-        }
+        },
       }
     })
 
