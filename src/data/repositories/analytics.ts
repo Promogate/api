@@ -1,14 +1,11 @@
 import {
-  AddOfferClickRepository,
-  GetOffersClicksRepository,
-  IGetProfileRepository
+  AddOfferClickRepository, IGetProfileRepository
 } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class AnalyticsRepository implements
   AddOfferClickRepository,
-  GetOffersClicksRepository,
   IGetProfileRepository {
 
   async getProfile(input: IGetProfileRepository.Input): Promise<IGetProfileRepository.Ouput> {
@@ -82,25 +79,12 @@ export class AnalyticsRepository implements
 
       await prisma.offerClicks.create({
         data: {
-          resource_id: offer.resources.id,
           offer_id: offer.id,
           analytics_id: offer.resources.analytics?.id as string
         }
       })
     } catch (error: any) {
       throw new Error(error.message)
-    }
-  }
-
-  async getClicks(input: GetOffersClicksRepository.Input): Promise<GetOffersClicksRepository.Output> {
-    const clicks = await prisma.offerClicks.count({
-      where: {
-        resource_id: input.resourceId
-      }
-    })
-
-    return {
-      clicks: clicks
     }
   }
 }

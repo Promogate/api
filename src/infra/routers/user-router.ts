@@ -6,25 +6,38 @@ import { verifyToken } from '@/application/middlewares';
 import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import { VerifiedTokenRequest } from '@/domain/models';
 import { prisma } from '@/main/config';
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 
+type UpdateProfileBody = {
+  name?: string;
+  store_image?: string;
+  store_name?: string;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
+  telegram?: string;
+  twitter?: string;
+}
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
-
 const userRouter = Router()
 
 userRouter.post('/signin', createSessionController.handle);
 userRouter.post('/signup', createUserController.handle);
 
-userRouter.post('/:id/profile/create', async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string };
+userRouter.use(verifyToken);
+
+userRouter.post('/:id/profile/create', async (req: VerifiedTokenRequest, res: Response) => {
   const input = req.body as { store_image: string, store_name: string };
-  const treatedStoreName= input.store_name.toLocaleUpperCase().replace(' ', '-');
-  
+  const treatedStoreName = input.store_name.replace(/[\D]\s/g, '-');
+
   try {
-    const profileAlreadyExists = await prisma.userProfile.findUnique({
+    const profileAlreadyExists = await prisma.userProfile.findFirst({
       where: {
-        store_name: treatedStoreName
+        store_name: {
+          equals: treatedStoreName,
+          mode: 'insensitive'
+        }
       }
     })
 
@@ -34,8 +47,13 @@ userRouter.post('/:id/profile/create', async (req: Request, res: Response) => {
 
     const profile = await prisma.userProfile.create({
       data: {
-        store_image: input.store_image,
         store_name: input.store_name,
+        store_image: input.store_image,
+        user: {
+          connect: {
+            id: req.user,
+          }
+        },
         resources: {
           create: {}
         },
@@ -44,17 +62,15 @@ userRouter.post('/:id/profile/create', async (req: Request, res: Response) => {
             key: generateApiKey(),
             expiration_date: generateExpirationDate(1, 'year'),
           }
-        },
-        user: {
-          connect: {
-            id: id,
-          }
-        },
+        }
       }, include: {
-        resources: true,
-        api_key: true
+        resources: {
+          select: {
+            id: true
+          }
+        }
       }
-    });
+    })
 
     await prisma.analytics.create({
       data: {
@@ -73,12 +89,76 @@ userRouter.post('/:id/profile/create', async (req: Request, res: Response) => {
 
     return res.status(201).json({ message: 'Perfil criado com sucesso!' })
 
-  } catch {
-    return res.status(400).json({ message: 'Falha ao criar o perfil da loja' })
+  } catch (error: any) {
+    return res.status(400).json({ message: error.message })
   }
 });
 
-userRouter.use(verifyToken);
+userRouter.put('/profile/:id/update', async (req: VerifiedTokenRequest, res: Response) => {
+  const { id } = req.params as { id: string };
+  const body = req.body as UpdateProfileBody;
+  const treatedStoreName = body.store_name?.replace(/[\D]\s/g, '-');
+
+  try {
+    const profileAlreadyExists = await prisma.userProfile.findFirst({
+      where: {
+        store_name: {
+          equals: treatedStoreName,
+          mode: 'insensitive'
+        }
+      }
+    })
+
+    const myProfile = await prisma.userProfile.findFirst({
+      where: {
+        user_id: req.user,
+      }
+    })
+
+    if (profileAlreadyExists && profileAlreadyExists.store_name !== myProfile?.store_name) {
+      return res.status(400).json({ message: 'Perfil já existe, tente outro nome.' })
+    }
+
+    const profile = await prisma.userProfile.update({
+      where: {
+        id: id
+      },
+      data: {
+        store_name: body?.store_name,
+        store_image: body?.store_image,
+        social_media: {
+          upsert: {
+            create: {
+              facebook: body?.facebook,
+              instagram: body?.instagram,
+              whatsapp: body?.whatsapp,
+              telegram: body?.telegram,
+              twitter: body?.twitter,
+            },
+            update: {
+              facebook: body?.facebook,
+              instagram: body?.instagram,
+              whatsapp: body?.whatsapp,
+              telegram: body?.telegram,
+              twitter: body?.twitter,
+            }
+          }
+        }
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Atualizado com sucesso',
+      profile
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Algo deu errado enquanto tentava atualizar a loja'
+    })
+  }
+});
 
 userRouter.get('/me', async (req: VerifiedTokenRequest, res: Response) => {
   try {
@@ -92,7 +172,20 @@ userRouter.get('/me', async (req: VerifiedTokenRequest, res: Response) => {
         name: true,
         email: true,
         created_at: true,
-        user_profile: true
+        user_profile: {
+          include: {
+            resources: true,
+            social_media: {
+              select: {
+                facebook: true,
+                instagram: true,
+                telegram: true,
+                twitter: true,
+                whatsapp: true,
+              }
+            },
+          },
+        }
       }
     });
 

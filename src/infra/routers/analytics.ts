@@ -36,7 +36,6 @@ analyticsRouter.get('/redirect/offer/:id', async (req: Request, res: Response) =
 
     await prisma.destinationClicks.create({
       data: {
-        resource_id: offer.resources_id,
         destination_link: offer.destination_link,
         offer_id: id,
         analytics_id: offer.resources.analytics?.id as string

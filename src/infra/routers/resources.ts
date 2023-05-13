@@ -98,7 +98,8 @@ resourcesRouter.get('/:resourceId/offer/:offerId', async (req: Request, res: Res
           select: {
             user_profile: {
               select: {
-                store_name: true
+                store_name: true,
+                store_image: true,
               }
             }
           }
@@ -121,7 +122,6 @@ resourcesRouter.get('/:resourceId/offer/:offerId', async (req: Request, res: Res
         }, data: {
           offer_clicks: {
             create: {
-              resource_id: resourceId,
               offer_id: offerId,
             }
           }
@@ -166,7 +166,9 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
         image: body.image,
         title: body.title,
         destination_link: body.destination_link,
+        description: body.description,
         price: body.price,
+        old_price: body.old_price,
         store_name: body.store_name,
         store_image: body.store_image,
         is_featured: body.is_featured,
@@ -196,6 +198,75 @@ resourcesRouter.post('/:resourceId/offer/create', async (req: VerifiedTokenReque
   }
 });
 
+resourcesRouter.put('/:resourceId/offer/:id', async (req: VerifiedTokenRequest, res: Response) => {
+  const { resourceId, id } = req.params as { resourceId: string, id: string };
+  try {
+
+    const body = req.body as CreateOfferBody;
+
+    const offer = await prisma.offer.update({
+      where: {
+        id: id
+      },
+      data: {
+        image: body.image,
+        title: body.title,
+        destination_link: body.destination_link,
+        description: body.description,
+        price: body.price,
+        old_price: body.old_price,
+        store_name: body.store_name,
+        store_image: body.store_image,
+        is_featured: body.is_featured,
+        is_free_shipping: body.is_free_shipping,
+        is_on_showcase: body.is_on_showcase,
+        expiration_date: body.expiration_date,
+        resources: {
+          connect: {
+            id: resourceId
+          }
+        }
+      }
+    })
+
+    return res.status(201).json({
+      status: 'success',
+      message: 'Oferta atualizada com sucesso',
+      offer
+    })
+
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar criar uma nova oferta'
+    })
+  }
+});
+
+resourcesRouter.delete('/offer/:id', async (req: VerifiedTokenRequest, res: Response) => {
+  const { id } = req.params as { resourceId: string, id: string };
+  try {
+    await prisma.offer.delete({
+      where: {
+        id: id
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Oferta excluída com sucesso.'
+    })
+
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar excluir uma nova oferta'
+    })
+  }
+});
+
 resourcesRouter.put('/offer/:offerId/update/showcase', async (req: VerifiedTokenRequest, res: Response) => {
   const { offerId } = req.params as { offerId: string };
   const body = req.body as { is_on_showcase: boolean };
@@ -206,6 +277,33 @@ resourcesRouter.put('/offer/:offerId/update/showcase', async (req: VerifiedToken
         id: offerId,
       }, data: {
         is_on_showcase: body.is_on_showcase
+      }
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Oferta atualizada com sucesso com sucesso!',
+      offer
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 'error',
+      error: error.message,
+      message: 'Algo deu erro ao tentar atualizar a oferta'
+    })
+  }
+})
+
+resourcesRouter.put('/offer/:offerId/update/featured', async (req: VerifiedTokenRequest, res: Response) => {
+  const { offerId } = req.params as { offerId: string };
+  const body = req.body as { is_featured: boolean };
+  
+  try {
+    const offer = await prisma.offer.update({
+      where: {
+        id: offerId,
+      }, data: {
+        is_featured: body.is_featured
       }
     })
 
