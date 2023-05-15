@@ -1,25 +1,23 @@
 import { ISignInRepo } from '@/data/contracts';
-import { AuthenticationFailed, UserNotFound } from '@/domain/error';
+import { UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
-import { compare } from 'bcrypt';
 
 export class AuthenticationRepository implements ISignInRepo {
-  async signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Ouput> {
+  async signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Output> {
     const user = await prisma.user.findUnique({
       where: {
         email: input.email
       }, include: {
-        user_profile: true
+        user_profile: {
+          include: {
+            social_media: true
+          }
+        }
       }
     });
 
-    if (user === null) throw new UserNotFound();
-
-    const passwordMatch = await compare(input.password, user.password);
-
-    if (passwordMatch === false) throw new AuthenticationFailed();
+    if (user === null) throw new UserNotFound()
 
     return user
   }
-
 }

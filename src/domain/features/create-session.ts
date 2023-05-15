@@ -8,9 +8,5 @@ export namespace CreateSession {
     password: string
   }
 
-  export type Output = {
-    token: string;
-    user: string;
-    profile: string;
-  }
+  export type Output = any
 }

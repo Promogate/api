@@ -1,7 +1,7 @@
-import { User, UserProfile } from '@prisma/client';
+import { User, UserProfile, UserSocialMedia } from '@prisma/client';
 
 export interface ISignInRepo {
-  signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Ouput>;
+  signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Output>;
 }
 
 export namespace ISignInRepo {
@@ -10,5 +10,9 @@ export namespace ISignInRepo {
     password: string;
   }
 
-  export type Ouput = (Omit<User, 'password'> & { user_profile: UserProfile | null; })
+  export type Output = (User & {
+    user_profile: (UserProfile & {
+      social_media: UserSocialMedia | null;
+    }) | null;
+  })
 }
