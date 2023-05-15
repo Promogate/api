@@ -29,13 +29,13 @@ userRouter.use(verifyToken);
 
 userRouter.post('/:id/profile/create', async (req: VerifiedTokenRequest, res: Response) => {
   const input = req.body as { store_image: string, store_name: string };
-  const treatedStoreName = input.store_name.replace(/[\D]\s/g, '-');
+  const store_name = input.store_name.toLowerCase().replace(/\s/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 
   try {
     const profileAlreadyExists = await prisma.userProfile.findFirst({
       where: {
         store_name: {
-          equals: treatedStoreName,
+          equals: store_name,
           mode: 'insensitive'
         }
       }
@@ -47,7 +47,8 @@ userRouter.post('/:id/profile/create', async (req: VerifiedTokenRequest, res: Re
 
     const profile = await prisma.userProfile.create({
       data: {
-        store_name: input.store_name,
+        store_name: store_name,
+        store_name_display: input.store_name,
         store_image: input.store_image,
         user: {
           connect: {

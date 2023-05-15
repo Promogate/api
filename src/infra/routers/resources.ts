@@ -40,7 +40,7 @@ resourcesRouter.get('/offers/:store', async (req: Request, res: Response) => {
       where: {
         store_name: {
           equals: store,
-          mode: 'insensitive'
+          mode: 'insensitive',
         }
       }, include: {
         resources: {

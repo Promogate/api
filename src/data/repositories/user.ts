@@ -1,11 +1,9 @@
-import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
   CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository,
-  ICheckProfileRepository,
-  ICreateProfileRepository
+  ICheckProfileRepository
 } from '@/data/contracts';
 import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
@@ -17,7 +15,6 @@ export class UserRepository implements
   FindUserByIdRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByEmailIncludingPasswordRepository,
-  ICreateProfileRepository,
   ICheckProfileRepository {
 
   async checkProfile(input: ICheckProfileRepository.Input): Promise<ICheckProfileRepository.Output> {
@@ -29,55 +26,6 @@ export class UserRepository implements
 
     return {
       profile: profile
-    }
-  }
-
-  async createProfile(input: ICreateProfileRepository.Input): Promise<ICreateProfileRepository.Output> {
-    try {
-      const profile = await prisma.userProfile.create({
-        data: {
-          store_image: input.store_image,
-          store_name: input.store_name,
-          resources: {
-            create: {}
-          },
-          api_key: {
-            create: {
-              key: generateApiKey(),
-              expiration_date: generateExpirationDate(1, 'year'),
-            }
-          },
-          user: {
-            connect: {
-              id: input.user,
-            }
-          },
-        }, include: {
-          resources: true,
-          api_key: true
-        }
-      });
-
-      await prisma.analytics.create({
-        data: {
-          user_profile: {
-            connect: {
-              id: profile.id
-            }
-          },
-          resources: {
-            connect: {
-              id: String(profile.resources?.id)
-            }
-          }
-        }
-      })
-
-      return {
-        profile: profile.id
-      }
-    } catch (err: any) {
-      throw new Error(err.message)
     }
   }
 
