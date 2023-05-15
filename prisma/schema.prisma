@@ -24,7 +24,7 @@ model User {
 
 model UserProfile {
   id           String           @id @default(uuid())
-  store_image  String
+  store_image  String?
   store_name   String           @unique
   resources    Resources?
   analytics    Analytics?
