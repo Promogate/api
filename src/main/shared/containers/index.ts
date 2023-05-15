@@ -1,13 +1,17 @@
 import {
   CreateUserRepository,
-  FindOfferByIdRepository, FindUserByEmailIncludingPasswordRepository,
+  FindOfferByIdRepository,
+  FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
-  FindUserByIdRepository, ICheckProfileRepository, ICreateProfileRepository,
+  FindUserByIdRepository,
+  ICheckProfileRepository,
+  ICreateProfileRepository,
   IGetProfileRepository,
   IGetShowcaseOffersRepo,
   IGetStoreDataRepo,
   ISignInRepo,
+  ISignUpRepo,
   ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
@@ -44,5 +48,6 @@ container.registerSingleton<
 >('AnalyticsRepository', AnalyticsRepository)
 
 container.registerSingleton<
-  ISignInRepo
+  ISignInRepo &
+  ISignUpRepo
 >('AuthenticationRepository', AuthenticationRepository)

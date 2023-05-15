@@ -16,3 +16,21 @@ export namespace ISignInRepo {
     }) | null;
   })
 }
+
+export interface ISignUpRepo {
+  signUp(input: ISignUpRepo.Input): Promise<ISignUpRepo.Output>
+}
+
+export namespace ISignUpRepo {
+  export type Input = {
+    name: string;
+    email: string;
+    password: string;
+  }
+
+  export type Output = (User & {
+    user_profile: (UserProfile & {
+      social_media: UserSocialMedia | null;
+    }) | null;
+  })
+}
