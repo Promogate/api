@@ -1,4 +1,5 @@
 import {
+  getOffersFromStoreController,
   getStoreDataController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
@@ -32,52 +33,7 @@ type CreateSubcategoryBody = {
   name: string;
 }
 
-resourcesRouter.get('/offers/:store', async (req: Request, res: Response) => {
-  const { store } = req.params as { store: string };
-
-  try {
-    const user_profile = await prisma.userProfile.findFirst({
-      where: {
-        store_name: {
-          equals: store,
-          mode: 'insensitive',
-        }
-      }, include: {
-        resources: {
-          select: {
-            offers: {
-              take: 50,
-              where: {
-                is_on_showcase: {
-                  equals: true,
-                }
-              }, include: {
-                _count: {
-                  select: {
-                    offer_clicks: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Ofertas encontradas',
-      user_profile
-    })
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu erro ao tentar criar uma nova oferta'
-    })
-  }
-});
-
+resourcesRouter.get('/offers/:store', getOffersFromStoreController.handle);
 resourcesRouter.get('/store/:store', getStoreDataController.handle);
 
 resourcesRouter.get('/:resourceId/offer/:offerId', async (req: Request, res: Response) => {
