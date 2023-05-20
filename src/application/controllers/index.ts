@@ -12,6 +12,7 @@ export * from './get-offers-from-store';
 export * from './get-offers-with-clicks-count';
 export * from './get-profile';
 export * from './get-showcase-offers';
+export * from './get-single-offer';
 export * from './get-store-data';
 export * from './get-user-with-token';
 export * from './list-api-keys';
