@@ -3,7 +3,9 @@ import {
   deleteOfferController,
   getOffersFromStoreController,
   getSingleOfferController,
-  getStoreDataController
+  getStoreDataController,
+  updateFeaturedOfferStatusController,
+  updateShowcaseOfferStatusController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
 import { VerifiedTokenRequest } from '@/domain/models';
@@ -33,59 +35,9 @@ resourcesRouter.post('/:resourceId/offer/create', createOfferController.handle);
 
 resourcesRouter.delete('/offer/:id', deleteOfferController.handle);
 
-resourcesRouter.put('/offer/:offerId/update/showcase', async (req: VerifiedTokenRequest, res: Response) => {
-  const { offerId } = req.params as { offerId: string };
-  const body = req.body as { is_on_showcase: boolean };
-  
-  try {
-    const offer = await prisma.offer.update({
-      where: {
-        id: offerId,
-      }, data: {
-        is_on_showcase: body.is_on_showcase
-      }
-    })
+resourcesRouter.put('/offer/:offerId/update/showcase', updateShowcaseOfferStatusController.handle);
 
-    return res.status(200).json({
-      status: 'success',
-      message: 'Oferta atualizada com sucesso com sucesso!',
-      offer
-    })
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu erro ao tentar atualizar a oferta'
-    })
-  }
-})
-
-resourcesRouter.put('/offer/:offerId/update/featured', async (req: VerifiedTokenRequest, res: Response) => {
-  const { offerId } = req.params as { offerId: string };
-  const body = req.body as { is_featured: boolean };
-  
-  try {
-    const offer = await prisma.offer.update({
-      where: {
-        id: offerId,
-      }, data: {
-        is_featured: body.is_featured
-      }
-    })
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Oferta atualizada com sucesso com sucesso!',
-      offer
-    })
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu erro ao tentar atualizar a oferta'
-    })
-  }
-})
+resourcesRouter.put('/offer/:offerId/update/featured', updateFeaturedOfferStatusController.handle)
 
 resourcesRouter.put('/:resourcesId/offer/:offerId/connect/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
   const { resourcesId } = req.params as { resourcesId: string };
