@@ -4,6 +4,7 @@ export * from './create-profile';
 export * from './create-session';
 export * from './create-user';
 export * from './delete-api-key';
+export * from './delete-offer';
 export * from './find-offer-by-id';
 export * from './find-user-by-email';
 export * from './find-user-by-id';

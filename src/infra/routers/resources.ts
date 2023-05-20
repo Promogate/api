@@ -1,5 +1,6 @@
 import {
   createOfferController,
+  deleteOfferController,
   getOffersFromStoreController, getSingleOfferController, getStoreDataController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
@@ -28,28 +29,7 @@ resourcesRouter.use(verifyToken);
 
 resourcesRouter.post('/:resourceId/offer/create', createOfferController.handle);
 
-resourcesRouter.delete('/offer/:id', async (req: VerifiedTokenRequest, res: Response) => {
-  const { id } = req.params as { resourceId: string, id: string };
-  try {
-    await prisma.offer.delete({
-      where: {
-        id: id
-      }
-    })
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Oferta excluída com sucesso.'
-    })
-
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu erro ao tentar excluir uma nova oferta'
-    })
-  }
-});
+resourcesRouter.delete('/offer/:id', deleteOfferController.handle);
 
 resourcesRouter.put('/offer/:offerId/update/showcase', async (req: VerifiedTokenRequest, res: Response) => {
   const { offerId } = req.params as { offerId: string };
