@@ -1,7 +1,9 @@
 import {
   createOfferController,
   deleteOfferController,
-  getOffersFromStoreController, getSingleOfferController, getStoreDataController
+  getOffersFromStoreController,
+  getSingleOfferController,
+  getStoreDataController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
 import { VerifiedTokenRequest } from '@/domain/models';

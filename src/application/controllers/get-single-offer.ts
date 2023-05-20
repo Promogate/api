@@ -1,7 +1,7 @@
 import { prisma } from '@/main/config';
 import { Request, Response } from 'express';
 
-/*eslint-disable*/
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class GetSingleOfferController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { offerId, resourceId } = req.params as { offerId: string, resourceId: string };

@@ -2,7 +2,7 @@ import { VerifiedTokenRequest } from '@/domain/models';
 import { prisma } from '@/main/config';
 import { Response } from 'express';
 
-/*eslint-disable*/
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 class DeleteOfferController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { id } = req.params as { id: string };

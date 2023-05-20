@@ -19,4 +19,5 @@ export * from './get-user-with-token';
 export * from './list-api-keys';
 export * from './list-offers';
 export * from './sign-in';
+export * from './update-showcase-offer-status';
 export * from './upload-offers-from-csv';

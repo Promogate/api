@@ -15,7 +15,7 @@ type CreateOfferBody = {
   is_on_showcase: boolean | undefined;
   is_free_shipping: boolean | undefined;
 }
-/*eslint-disable */
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 class CreateOfferController {
   async handle (req: Request, res: Response): Promise<Response> {
   const { resourceId } = req.params as { resourceId: string };
