@@ -1,4 +1,5 @@
 export * from './create-api-key';
+export * from './create-category';
 export * from './create-offer';
 export * from './create-profile';
 export * from './create-session';

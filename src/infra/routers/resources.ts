@@ -1,4 +1,5 @@
 import {
+  createCategoryController,
   createOfferController,
   deleteOfferController,
   getOffersFromStoreController,
@@ -14,10 +15,6 @@ import { Response, Router } from 'express';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 const resourcesRouter = Router();
-
-type CreateCategoryBody = {
-  name: string;
-}
 
 type CreateSubcategoryBody = {
   name: string;
@@ -39,7 +36,9 @@ resourcesRouter.put('/offer/:offerId/update/showcase', updateShowcaseOfferStatus
 
 resourcesRouter.put('/offer/:offerId/update/featured', updateFeaturedOfferStatusController.handle)
 
-resourcesRouter.put('/:resourcesId/offer/:offerId/connect/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
+resourcesRouter.post('/:resourceId/category/create', createCategoryController.handle);
+
+resourcesRouter.put('/:resourcesId/offer/:offerId/update/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
   const { resourcesId } = req.params as { resourcesId: string };
 
   const body = req.body as  { categoryId: string, offerId: string };
@@ -98,33 +97,6 @@ resourcesRouter.get('/:resourcesId/offers', async (req: VerifiedTokenRequest, re
       error: error.message,
       message: 'Algo deu errado ao tentar atualizar a oferta'
     })
-  }
-});
-
-resourcesRouter.post('/:resourceId/category/create', async (req: VerifiedTokenRequest, res: Response) => {
-  const { resourceId } = req.params as { resourceId: string };
-  try {
-
-    const body = req.body as CreateCategoryBody;
-    const category = await prisma.category.create({
-      data: {
-        name: body.name,
-        resources_id: resourceId
-      }
-    });
-
-    return res.status(201).json({
-      status: 'success',
-      message: 'Categoria criada com sucesso!',
-      category
-    });
-
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Falha ao tentar criar uma nova categoria.'
-    });
   }
 });
 
