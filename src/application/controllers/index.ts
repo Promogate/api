@@ -4,6 +4,7 @@ export * from './create-category';
 export * from './create-offer';
 export * from './create-profile';
 export * from './create-session';
+export * from './create-subcategory';
 export * from './create-user';
 export * from './delete-api-key';
 export * from './delete-offer';
