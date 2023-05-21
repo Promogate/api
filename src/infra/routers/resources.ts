@@ -1,4 +1,5 @@
 import {
+  connectCategoryToOfferController,
   createCategoryController,
   createOfferController,
   deleteOfferController,
@@ -38,34 +39,7 @@ resourcesRouter.put('/offer/:offerId/update/featured', updateFeaturedOfferStatus
 
 resourcesRouter.post('/:resourceId/category/create', createCategoryController.handle);
 
-resourcesRouter.put('/:resourcesId/offer/:offerId/update/category/:categoryId', async (req: VerifiedTokenRequest, res: Response) => {
-  const { resourcesId } = req.params as { resourcesId: string };
-
-  const body = req.body as  { categoryId: string, offerId: string };
-
-  try {
-    const offer = await prisma.categoriesOnOffer.create({
-      data: {
-        resource_id: resourcesId,
-        offer_id: body.offerId,
-        category_id: body.categoryId,
-      }
-    });
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Categoria adicionada com sucesso à oferta',
-      offer
-    });
-
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu errado ao tentar atualizar a oferta'
-    })
-  }
-});
+resourcesRouter.put('/:resourcesId/offer/:offerId/update/category', connectCategoryToOfferController.handle);
 
 resourcesRouter.get('/:resourcesId/offers', async (req: VerifiedTokenRequest, res: Response) => {
   const { resourcesId } = req.params as { resourcesId: string };

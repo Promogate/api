@@ -1,3 +1,4 @@
+export * from './connect-category-to-offer';
 export * from './create-api-key';
 export * from './create-category';
 export * from './create-offer';
