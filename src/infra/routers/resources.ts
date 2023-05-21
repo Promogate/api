@@ -4,6 +4,7 @@ import {
   createOfferController,
   deleteOfferController,
   getOffersFromStoreController,
+  getResourceOffersController,
   getSingleOfferController,
   getStoreDataController,
   updateFeaturedOfferStatusController,
@@ -41,38 +42,7 @@ resourcesRouter.post('/:resourceId/category/create', createCategoryController.ha
 
 resourcesRouter.put('/:resourcesId/offer/:offerId/update/category', connectCategoryToOfferController.handle);
 
-resourcesRouter.get('/:resourcesId/offers', async (req: VerifiedTokenRequest, res: Response) => {
-  const { resourcesId } = req.params as { resourcesId: string };
-  try {
-    const offers = await prisma.offer.findMany({
-      where: {
-        resources_id: resourcesId,
-      }, include: {
-        categories: {
-          select: {
-            category: {
-              include: {
-                sub_categories: true
-              }
-            }
-          }
-        }
-      }
-    })
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Ofertas encontradas',
-      offers
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Algo deu errado ao tentar atualizar a oferta'
-    })
-  }
-});
+resourcesRouter.get('/:resourcesId/offers', getResourceOffersController.handle);
 
 resourcesRouter.get('/:resourceId/categories', async (req: VerifiedTokenRequest, res: Response) => {
   const { resourceId } = req.params as { resourceId: string };
