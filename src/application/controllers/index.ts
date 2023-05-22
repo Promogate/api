@@ -24,6 +24,7 @@ export * from './get-user-with-token';
 export * from './list-api-keys';
 export * from './list-offers';
 export * from './me';
+export * from './me-categories';
 export * from './sign-in';
 export * from './update-featured-offer-status';
 export * from './update-profile';

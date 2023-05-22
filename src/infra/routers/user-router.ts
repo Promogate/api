@@ -2,15 +2,12 @@ import {
   createProfileController,
   createSessionController,
   createUserController,
+  meCategoriesController,
   meController,
   updateProfileController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response, Router } from 'express';
-
-
+import { Router } from 'express';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 const userRouter = Router()
@@ -27,49 +24,6 @@ userRouter.put('/profile/:id/update', updateProfileController.handle);
 
 userRouter.get('/me', meController.handle);
 
-userRouter.get('/me/categories', async (req: VerifiedTokenRequest, res: Response) => {
-  try {
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: req.user
-      }, select: {
-        id: true,
-        name: true,
-        email: true,
-        created_at: true,
-        user_profile: {
-          include: {
-            resources: {
-              select: {
-                categories: true
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (!user) {
-      return res.status(401).json({
-        status: 'error',
-        error: 'Não autorizado',
-        message: 'Error ao buscar informações sobre o usuário'
-      });
-    }
-
-    return res.status(200).json({
-      status: 'sucess',
-      message: 'Usuário encontrado',
-      user
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      status: 'error',
-      error: error.message,
-      message: 'Error ao buscar informações sobre o usuário'
-    });
-  }
-});
+userRouter.get('/me/categories', meCategoriesController.handle);
 
 export { userRouter };
