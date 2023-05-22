@@ -31,6 +31,7 @@ model UserProfile {
   analytics          Analytics?
   api_key            ApiKey?
   social_media       UserSocialMedia?
+  lomadee_source_id  String?
   role               Role             @default(FREE)
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
