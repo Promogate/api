@@ -2,6 +2,7 @@ import {
   createProfileController,
   createSessionController,
   createUserController,
+  meController,
   updateProfileController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
@@ -24,47 +25,7 @@ userRouter.post('/:id/profile/create', createProfileController.handle);
 
 userRouter.put('/profile/:id/update', updateProfileController.handle);
 
-userRouter.get('/me', async (req: VerifiedTokenRequest, res: Response) => {
-  try {
-    const userId = req.user;
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId
-      }, select: {
-        id: true,
-        name: true,
-        email: true,
-        created_at: true,
-        user_profile: {
-          include: {
-            resources: true,
-            social_media: {
-              select: {
-                facebook: true,
-                instagram: true,
-                telegram: true,
-                twitter: true,
-                whatsapp: true,
-              }
-            },
-          },
-        }
-      }
-    });
-
-    if (!user) {
-      return res.status(401).json({ message: 'User not found!' })
-    }
-
-    return res.status(200).json({
-      status: 'success',
-      user
-    });
-  } catch {
-    return res.status(401).json({ message: 'Token is missing' })
-  }
-});
+userRouter.get('/me', meController.handle);
 
 userRouter.get('/me/categories', async (req: VerifiedTokenRequest, res: Response) => {
   try {
