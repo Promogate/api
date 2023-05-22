@@ -4,7 +4,6 @@ import { TOKEN_SECRET } from '@/main/config';
 import { hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
-
 @injectable()
 export class CreateUserService implements CreateUser {
   constructor(
