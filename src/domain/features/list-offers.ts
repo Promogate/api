@@ -5,7 +5,11 @@ export interface ListOffers {
 }
 
 export namespace ListOffers {
-  export type Input = { user_id: string };
+  export type Input = { 
+    user_id: string,
+    page?: number;
+    perPage?: number;
+   };
   export type Output = {
     page: number;
     per_page: number;
