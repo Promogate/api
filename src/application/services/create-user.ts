@@ -16,7 +16,7 @@ export class CreateUserService implements CreateUser {
 
     const user = await this.authenticationRepository.signUp({...input, password: hashedPassword});
 
-    const token = sign({ id: user.id }, TOKEN_SECRET, { expiresIn: '1d' });
+    const token = sign({ id: user.id, role: user.user_profile?.role }, TOKEN_SECRET, { expiresIn: '1d' });
 
     return {
       token,

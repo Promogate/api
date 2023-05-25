@@ -16,7 +16,7 @@ class UpdateShowcaseOfferStatusController {
           is_on_showcase: body.is_on_showcase
         }
       })
-  
+      
       return res.status(200).json({
         status: 'success',
         message: 'Oferta atualizada com sucesso com sucesso!',
