@@ -46,8 +46,17 @@ export interface ListOffersRepository {
 }
 
 export namespace ListOffersRepository {
-  export type Input = { user_id: string }
-  export type Output = Offer[]
+  export type Input = { 
+    user_id: string;
+    per_page?: number;
+    page?: number;
+  }
+  export type Output = {
+    page: number;
+    per_page: number;
+    total_offers: number;
+    offers: Offer[];
+  }
 }
 
 export interface FindOfferByIdRepository {

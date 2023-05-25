@@ -6,5 +6,9 @@ export interface ListOffers {
 
 export namespace ListOffers {
   export type Input = { user_id: string };
-  export type Output = Offer[];
+  export type Output = {
+    page: number;
+    per_page: number;
+    offers: Offer[];
+  }
 }

@@ -1,3 +1,4 @@
+import { makeSkipPointer } from '@/application/utils';
 import {
   FindOfferByIdRepository, IGetShowcaseOffersRepo, IGetStoreDataRepo, ListOffersRepository,
   SaveOfferRepository,
@@ -60,19 +61,47 @@ export class ResourcesRepository implements
     }
   }
 
-  async listOffers(input: ListOffersRepository.Input): Promise<ListOffersRepository.Output> {
+  async listOffers({ 
+    user_id,
+    per_page = 10,
+    page = 1,
+   }: ListOffersRepository.Input): Promise<ListOffersRepository.Output> {
     try {
-      const offers = await prisma.offer.findMany({
+
+
+      const offers = prisma.offer.findMany({
         where: {
           resources: {
             user_profile: {
-              user_id: input.user_id
+              user_id: user_id,
             }
           }
-        }, take: 10
+        },
+        skip: makeSkipPointer(page, per_page),
+        take: per_page,
+        orderBy: {
+          created_at: 'desc'
+        }
       })
 
-      return offers
+      const totalOffers = prisma.offer.count({
+        where: {
+          resources: {
+            user_profile: {
+              user_id: user_id,
+            }
+          }
+        }
+      })
+
+      const transaction = await prisma.$transaction([offers, totalOffers])
+
+      return {
+        page: page,
+        per_page: per_page,
+        total_offers: transaction[1],
+        offers: transaction[0],
+      }
     } catch (err: any) {
       throw new Error(err.message)
     }
