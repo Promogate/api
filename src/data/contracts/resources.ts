@@ -55,6 +55,8 @@ export namespace ListOffersRepository {
     page: number;
     per_page: number;
     total_offers: number;
+    total_featured_offers: number;
+    total_showcase_offers: number;
     offers: Offer[];
   }
 }

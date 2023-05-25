@@ -67,8 +67,6 @@ export class ResourcesRepository implements
     page = 1,
    }: ListOffersRepository.Input): Promise<ListOffersRepository.Output> {
     try {
-
-
       const offers = prisma.offer.findMany({
         where: {
           resources: {
@@ -94,12 +92,57 @@ export class ResourcesRepository implements
         }
       })
 
-      const transaction = await prisma.$transaction([offers, totalOffers])
+      const featuredOffers = prisma.offer.count({
+        where: {
+          AND: [
+            {
+              resources: {
+                user_profile: {
+                  user_id: user_id,
+                }
+              }
+            },
+            {
+              is_featured: {
+                equals: true,
+              }
+            }
+          ]
+        }
+      })
+
+      const showcaseOffers = prisma.offer.count({
+        where: {
+          AND: [
+            {
+              resources: {
+                user_profile: {
+                  user_id: user_id,
+                }
+              }
+            },
+            {
+              is_on_showcase: {
+                equals: true,
+              }
+            }
+          ]
+        }
+      })
+
+      const transaction = await prisma.$transaction([
+        offers, 
+        totalOffers, 
+        featuredOffers,
+        showcaseOffers
+      ])
 
       return {
         page: page,
         per_page: per_page,
         total_offers: transaction[1],
+        total_featured_offers: transaction[2],
+        total_showcase_offers: transaction[3],
         offers: transaction[0],
       }
     } catch (err: any) {
