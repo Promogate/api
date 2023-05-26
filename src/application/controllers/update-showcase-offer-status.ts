@@ -1,6 +1,8 @@
+import { UpdateShowcaseOfferStatusService } from '@/application/services';
 import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
 import { Response } from 'express';
+import { container } from 'tsyringe';
+import { HttpStatusCode } from '../utils';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class UpdateShowcaseOfferStatusController {
@@ -9,18 +11,17 @@ class UpdateShowcaseOfferStatusController {
     const body = req.body as { is_on_showcase: boolean };
 
     try {
-      const offer = await prisma.offer.update({
-        where: {
-          id: offerId,
-        }, data: {
-          is_on_showcase: body.is_on_showcase
-        }
+      const updateShowcaseOfferStatusService = container.resolve(UpdateShowcaseOfferStatusService)
+      const result = await updateShowcaseOfferStatusService.execute({
+        is_on_showcase: body.is_on_showcase,
+        offer_id: offerId,
+        user_id: req.user as string
       })
-      
-      return res.status(200).json({
+
+      return res.status(HttpStatusCode.OK).json({
         status: 'success',
-        message: 'Oferta atualizada com sucesso com sucesso!',
-        offer
+        message: 'Oferta atualizada com sucesso!',
+        offer: result
       })
     } catch (error: any) {
       return res.status(400).json({
