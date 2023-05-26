@@ -14,8 +14,6 @@ export class GetOffersAtShowcaseService {
       }
     })
 
-    console.log(countOffers);
-
     return countOffers
   }
 }
