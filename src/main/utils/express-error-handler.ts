@@ -1,11 +1,18 @@
+import { ErrorHandler } from '@/application/utils';
 import { NextFunction, Request, Response } from 'express';
 
-export function errorHandler (err: Error, req: Request, res: Response, next: NextFunction) {
+export function errorHandler (error: ErrorHandler, req: Request, res: Response, next: NextFunction) {
+  const errorStatus = error.statusCode || 500;
+  const message = error.message || 'Error interno do servidor';
+  const name = error.name || 'ServerError';
   
-  next()
-
-  return res.status(500).json({
-    name: err.name,
-    message: err.message,
+  if (res.headersSent) {
+    return next(error);
+  }
+  
+  return res.status(errorStatus).json({
+    name: name,
+    message: message,
   })
+  
 }
