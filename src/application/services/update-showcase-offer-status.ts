@@ -24,7 +24,7 @@ export class UpdateShowcaseOfferStatusService implements UpdateOfferShowcaseStat
     const { is_on_showcase, offer_id, user_id } = input;
 
     const numberOfOffersAtShowcase = container.resolve(GetOffersAtShowcaseService);
-    const offerOnShowcase = await numberOfOffersAtShowcase.execute(offer_id);
+    const offerOnShowcase = await numberOfOffersAtShowcase.execute(user_id);
 
     const userProfile = await prisma.userProfile.findFirst({
       where: {

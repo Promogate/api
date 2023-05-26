@@ -11,11 +11,12 @@ class UpdateShowcaseOfferStatusController {
     const body = req.body as { is_on_showcase: boolean };
 
     try {
+      const userId = req.user as string;
       const updateShowcaseOfferStatusService = container.resolve(UpdateShowcaseOfferStatusService)
       const result = await updateShowcaseOfferStatusService.execute({
         is_on_showcase: body.is_on_showcase,
         offer_id: offerId,
-        user_id: req.user as string
+        user_id: userId
       })
 
       return res.status(HttpStatusCode.OK).json({
