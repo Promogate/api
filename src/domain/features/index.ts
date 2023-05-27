@@ -19,6 +19,7 @@ export * from './list-offers';
 export * from './revalidate-refresh-token';
 export * from './search-by-word';
 export * from './update-offer';
+export * from './update-offer-featured-status';
 export * from './upload-file';
 export * from './user';
 export * from './verify-refresh-token';
