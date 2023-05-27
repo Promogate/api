@@ -6,24 +6,20 @@ export class GetOffersAtShowcaseService {
   async execute(user_id: string): Promise<number> {
     const countOffers = await prisma.offer.count({
       where: {
-        resources: {
-          AND: [
-            {
-              user_profile: {
-                user_id: user_id,
-              }
+        AND: [
+          {
+            is_on_showcase: {
+              equals: true,
             },
-            {
-              offers: {
-                every: {
-                  is_on_showcase: {
-                    equals: true,
-                  }
+            resources: {
+              user_profile: {
+                user_id: {
+                  equals: user_id,
                 }
               }
             }
-          ]
-        }
+          }
+        ]
       }
     })
 
