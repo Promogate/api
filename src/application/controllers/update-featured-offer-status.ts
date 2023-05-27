@@ -1,6 +1,7 @@
+import { UpdateFeaturedOfferStatusService } from '@/application/services';
 import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
 import { Response } from 'express';
+import { container } from 'tsyringe';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class UpdateFeaturedOfferStatusController {
@@ -9,19 +10,20 @@ class UpdateFeaturedOfferStatusController {
     const body = req.body as { is_featured: boolean };
 
     try {
-      const offer = await prisma.offer.update({
-        where: {
-          id: offerId,
-        }, data: {
-          is_featured: body.is_featured
-        }
+      const updateFeaturedOfferStatusService = container.resolve(UpdateFeaturedOfferStatusService)
+      const result = await updateFeaturedOfferStatusService.execute({
+        is_featured: body.is_featured,
+        offer_id: offerId,
+        user_id: req.user as string,
+        role: req.role as string
       })
-  
+
       return res.status(200).json({
         status: 'success',
         message: 'Oferta atualizada com sucesso com sucesso!',
-        offer
+        offer: result
       })
+
     } catch (error: any) {
       return res.status(400).json({
         status: 'error',
