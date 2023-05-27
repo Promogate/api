@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  created_at DateTime @default(now())
+  id                  String   @id @default(uuid())
+  name                String
+  email               String   @unique
+  password            String
+  created_at          DateTime @default(now())
+  agree_with_policies Boolean? @default(false)
 
   user_profile UserProfile?
 
@@ -33,7 +34,6 @@ model UserProfile {
   social_media         UserSocialMedia?
   lomadee_source_id    String?
   admitad_verification String?
-  agree_with_policies  Boolean?          @default(false)
   role                 Role             @default(FREE)
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)

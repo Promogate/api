@@ -1,4 +1,4 @@
-import { User, UserProfile, UserSocialMedia } from '@prisma/client'
+import { User, UserProfile, UserSocialMedia } from '@prisma/client';
 
 export interface CreateUser {
   execute: (input: CreateUser.Input) => Promise<CreateUser.Output>
@@ -6,9 +6,10 @@ export interface CreateUser {
 
 export namespace CreateUser {
   export type Input = {
-    name: string
-    email: string
-    password: string
+    name: string;
+    email: string;
+    password: string;
+    agree_with_policies: boolean;
   }
 
   export type Output = {

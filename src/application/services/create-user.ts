@@ -25,7 +25,8 @@ export class CreateUserService implements CreateUser {
         name: user.name,
         email: user.email,
         created_at: user.created_at,
-        user_profile: user.user_profile
+        user_profile: user.user_profile,
+        agree_with_policies: user.agree_with_policies
       }
     }
   }

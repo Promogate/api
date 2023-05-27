@@ -95,7 +95,8 @@ export class UserRepository implements
         email: true,
         name: true,
         created_at: true,
-        user_profile: true
+        user_profile: true,
+        agree_with_policies: true
       }
     });
 
@@ -133,7 +134,8 @@ export class UserRepository implements
       email: user.email,
       name: user.name,
       created_at: user.created_at,
-      resources: user.user_profile.resources
+      resources: user.user_profile.resources,
+      agree_with_policies: user.agree_with_policies
     }
   }
 }

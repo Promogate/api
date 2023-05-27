@@ -16,7 +16,8 @@ export class FindUserByEmailService implements FindUserByEmail {
       id: user.id,
       email: user.email,
       name: user.name,
-      created_at: user.created_at
+      created_at: user.created_at,
+      agree_with_policies: user.agree_with_policies
     }
   }
 

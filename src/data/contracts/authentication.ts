@@ -26,6 +26,7 @@ export namespace ISignUpRepo {
     name: string;
     email: string;
     password: string;
+    agree_with_policies: boolean;
   }
 
   export type Output = (User & {

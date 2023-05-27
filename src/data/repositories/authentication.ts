@@ -36,7 +36,8 @@ export class AuthenticationRepository implements
         data: {
           name: input.name,
           email: input.email,
-          password: input.password
+          password: input.password,
+          agree_with_policies: input.agree_with_policies
         }, include: {
           user_profile: {
             include: {
