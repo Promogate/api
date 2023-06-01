@@ -1,17 +1,21 @@
-export interface IUpdateOffer {
-  execute(input: IUpdateOffer.Input): Promise<IUpdateOffer.Ouput>
+import { Offer } from '@prisma/client';
+
+export interface UpdateOffer {
+  execute(input: UpdateOffer.Input): Promise<UpdateOffer.Ouput>
 }
 
-export namespace IUpdateOffer {
+export namespace UpdateOffer {
   export type Input = {
-    offer_id: string;
+    offerId: string;
     image?: string;
-    old_price?: string;
+    title?: string;
+    oldPrice?: string;
     price?: string;
-    destination_link: string;
-    store_image?: string;
-    expiration_date?: string;
+    destinationLink?: string;
+    storeName?: string;
+    expirationDate?: string;
+    description?: string;
   }
 
-  export type Ouput = void
+  export type Ouput = Offer
 }
