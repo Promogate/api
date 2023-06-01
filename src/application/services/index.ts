@@ -1,6 +1,7 @@
 export * from './convert-csv-to-json';
 export * from './create-api-key';
 export * from './create-offer';
+export * from './create-profile';
 export * from './create-session';
 export * from './create-user';
 export * from './delete-api-key';

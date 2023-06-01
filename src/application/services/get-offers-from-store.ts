@@ -32,6 +32,7 @@ export class GetOffersFromStoreService implements IGetOffersFromStore {
           mode: 'insensitive',
         }
       }, include: {
+        social_media: true,
         resources: {
           select: {
             offers: {
