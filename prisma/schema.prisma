@@ -98,6 +98,7 @@ model Offer {
   store_name         String
   description        String?
   expiration_date    String?
+  short_link         String
   created_at         DateTime            @default(now())
   is_on_showcase     Boolean             @default(false)
   is_featured        Boolean             @default(false)
