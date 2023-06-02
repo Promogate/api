@@ -47,20 +47,31 @@ class CreateOfferController {
               id: resourceId
             }
           }
+        },
+        include: {
+          resources: {
+            include: {
+              user_profile: {
+                select: {
+                  store_name: true,
+                  store_name_display: true,
+                }
+              }
+            }
+          }
         }
       })
 
-      const store = offer.store_name.toLocaleLowerCase().replace(' ', '-');
       const productName = offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s/]/g, '-');
     
-      const offerUrl = `/${store}/produto/${productName}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`
+      const offerUrl = `https://promogate.app/${offer.resources.user_profile?.store_name}/produto/${productName}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`
 
       const createShorlinkService = container.resolve(CreateShortlinkService);
-      const shortlinkResult = await createShorlinkService.execute({ 
+      const { shortLink } = await createShorlinkService.execute({ 
         fullLink: offerUrl,
         offerId: offer.id,
         resourceId: offer.resources_id,
-        storeName: offer.store_name
+        storeName: offer.resources.user_profile?.store_name_display as string
       })
 
       const updatedOffer = await prisma.offer.update({
@@ -68,7 +79,7 @@ class CreateOfferController {
           id: offer.id,
         },
         data: {
-          short_link: shortlinkResult.shortLink
+          short_link: shortLink
         }
       })
 

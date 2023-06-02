@@ -30,4 +30,5 @@ export * from './update-featured-offer-status';
 export * from './update-offer';
 export * from './update-profile';
 export * from './update-showcase-offer-status';
+export * from './updateShortlink';
 export * from './upload-offers-from-csv';
