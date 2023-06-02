@@ -11,6 +11,7 @@ import {
   getStoreDataController,
   updateFeaturedOfferStatusController,
   updateOfferController,
+  updateShortlinkController,
   updateShowcaseOfferStatusController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
@@ -37,6 +38,8 @@ resourcesRouter.get('/:resourcesId/offers', getResourceOffersController.handle);
 resourcesRouter.get('/:resourceId/categories', getResourceCategoriesController.handle);
 
 resourcesRouter.put('/:resourceId/offer/:offerId/update', updateOfferController.handle);
+
+resourcesRouter.put('/offer/:offerId/shortlink', updateShortlinkController.handle);
 
 resourcesRouter.put('/offer/:offerId/update/showcase', updateShowcaseOfferStatusController.handle);
 
