@@ -35,7 +35,8 @@ export class CreateOfferService implements CreateOffer {
       expiration_date: expirationDate,
       store_image: input.store_image,
       destination_link: input.destination_link,
-      resourceId: resources.id
+      resourceId: resources.id,
+      short_link: 'pgate.app' //TODO: Need to change
     })
   }
 }

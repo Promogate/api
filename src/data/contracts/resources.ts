@@ -1,4 +1,4 @@
-import { Offer } from '@prisma/client'
+import { Offer } from '@prisma/client';
 
 export interface SaveOfferRepository {
   saveOffer: (input: SaveOfferRepository.Input) => Promise<SaveOfferRepository.Output>
@@ -6,14 +6,15 @@ export interface SaveOfferRepository {
 
 export namespace SaveOfferRepository {
   export type Input = {
-    resourceId: string
-    image: string
-    title: string
-    oldPrice?: string
-    price: string
-    destination_link: string
-    store_image: string
-    expiration_date: string
+    resourceId: string;
+    image: string;
+    title: string;
+    oldPrice?: string;
+    price: string;
+    destination_link: string;
+    store_image: string;
+    expiration_date: string;
+    short_link: string;
   }
 
   export type Output = void
@@ -26,14 +27,15 @@ export interface SaveOffersFromCSVRepository {
 export namespace SaveOffersFromCSVRepository {
   export type Input = {
     offers: Array<{
-      resources_id: string
-      image: string
-      title: string
-      oldPrice?: string
-      price: string
-      destination_link: string
-      store_image: string
-      expiration_date: string
+      resources_id: string;
+      image: string;
+      title: string;
+      oldPrice?: string;
+      price: string;
+      destination_link: string;
+      store_image: string;
+      expiration_date: string;
+      short_link: string;
     }>,
     resource_id: string
   }
@@ -46,7 +48,7 @@ export interface ListOffersRepository {
 }
 
 export namespace ListOffersRepository {
-  export type Input = { 
+  export type Input = {
     user_id: string;
     per_page?: number;
     page?: number;

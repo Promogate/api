@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const pgateClient = axios.create({
-  baseURL: 'https://pgate.com/'
+  baseURL: 'https://pgate.app/'
 })

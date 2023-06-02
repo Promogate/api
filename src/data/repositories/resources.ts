@@ -7,14 +7,14 @@ import {
 import { prisma } from '@/main/config';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
-export class ResourcesRepository implements 
+export class ResourcesRepository implements
   SaveOfferRepository,
   ListOffersRepository,
   FindOfferByIdRepository,
   SaveOffersFromCSVRepository,
   IGetShowcaseOffersRepo,
   IGetStoreDataRepo {
-  
+
   async getStore(input: IGetStoreDataRepo.Input): Promise<any> {
     const store = await prisma.userProfile.findUnique({
       where: {
@@ -53,7 +53,8 @@ export class ResourcesRepository implements
           store_image: input.store_image,
           destination_link: input.destination_link,
           expiration_date: input.expiration_date,
-          store_name: ''
+          store_name: 'Promogate', //TODO: Need to change
+          short_link: 'pgate.app', //TODO: Need to change
         }
       });
     } catch (err: any) {
@@ -61,11 +62,11 @@ export class ResourcesRepository implements
     }
   }
 
-  async listOffers({ 
+  async listOffers({
     user_id,
     per_page = 10,
     page = 1,
-   }: ListOffersRepository.Input): Promise<ListOffersRepository.Output> {
+  }: ListOffersRepository.Input): Promise<ListOffersRepository.Output> {
     try {
       const offers = prisma.offer.findMany({
         where: {
@@ -131,8 +132,8 @@ export class ResourcesRepository implements
       })
 
       const transaction = await prisma.$transaction([
-        offers, 
-        totalOffers, 
+        offers,
+        totalOffers,
         featuredOffers,
         showcaseOffers
       ])
@@ -150,7 +151,7 @@ export class ResourcesRepository implements
     }
   }
 
-  async findOfferById (input: FindOfferByIdRepository.Input): Promise<FindOfferByIdRepository.Output> {
+  async findOfferById(input: FindOfferByIdRepository.Input): Promise<FindOfferByIdRepository.Output> {
     try {
       const offer = await prisma.offer.findUnique({
         where: {
@@ -158,7 +159,7 @@ export class ResourcesRepository implements
         }
       });
 
-      
+
       if (offer === null) throw new Error('Failed to find offer in repo');
 
       return {
@@ -177,10 +178,15 @@ export class ResourcesRepository implements
     }
   }
 
-  async saveOffersFromCSV (input: SaveOffersFromCSVRepository.Input): Promise<SaveOffersFromCSVRepository.Output> {
+  async saveOffersFromCSV(input: SaveOffersFromCSVRepository.Input): Promise<SaveOffersFromCSVRepository.Output> {
     try {
       const offersWithResourceId = input.offers.map((el) => {
-        return {...el, resources_id: input.resource_id, store_name: ''}
+        return {
+          ...el,
+          resources_id: input.resource_id,
+          store_name: 'Promogate', //TODO: Need to change
+          short_link: 'pgate.app/' //TODO: Need to change
+        }
       })
 
       await prisma.offer.createMany({

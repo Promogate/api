@@ -12,13 +12,14 @@ export namespace ConvertCSVToJSON {
   }
 
   export type Output = Array<{
-    resources_id: string
-    image: string
-    title: string
-    oldPrice?: string
-    price: string
-    destination_link: string
-    store_image: string
-    expiration_date: string
+    resources_id: string;
+    image: string;
+    title: string;
+    oldPrice?: string;
+    price: string;
+    destination_link: string;
+    store_image: string;
+    expiration_date: string;
+    short_link: string;
   }>
 }
