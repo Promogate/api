@@ -21,6 +21,7 @@ import {
 } from '@/infra/routers';
 
 import { errorHandler } from '@/main/utils';
+import { socialsoulRouter } from '@/modules/social-soul/infra/router';
 
 const PORT = process.env.PORT || 8080
 
@@ -34,6 +35,7 @@ app.use('/dashboard', dashboardRouter);
 app.use('/analytics', analyticsRouter);
 app.use('/users', userRouter);
 app.use('/api-keys', apiKeyRouter);
+app.use('/social-soul', socialsoulRouter);
 app.use(errorHandler);
 
 
