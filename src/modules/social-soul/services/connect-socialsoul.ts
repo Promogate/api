@@ -1,7 +1,6 @@
-import { SOCIALSOUL_APP_ID } from '@/main/config';
+import { SOCIALSOUL_APP_ID, TS_NODE_ENV } from '@/main/config';
 import { CouponsResponse } from '@/modules/social-soul/@types';
 import axios, { AxiosInstance } from 'axios';
-import { injectable } from 'tsyringe';
 
 export namespace ConnectSocialsoul {
   export type Input = {
@@ -9,7 +8,6 @@ export namespace ConnectSocialsoul {
   }
 }
 
-@injectable()
 export class ConnectSocialsoulService {
   private readonly appId: string;
   private readonly apiUrl: string;
@@ -18,7 +16,7 @@ export class ConnectSocialsoulService {
 
   constructor({ sourceId }: ConnectSocialsoul.Input) {
     this.appId = SOCIALSOUL_APP_ID
-    this.apiUrl = process.env.TS_NODE_ENV === undefined ? `https://api.lomadee.com/${this.appId}` : `http://sandbox-api.lomadee.com/${this.appId}`
+    this.apiUrl = TS_NODE_ENV === undefined ? `https://api.lomadee.com` : `http://sandbox-api.lomadee.com`
     this.sourceId = sourceId
     this.apiClient = axios.create({
       baseURL: this.apiUrl
@@ -26,7 +24,7 @@ export class ConnectSocialsoulService {
   }
 
   async getCoupons(): Promise<CouponsResponse> {
-    const { data } = await this.apiClient.get<CouponsResponse>('/coupon/_all',  {
+    const { data } = await this.apiClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`,  {
       params: {
         sourceId: this.sourceId
       }
