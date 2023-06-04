@@ -1,5 +1,5 @@
 import { SOCIALSOUL_APP_ID, TS_NODE_ENV } from '@/main/config';
-import { CouponsResponse } from '@/modules/social-soul/@types';
+import { CouponsResponse, StoresResponse } from '@/modules/social-soul/@types';
 import axios, { AxiosInstance } from 'axios';
 
 export namespace ConnectSocialsoul {
@@ -25,6 +25,16 @@ export class ConnectSocialsoulService {
 
   async getCoupons(): Promise<CouponsResponse> {
     const { data } = await this.apiClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`,  {
+      params: {
+        sourceId: this.sourceId
+      }
+    })
+
+    return data
+  }
+
+  async getStores(): Promise<StoresResponse> {
+    const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`,  {
       params: {
         sourceId: this.sourceId
       }
