@@ -62,6 +62,20 @@ export type StoreEvent = {
   commission: number;
 }
 
+export type SingleOfferResponse = {
+  requestInfo: {
+    status: string;
+    message: string;
+  },
+  pagination: {
+    page: number;
+    size: number;
+    totalSize: number;
+    totalPage: number;
+  },
+  offers: Offer[]
+}
+
 export type OffersResponse = {
   requestInfo: {
     status: string;
