@@ -61,3 +61,45 @@ export type StoreEvent = {
   fixedCommission: boolean;
   commission: number;
 }
+
+export type OffersResponse = {
+  requestInfo: {
+    status: string;
+    message: string;
+  },
+  pagination: {
+    page: number;
+    size: number;
+    totalSize: number;
+    totalPage: number;
+  },
+  coupons: Offer[]
+}
+
+export type Offer = {
+  id: string;
+  name: string;
+  category: Record<string, unknown>;
+  link: string;
+  thumbnail: string;
+  price: number;
+  priceFrom?: number;
+  discount?: number;
+  installment: Record<string, unknown>;
+  store: OfferStore;
+}
+
+export type OfferStore = {
+  id: number;
+  name: string;
+  thumbnail: string;
+  link: string;
+  invisible: boolean;
+  needPermission: boolean;
+}
+
+export type GetOffersParams = {
+  size?: number;
+  page?: number;
+  sort?: string;
+}
