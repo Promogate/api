@@ -1,2 +1,3 @@
-export * from './get-coupons';
-export * from './get-stores';
+export * from './getCoupons';
+export * from './getOffersByStoreId';
+export * from './getStores';
