@@ -73,7 +73,7 @@ export type OffersResponse = {
     totalSize: number;
     totalPage: number;
   },
-  coupons: Offer[]
+  offers: Offer[]
 }
 
 export type Offer = {

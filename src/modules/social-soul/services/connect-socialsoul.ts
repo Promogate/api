@@ -14,7 +14,14 @@ export namespace ConnectSocialsoul {
 
   export type GetOffers = {
     storeId: string;
-    params?: GetOffersParams
+    params?: GetOffersParams;
+  }
+
+  export type GetOfferById = {
+    offerId: string;
+    params?: {
+      storeId?: string;
+    }
   }
 }
 
@@ -55,6 +62,17 @@ export class ConnectSocialsoulService {
 
   async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
     const { data } = await this.apiClient.get<OffersResponse>(`/v3/${this.appId}/offer/_store/${storeId}`, {
+      params: {
+        sourceId: this.sourceId,
+        ...params
+      }
+    })
+
+    return data
+  }
+
+  async getOfferById({ offerId, params }: ConnectSocialsoul.GetOfferById): Promise<any> {
+    const { data } = await this.apiClient.get(`/v3/${this.appId}/offer/_id/${offerId}`, {
       params: {
         sourceId: this.sourceId,
         ...params
