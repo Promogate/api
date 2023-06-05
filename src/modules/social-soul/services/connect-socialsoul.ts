@@ -3,6 +3,7 @@ import {
   CouponsResponse,
   GetOffersParams,
   OffersResponse,
+  SingleOfferResponse,
   StoresResponse
 } from '@/modules/social-soul/@types';
 import axios, { AxiosInstance } from 'axios';
@@ -19,8 +20,8 @@ export namespace ConnectSocialsoul {
 
   export type GetOfferById = {
     offerId: string;
-    params?: {
-      storeId?: string;
+    params: {
+      storeId: string;
     }
   }
 }
@@ -71,8 +72,8 @@ export class ConnectSocialsoulService {
     return data
   }
 
-  async getOfferById({ offerId, params }: ConnectSocialsoul.GetOfferById): Promise<any> {
-    const { data } = await this.apiClient.get(`/v3/${this.appId}/offer/_id/${offerId}`, {
+  async getOfferById({ offerId, params }: ConnectSocialsoul.GetOfferById): Promise<SingleOfferResponse> {
+    const { data } = await this.apiClient.get<SingleOfferResponse>(`/v3/${this.appId}/offer/_id/${offerId}`, {
       params: {
         sourceId: this.sourceId,
         ...params
