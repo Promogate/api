@@ -1,10 +1,20 @@
 import { SOCIALSOUL_APP_ID, TS_NODE_ENV } from '@/main/config';
-import { CouponsResponse, StoresResponse } from '@/modules/social-soul/@types';
+import {
+  CouponsResponse,
+  GetOffersParams,
+  OffersResponse,
+  StoresResponse
+} from '@/modules/social-soul/@types';
 import axios, { AxiosInstance } from 'axios';
 
 export namespace ConnectSocialsoul {
   export type Input = {
     sourceId: string;
+  }
+
+  export type GetOffers = {
+    storeId: string;
+    params?: GetOffersParams
   }
 }
 
@@ -24,7 +34,7 @@ export class ConnectSocialsoulService {
   }
 
   async getCoupons(): Promise<CouponsResponse> {
-    const { data } = await this.apiClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`,  {
+    const { data } = await this.apiClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`, {
       params: {
         sourceId: this.sourceId
       }
@@ -34,9 +44,20 @@ export class ConnectSocialsoulService {
   }
 
   async getStores(): Promise<StoresResponse> {
-    const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`,  {
+    const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
       params: {
         sourceId: this.sourceId
+      }
+    })
+
+    return data
+  }
+
+  async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
+    const { data } = await this.apiClient.get<OffersResponse>(`/v3/${this.appId}/offer/_store/${storeId}`, {
+      params: {
+        sourceId: this.sourceId,
+        ...params
       }
     })
 
