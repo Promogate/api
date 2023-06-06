@@ -21,6 +21,7 @@ export * from './get-showcase-offers';
 export * from './get-single-offer';
 export * from './get-store-data';
 export * from './get-user-with-token';
+export * from './getStoresNames';
 export * from './list-api-keys';
 export * from './list-offers';
 export * from './me';

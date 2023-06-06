@@ -9,6 +9,7 @@ import {
   getResourceOffersController,
   getSingleOfferController,
   getStoreDataController,
+  getStoresNamesController,
   updateFeaturedOfferStatusController,
   updateOfferController,
   updateShortlinkController,
@@ -18,6 +19,8 @@ import { verifyToken } from '@/application/middlewares';
 import { Router } from 'express';
 
 const resourcesRouter = Router();
+
+resourcesRouter.get('/stores', getStoresNamesController.handle);
 
 resourcesRouter.get('/offers/:store', getOffersFromStoreController.handle);
 
