@@ -23,6 +23,7 @@ export class GetSingleOfferController {
                 select: {
                   store_name: true,
                   store_image: true,
+                  social_media: true
                 }
               }
             }
