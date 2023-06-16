@@ -24,17 +24,18 @@ model User {
 }
 
 model UserProfile {
-  id                   String           @id @default(uuid())
-  store_image          String
-  store_name           String           @unique
-  store_name_display   String
-  resources            Resources?
-  analytics            Analytics?
-  api_key              ApiKey?
-  social_media         UserSocialMedia?
-  lomadee_source_id    String?
-  admitad_verification String?
-  role                 Role             @default(FREE)
+  id                           String           @id @default(uuid())
+  store_image                  String
+  store_name                   String           @unique
+  store_name_display           String
+  resources                    Resources?
+  analytics                    Analytics?
+  api_key                      ApiKey?
+  social_media                 UserSocialMedia?
+  lomadee_source_id            String?
+  lomadee_verfication_file_url String?
+  admitad_verification         String?
+  role                         Role             @default(FREE)
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique
