@@ -22,8 +22,9 @@ export class GetSingleOfferController {
               user_profile: {
                 select: {
                   store_name: true,
+                  store_name_display: true,
                   store_image: true,
-                  social_media: true
+                  social_media: true,
                 }
               }
             }
