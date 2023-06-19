@@ -42,7 +42,7 @@ export class AuthenticationRepository implements
           user_profile: {
             include: {
               social_media: true
-            }
+            },
           }
         }
       })

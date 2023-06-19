@@ -33,7 +33,6 @@ model UserProfile {
   api_key                      ApiKey?
   social_media                 UserSocialMedia?
   lomadee_source_id            String?
-  lomadee_verfication_file_url String?
   admitad_verification         String?
   role                         Role             @default(FREE)
 
