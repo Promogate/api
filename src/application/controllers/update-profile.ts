@@ -11,6 +11,7 @@ type UpdateProfileBody = {
   whatsapp?: string;
   telegram?: string;
   twitter?: string;
+  lomadeeSourceId?: string;
 }
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
@@ -25,6 +26,7 @@ class UpdateProfileController {
           id: id
         },
         data: {
+          lomadee_source_id: body?.lomadeeSourceId,
           store_name: body?.store_name,
           store_image: body?.store_image,
           social_media: {
