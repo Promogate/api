@@ -2,6 +2,7 @@ import { IGetStoreDataRepo } from '@/data/contracts';
 import { IGetStoreData } from '@/domain/features';
 import { inject, injectable } from 'tsyringe';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 @injectable()
 export class GetStoreDataService implements IGetStoreData {
   constructor(

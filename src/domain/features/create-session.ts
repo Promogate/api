@@ -1,3 +1,5 @@
+/*eslint-disable @typescript-eslint/no-explicit-any*/
+
 export interface CreateSession {
   execute: (input: CreateSession.Input) => Promise<CreateSession.Output>
 }

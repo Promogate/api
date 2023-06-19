@@ -1,3 +1,5 @@
+/*eslint-disable @typescript-eslint/no-explicit-any*/
+
 export interface IGetProfile {
   execute(input: IGetProfile.Input): Promise<IGetProfile.Ouput>
 }

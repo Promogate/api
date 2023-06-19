@@ -1,5 +1,6 @@
 import { Offer } from '@prisma/client'
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export interface AddOfferClickRepository {
   addClick: (input: AddOfferClickRepository.Input) => Promise<AddOfferClickRepository.Output>
 }

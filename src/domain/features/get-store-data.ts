@@ -1,3 +1,5 @@
+/*eslint-disable @typescript-eslint/no-explicit-any*/
+
 export interface IGetStoreData {
   execute(input: IGetStoreData.Input): Promise<IGetStoreData.Output>
 }

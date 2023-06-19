@@ -1,3 +1,5 @@
+/*eslint-disable @typescript-eslint/no-explicit-any*/
+
 export interface IGetShowcaseOffers {
   execute(input: IGetShowcaseOffers.Input): Promise<IGetShowcaseOffers.Output>
 }

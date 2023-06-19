@@ -17,6 +17,7 @@ import {
   authenticationRouter,
   dashboardRouter,
   resourcesRouter,
+  uploadRouter,
   userRouter
 } from '@/infra/routers';
 
@@ -36,6 +37,7 @@ app.use('/analytics', analyticsRouter);
 app.use('/users', userRouter);
 app.use('/api-keys', apiKeyRouter);
 app.use('/social-soul', socialsoulRouter);
+app.use('/upload', uploadRouter);
 app.use(errorHandler);
 
 

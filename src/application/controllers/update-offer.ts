@@ -11,7 +11,7 @@ type UrlParams = {
 
 class UpdateOfferController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
-    const { resourceId, offerId } = req.params as UrlParams
+    const { offerId } = req.params as UrlParams
     const body = req.body as UpdateOfferParams;
 
     const service = container.resolve(UpdateOfferService);

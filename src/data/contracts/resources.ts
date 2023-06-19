@@ -1,5 +1,6 @@
 import { Offer } from '@prisma/client';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export interface SaveOfferRepository {
   saveOffer: (input: SaveOfferRepository.Input) => Promise<SaveOfferRepository.Output>
 }

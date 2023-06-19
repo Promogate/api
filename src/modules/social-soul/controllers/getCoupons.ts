@@ -3,6 +3,7 @@ import { VerifiedTokenRequest } from '@/domain/models';
 import { ConnectSocialsoulService } from '@/modules/social-soul/services';
 import { Response } from 'express';
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 class GetCouponsController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { 'x-source-id': sourceId } = req.headers as { 'x-source-id': string };
