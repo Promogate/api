@@ -8,7 +8,7 @@
     "start": "node dist/main/api/index.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "prepare": "husky install",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests"
   },

@@ -28,6 +28,11 @@ function moveFileToDestination(file: Express.Multer.File, destinationPath: strin
   fs.renameSync(file.path, destination);
 }
 
+uploadRouter.get('/:storeName/:fileName', (req, res) => {
+  const { storeName, fileName } = req.params as { storeName: string, fileName: string };
+  return res.sendFile(path.resolve(`public/${storeName}/${fileName}`));
+})
+
 uploadRouter.use(verifyToken);
 
 uploadRouter.post('/:storeName', upload.single('file'), (req, res) => {
@@ -46,19 +51,6 @@ uploadRouter.post('/:storeName', upload.single('file'), (req, res) => {
   }
 
   return res.send('Arquivo recebido com sucesso!');
-})
-
-uploadRouter.get('/:storeName/:fileName', (req, res) => {
-  const { storeName, fileName } = req.params as { storeName: string, fileName: string };
-  const file = fs.readFile(`public/${storeName}/${fileName}`, 'utf8', (err, data) => {
-    if(err) {
-      console.error(err);
-      return;
-    }
-    console.log(data)
-  });
-
-  return res.send(file);
 })
 
 export { uploadRouter };
