@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/main/api/index.ts",
     "start": "node dist/main/api/index.js",
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "build": "rimraf dist && tsc",
     "prepare": "husky install",
     "test": "jest --passWithNoTests",
     "test:watch": "yarn test --watch",
