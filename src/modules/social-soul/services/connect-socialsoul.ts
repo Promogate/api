@@ -37,7 +37,10 @@ export class ConnectSocialsoulService {
     this.apiUrl = SOCIALSOUL_API_URL
     this.sourceId = sourceId
     this.apiClient = axios.create({
-      baseURL: this.apiUrl
+      baseURL: this.apiUrl,
+      headers: {
+        "Accept": "*/*, application/json, text/plain",
+      }
     })
   }
 
