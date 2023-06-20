@@ -1,4 +1,4 @@
-import { SOCIALSOUL_API_URL, SOCIALSOUL_APP_ID } from '@/main/config';
+import { socialSoulClient, SOCIALSOUL_API_URL, SOCIALSOUL_APP_ID } from '@/main/config';
 import {
   CouponsResponse,
   GetOffersParams,
@@ -45,7 +45,7 @@ export class ConnectSocialsoulService {
   }
 
   async getCoupons(): Promise<CouponsResponse> {
-    const { data } = await this.apiClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`, {
+    const { data } = await socialSoulClient.get<CouponsResponse>(`/v2/${this.appId}/coupon/_all`, {
       params: {
         sourceId: this.sourceId
       }
@@ -56,7 +56,7 @@ export class ConnectSocialsoulService {
 
   async getStores(): Promise<StoresResponse> {
     try {
-      const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
+      const { data } = await socialSoulClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
         params: {
           sourceId: this.sourceId
         }
@@ -68,7 +68,7 @@ export class ConnectSocialsoulService {
   }
 
   async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
-    const { data } = await this.apiClient.get<OffersResponse>(`/v3/${this.appId}/offer/_store/${storeId}`, {
+    const { data } = await socialSoulClient.get<OffersResponse>(`/v3/${this.appId}/offer/_store/${storeId}`, {
       params: {
         sourceId: this.sourceId,
         ...params
