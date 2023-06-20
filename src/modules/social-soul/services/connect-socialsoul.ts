@@ -53,16 +53,12 @@ export class ConnectSocialsoulService {
 
   async getStores(): Promise<StoresResponse> {
     try {
-      // const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
-      //   params: {
-      //     sourceId: this.sourceId
-      //   }
-      // })
-      const response = await fetch(this.apiUrl + `/v3/${this.appId}/store/_all?sourceId=${this.sourceId}`, {
-        
+      const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
+        params: {
+          sourceId: this.sourceId
+        }
       })
-      const json = await response.json();
-      return json
+      return data
     } catch (e: any) {
       throw new Error(e.message)
     }
