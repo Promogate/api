@@ -16,6 +16,7 @@ import {
   updateShowcaseOfferStatusController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
+import { getStoresController } from '@/modules/social-soul/controllers';
 import { Router } from 'express';
 
 const resourcesRouter = Router();
@@ -29,6 +30,8 @@ resourcesRouter.get('/store/:store', getStoreDataController.handle);
 resourcesRouter.get('/:resourceId/offer/:offerId', getSingleOfferController.handle);
 
 resourcesRouter.use(verifyToken);
+
+resourcesRouter.get('/social-soul/stores', getStoresController.handle);
 
 resourcesRouter.post('/:resourceId/offer/create', createOfferController.handle);
 
