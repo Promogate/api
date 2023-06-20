@@ -52,13 +52,16 @@ export class ConnectSocialsoulService {
   }
 
   async getStores(): Promise<StoresResponse> {
-    const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
-      params: {
-        sourceId: this.sourceId
-      }
-    })
-
-    return data
+    try {
+      const { data } = await this.apiClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
+        params: {
+          sourceId: this.sourceId
+        }
+      })
+      return data
+    } catch (e: any) {
+      throw new Error(e.message)
+    }
   }
 
   async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
