@@ -37,7 +37,7 @@ export class ConnectSocialsoulService {
     this.apiUrl = SOCIALSOUL_API_URL
     this.sourceId = sourceId
     this.apiClient = axios.create({
-      baseURL: this.apiUrl,
+      baseURL: 'https://api.lomadee.com',
       headers: {
         "Accept": "*/*, application/json, text/plain",
       }
