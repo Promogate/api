@@ -1,4 +1,4 @@
-import { SOCIALSOUL_APP_ID } from '@/main/config';
+import { SOCIALSOUL_API_URL, SOCIALSOUL_APP_ID } from '@/main/config';
 import {
   CouponsResponse,
   GetOffersParams,
@@ -34,7 +34,7 @@ export class ConnectSocialsoulService {
 
   constructor({ sourceId }: ConnectSocialsoul.Input) {
     this.appId = SOCIALSOUL_APP_ID
-    this.apiUrl = `https://api.lomadee.com`
+    this.apiUrl = SOCIALSOUL_API_URL
     this.sourceId = sourceId
     this.apiClient = axios.create({
       baseURL: this.apiUrl
