@@ -1,4 +1,4 @@
-import { SOCIALSOUL_APP_ID, TS_NODE_ENV } from '@/main/config';
+import { SOCIALSOUL_APP_ID } from '@/main/config';
 import {
   CouponsResponse,
   GetOffersParams,
@@ -34,7 +34,7 @@ export class ConnectSocialsoulService {
 
   constructor({ sourceId }: ConnectSocialsoul.Input) {
     this.appId = SOCIALSOUL_APP_ID
-    this.apiUrl = TS_NODE_ENV === undefined ? `https://api.lomadee.com` : `http://sandbox-api.lomadee.com`
+    this.apiUrl = `https://api.lomadee.com`
     this.sourceId = sourceId
     this.apiClient = axios.create({
       baseURL: this.apiUrl
