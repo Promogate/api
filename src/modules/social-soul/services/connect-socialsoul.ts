@@ -37,7 +37,7 @@ export class ConnectSocialsoulService {
     this.apiUrl = SOCIALSOUL_API_URL
     this.sourceId = sourceId
     this.apiClient = axios.create({
-      baseURL: 'https://api.lomadee.com',
+      baseURL: this.apiUrl,
       headers: {
         "Accept": "*/*, application/json, text/plain",
       }
@@ -55,16 +55,15 @@ export class ConnectSocialsoulService {
   }
 
   async getStores(): Promise<StoresResponse> {
-    try {
-      const { data } = await socialSoulClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
-        params: {
-          sourceId: this.sourceId
-        }
-      })
-      return data
-    } catch (e: any) {
-      throw new Error(e.message)
-    }
+    const { data } = await socialSoulClient.get<StoresResponse>(`/v3/${this.appId}/store/_all`, {
+      params: {
+        sourceId: this.sourceId
+      },
+      validateStatus: function (status) {
+        return status < 500;
+      }
+    })
+    return data
   }
 
   async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
