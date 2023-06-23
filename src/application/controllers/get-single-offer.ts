@@ -26,6 +26,11 @@ export class GetSingleOfferController {
                   store_image: true,
                   social_media: true,
                 }
+              },
+              offers: {
+                where: {
+                  is_featured: true
+                }
               }
             }
           }
