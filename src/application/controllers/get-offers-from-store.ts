@@ -9,11 +9,11 @@ class GetOffersFromStoreController {
     const { store } = req.params as { store: string };
     const service = container.resolve(GetOffersFromStoreService)
     try {
-      console.time('Execution time');
+      console.time(`Execution time - ${store}`);
       const cacheKey = store+':all';
       const cachedOffers = await redis.get(cacheKey);
       if (cachedOffers) {
-        console.timeEnd('Execution time');
+        console.timeEnd(`Execution time - ${store}`);
         return res.status(200).json({
           status: 'success',
           message: 'Ofertas encontradas',
@@ -21,8 +21,8 @@ class GetOffersFromStoreController {
         })
       }
       const result = await service.execute({ storeName: store });
-      console.timeEnd('Execution time');
-      await redis.set(cacheKey, JSON.stringify(result))
+      console.timeEnd(`Execution time - ${store}`);
+      await redis.set(cacheKey, JSON.stringify(result), 'EX', 2678400)
       return res.status(200).json({
         status: 'success',
         message: 'Ofertas encontradas',
