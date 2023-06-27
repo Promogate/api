@@ -1,4 +1,5 @@
 import { GetOffersFromStoreService } from '@/application/services';
+import { redis } from '@/infra/lib';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -6,12 +7,22 @@ import { container } from 'tsyringe';
 class GetOffersFromStoreController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { store } = req.params as { store: string };
-    
     const service = container.resolve(GetOffersFromStoreService)
-
     try {
-      const result = await service.execute({ storeName: store })
-  
+      console.time('Execution time');
+      const cacheKey = store+':all';
+      const cachedOffers = await redis.get(cacheKey);
+      if (cachedOffers) {
+        console.timeEnd('Execution time');
+        return res.status(200).json({
+          status: 'success',
+          message: 'Ofertas encontradas',
+          data: JSON.parse(cachedOffers)
+        })
+      }
+      const result = await service.execute({ storeName: store });
+      console.timeEnd('Execution time');
+      await redis.set(cacheKey, JSON.stringify(result))
       return res.status(200).json({
         status: 'success',
         message: 'Ofertas encontradas',
