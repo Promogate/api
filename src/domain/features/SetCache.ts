@@ -5,7 +5,7 @@ export interface SetCache {
 export namespace SetCache {
   export type input = {
     cacheKey: string;
-    content: string;
+    content: Record<string, unknown>;
   }
 
   export type output = void
