@@ -7,5 +7,5 @@ export namespace GetCache {
     cacheKey: string;
   }
 
-  export type output = Record<string, unknown>;
+  export type output = Record<string, unknown> | undefined;
 }
