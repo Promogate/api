@@ -15,7 +15,7 @@ type Output = UserProfile & {
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class CreateProfileService {
   async execute(input: CreateProfileInput): Promise<Output> {
-    const uniqueStoreName = input.storeName.toLowerCase().replace(/[\s]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const uniqueStoreName = input.storeName.toLowerCase().trim().replace(/[\s]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     const realStoreName = input.storeName;
 
     try {
