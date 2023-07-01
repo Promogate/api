@@ -30,7 +30,7 @@ class CreateOfferController {
       const offer = await prisma.offer.create({
         data: {
           image: body.image,
-          title: body.title,
+          title: body.title.replace(/[%]/g, ''),
           destination_link: body.destination_link,
           description: body.description,
           price: body.price,
