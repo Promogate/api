@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "test": "jest --passWithNoTests --runInBand",
     "test:watch": "yarn test --watch",
-    "test:staged": "yarn test --findRelatedTests"
+    "test:staged": "yarn test --findRelatedTests",
+    "test:coverage": "yarn test --coverage"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
