@@ -1,6 +1,9 @@
 import { SaveUserService } from '@/v2/application/services';
+import { SaveUserRepository } from '@/v2/data/contracts/entities';
 import { SaveUserError } from '@/v2/domain/errors';
 import { User } from '@/v2/domain/models/User';
+
+import { mock } from 'jest-mock-extended';
 
 describe('SaveUserService', function () {
   test('it should create a user entity object', function () {
@@ -9,9 +12,7 @@ describe('SaveUserService', function () {
   });
 
   test('it should call SaveUserRepository with correct params', async function () {
-    const userRepository = {
-      saveUser: jest.fn()
-    };
+    const userRepository = mock<SaveUserRepository>()
     const sut = new SaveUserService(userRepository);
     await sut.execute({
       name: 'any_name',
@@ -29,9 +30,7 @@ describe('SaveUserService', function () {
   });
 
   test('it should return SaveUserError when user email is already registered', async function () {
-    const userRepository = {
-      saveUser: jest.fn()
-    };
+    const userRepository = mock<SaveUserRepository>()
     userRepository.saveUser.mockResolvedValueOnce({
       name: 'any_name',
       email: 'any_email',
