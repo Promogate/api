@@ -1,12 +1,22 @@
 import { SaveUserService } from '@/v2/application/services';
-import { SaveUserRepository } from '@/v2/data/contracts/entities';
+import {
+  FindUserByEmailRepository,
+  SaveUserRepository
+} from '@/v2/data/contracts/entities';
 import { SaveUserError } from '@/v2/domain/errors';
 import { User } from '@/v2/domain/models/User';
 
 import { mock, MockProxy } from 'jest-mock-extended';
 
+
+export class UserAlreadyRegisteredError extends Error {
+  constructor() {
+    super('Usuário já cadastrado')
+  }
+}
+
 describe('SaveUserService', function () {
-  let userRepository: MockProxy<SaveUserRepository>;
+  let userRepository: MockProxy<SaveUserRepository & FindUserByEmailRepository>;
   let sut: SaveUserService;
   const user= {
     name: 'any_name',
