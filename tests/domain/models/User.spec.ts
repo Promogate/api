@@ -3,17 +3,10 @@ import {
   FindUserByEmailRepository,
   SaveUserRepository
 } from '@/v2/data/contracts/entities';
-import { SaveUserError } from '@/v2/domain/errors';
+import { UserAlreadyRegisteredError } from '@/v2/domain/errors';
 import { User } from '@/v2/domain/models/User';
 
 import { mock, MockProxy } from 'jest-mock-extended';
-
-
-export class UserAlreadyRegisteredError extends Error {
-  constructor() {
-    super('Usuário já cadastrado')
-  }
-}
 
 describe('SaveUserService', function () {
   let userRepository: MockProxy<SaveUserRepository & FindUserByEmailRepository>;
@@ -47,13 +40,12 @@ describe('SaveUserService', function () {
   });
 
   test('it should return SaveUserError when user email is already registered', async function () {
-    userRepository.saveUser.mockResolvedValueOnce({
+    userRepository.findByEmail.mockResolvedValueOnce({
+      id: 'any_id',
       name: 'any_name',
       email: 'any_email',
-      password: 'any_password',
       agreeWithPolicies: true
     })
-    const result = await sut.execute(user);
-    expect(result).toEqual(new SaveUserError());
+    await expect(sut.execute(user)).rejects.toThrow(new UserAlreadyRegisteredError());
   });
 })
