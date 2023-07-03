@@ -1,4 +1,5 @@
 export * from './authentication';
+export * from './CheckUniqueStoreName';
 export * from './convet-csv-to-json';
 export * from './create-api-key';
 export * from './create-offer';
