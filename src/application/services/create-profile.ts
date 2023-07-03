@@ -1,7 +1,7 @@
 import { CreateProfileInput } from '@/domain/@types';
 import { prisma } from '@/main/config';
 
-import { ErrorHandler, generateApiKey, generateExpirationDate, HttpStatusCode } from '@/application/utils';
+import { ErrorHandler, generateApiKey, generateExpirationDate, HttpStatusCode, makeUniqueStoreName } from '@/application/utils';
 import { UserProfile } from '@prisma/client';
 import { injectable } from 'tsyringe';
 
@@ -15,7 +15,7 @@ type Output = UserProfile & {
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class CreateProfileService {
   async execute(input: CreateProfileInput): Promise<Output> {
-    const uniqueStoreName = input.storeName.toLowerCase().trim().replace(/[\s]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const uniqueStoreName = makeUniqueStoreName(input.storeName);
     const realStoreName = input.storeName;
 
     try {
