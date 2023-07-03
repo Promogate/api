@@ -29,6 +29,6 @@ export namespace FindUserByEmailRepository {
     id: string;
     name: string;
     email: string;
-    agreeWithPolicies: string;
-  } | UserNotFoundError
+    agreeWithPolicies: boolean;
+  } | undefined | UserNotFoundError
 }
