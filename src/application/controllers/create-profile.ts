@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 
 type Body = {
   storeName: string;
+  storeNameDisplay: string;
   storeImage: string;
 }
 
@@ -15,6 +16,7 @@ class CreateProfileController {
     const service = container.resolve(CreateProfileService);
     const result = await service.execute({ 
       storeName: body.storeName,
+      storeNameDisplay: body.storeNameDisplay,
       storeImage: body.storeImage,
       userId: req.user as string
      })

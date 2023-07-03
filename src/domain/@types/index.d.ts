@@ -1,6 +1,7 @@
 export type CreateProfileInput = { 
   storeImage: string; 
   storeName: string;
+  storeNameDisplay: string;
   userId: string;
 }
 

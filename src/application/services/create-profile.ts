@@ -16,27 +16,23 @@ type Output = UserProfile & {
 export class CreateProfileService {
   async execute(input: CreateProfileInput): Promise<Output> {
     const uniqueStoreName = makeUniqueStoreName(input.storeName);
-    const realStoreName = input.storeName;
-
     try {
       const profileAlreadyExists = await prisma.userProfile.findUnique({
         where: {
           store_name: uniqueStoreName
         }
       });
-  
       if (profileAlreadyExists) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.BAD_REQUEST,
           name: 'UserProfileAlreadyExists',
-          message: `Perfil já existe. (${realStoreName} / ${uniqueStoreName})`
+          message: `Perfil já existe. (${input.storeNameDisplay} / ${uniqueStoreName})`
         })
       }
-  
       const profile = await prisma.userProfile.create({
         data: {
-          store_name: uniqueStoreName,
-          store_name_display: realStoreName,
+          store_name: uniqueStoreName as string,
+          store_name_display: input.storeNameDisplay,
           store_image: input.storeImage,
           user: {
             connect: {
@@ -60,7 +56,6 @@ export class CreateProfileService {
           }
         }
       });
-  
       await prisma.analytics.create({
         data: {
           user_profile: {
@@ -77,7 +72,6 @@ export class CreateProfileService {
       });
   
       return profile
-      
     } catch (error: any) {
       throw new ErrorHandler({
         statusCode: error.statusCode,

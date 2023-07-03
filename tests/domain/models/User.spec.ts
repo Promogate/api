@@ -48,4 +48,16 @@ describe('SaveUserService', function () {
     })
     await expect(sut.execute(user)).rejects.toThrow(new UserAlreadyRegisteredError());
   });
+
+  test('it should call saveUser method when findByEmail returns undefined', async function () {
+    userRepository.findByEmail.mockResolvedValueOnce(undefined);
+    await sut.execute(user)
+    expect(userRepository.saveUser).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password',
+      agreeWithPolicies: true
+    });
+    expect(userRepository.saveUser).toHaveBeenCalledTimes(1);
+  });
 })
