@@ -2,7 +2,7 @@ import { SaveUserService } from '@/v2/application/services';
 import {
   FindUserByEmailRepository,
   SaveUserRepository
-} from '@/v2/data/contracts/entities';
+} from '@/v2/data/contracts/repositories';
 import { UserAlreadyRegisteredError } from '@/v2/domain/errors';
 import { User } from '@/v2/domain/models/User';
 
