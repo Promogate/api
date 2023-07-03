@@ -1,9 +1,24 @@
 import { SaveUserService } from '@/v2/application/services';
 import { SaveUserRepository } from '@/v2/data/contracts/entities';
 import { SaveUserError } from '@/v2/domain/errors';
+import { SaveUser } from '@/v2/domain/features';
 import { User } from '@/v2/domain/models/User';
 
-import { mock } from 'jest-mock-extended';
+import { mock, MockProxy } from 'jest-mock-extended';
+
+type SutTypes = {
+  sut: SaveUser;
+  userRepository: MockProxy<SaveUserRepository>
+}
+
+const makeSut = (): SutTypes => {
+  const userRepository = mock<SaveUserRepository>()
+  const sut = new SaveUserService(userRepository);
+  return {
+    sut,
+    userRepository
+  }
+}
 
 describe('SaveUserService', function () {
   test('it should create a user entity object', function () {
@@ -12,8 +27,7 @@ describe('SaveUserService', function () {
   });
 
   test('it should call SaveUserRepository with correct params', async function () {
-    const userRepository = mock<SaveUserRepository>()
-    const sut = new SaveUserService(userRepository);
+    const { sut, userRepository } = makeSut();
     await sut.execute({
       name: 'any_name',
       email: 'any_email',
@@ -30,14 +44,13 @@ describe('SaveUserService', function () {
   });
 
   test('it should return SaveUserError when user email is already registered', async function () {
-    const userRepository = mock<SaveUserRepository>()
+    const { userRepository, sut } = makeSut();
     userRepository.saveUser.mockResolvedValueOnce({
       name: 'any_name',
       email: 'any_email',
       password: 'any_password',
       agreeWithPolicies: true
     })
-    const sut = new SaveUserService(userRepository);
     const user = await sut.execute({
       name: 'any_name',
       email: 'any_email',
