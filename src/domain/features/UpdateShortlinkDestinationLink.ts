@@ -5,6 +5,7 @@ export interface UpdateShortlinkDestinationLink {
 export namespace UpdateShortlinkDestinationLink {
   export type Input = {
     destinationLink: string;
+    offerId: string;
   }
   export type Ouput = {
     id: string;
