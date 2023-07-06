@@ -62,13 +62,15 @@ class UpdateProfileController {
         profile
       })
     }
-    const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: body.store_name } });
-    if (findStoreByName) {
-      throw new ErrorHandler({
-        name: 'ProfileAlreadyExists',
-        message: 'Identificador único de perfil já está sendo utilizado. Tente outro.',
-        statusCode: HttpStatusCode.FORBIDDEN
-      })
+    if(body.store_name) {
+      const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: body.store_name } });
+      if (findStoreByName) {
+        throw new ErrorHandler({
+          name: 'ProfileAlreadyExists',
+          message: 'Identificador único de perfil já está sendo utilizado. Tente outro.',
+          statusCode: HttpStatusCode.FORBIDDEN
+        })
+      }
     }
     const profile = await prisma.userProfile.update({
       where: {
