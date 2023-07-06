@@ -8,6 +8,7 @@ export namespace CreateShortlink {
     offerId: string;
     storeName: string;
     resourceId: string;
+    destinationLink: string;
   }
 
   export type Output = {

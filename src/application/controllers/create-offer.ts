@@ -71,7 +71,8 @@ class CreateOfferController {
         fullLink: offerUrl,
         offerId: offer.id,
         resourceId: offer.resources_id,
-        storeName: offer.resources.user_profile?.store_name_display as string
+        storeName: offer.resources.user_profile?.store_name_display as string,
+        destinationLink: offer.destination_link
       })
 
       const updatedOffer = await prisma.offer.update({

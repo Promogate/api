@@ -13,7 +13,6 @@ class UpdateOfferController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { offerId } = req.params as UrlParams
     const body = req.body as UpdateOfferParams;
-
     const service = container.resolve(UpdateOfferService);
     const result = await service.execute({
       offerId,
