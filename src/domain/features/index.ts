@@ -24,6 +24,7 @@ export * from './search-by-word';
 export * from './SetCache';
 export * from './update-offer';
 export * from './update-offer-featured-status';
+export * from './UpdateShortlinkDestinationLink';
 export * from './upload-file';
 export * from './user';
 export * from './verify-refresh-token';
