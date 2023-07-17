@@ -16,6 +16,7 @@ import {
   apiKeyRouter,
   authenticationRouter,
   dashboardRouter,
+  paymentRouter,
   resourcesRouter,
   uploadRouter,
   userRouter
@@ -31,6 +32,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(authenticationRouter);
+app.use('/payment', paymentRouter);
 app.use('/resources', resourcesRouter)
 app.use('/dashboard', dashboardRouter);
 app.use('/analytics', analyticsRouter);
