@@ -26,18 +26,16 @@ export class AuthenticationRepository implements
 
   async signUp(input: ISignUpRepo.Input): Promise<ISignUpRepo.Output> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
-
     if (userAlreadyExists) {
       throw new UserAlredyExistsError();
     }
-
     try {
       const user = await prisma.user.create({
         data: {
           name: input.name,
           email: input.email,
           password: input.password,
-          agree_with_policies: input.agree_with_policies
+          agree_with_policies: input.agree_with_policies,
         }, include: {
           user_profile: {
             include: {

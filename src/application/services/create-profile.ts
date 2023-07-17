@@ -53,7 +53,8 @@ export class CreateProfileService {
             select: {
               id: true
             }
-          }
+          },
+          user: true
         }
       });
       await prisma.analytics.create({

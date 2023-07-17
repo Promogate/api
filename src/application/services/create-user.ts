@@ -13,9 +13,7 @@ export class CreateUserService implements CreateUser {
 
   async execute(input: CreateUser.Input): Promise<CreateUser.Output> {
     const hashedPassword = await hash(input.password, 10);
-
     const user = await this.authenticationRepository.signUp({...input, password: hashedPassword});
-
     const token = sign({ id: user.id, role: user.user_profile?.role }, TOKEN_SECRET, { expiresIn: '1d' });
 
     return {
