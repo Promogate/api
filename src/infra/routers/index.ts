@@ -5,4 +5,4 @@ export * from './dashboard';
 export * from './payment';
 export * from './resources';
 export * from './upload';
-export * from './user-router';
+export * from './user';
