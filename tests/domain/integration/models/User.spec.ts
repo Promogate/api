@@ -4,7 +4,7 @@ import {
   SaveUserRepository
 } from '@/v2/data/contracts/repositories';
 import { UserAlreadyRegisteredError } from '@/v2/domain/errors';
-import { User } from '@/v2/domain/models/User';
+import User from '@/v2/domain/models/User';
 
 import { mock, MockProxy } from 'jest-mock-extended';
 
@@ -24,7 +24,7 @@ describe('SaveUserService', function () {
   })
 
   test('it should create a user entity object', function () {
-    const sut = new User('any_name', 'any_email', 'any_password', true);
+    const sut = new User(user);
     expect(sut).toEqual({ name: 'any_name', email: 'any_email', password: 'any_password', agreeWithPolicies: true })
   });
 

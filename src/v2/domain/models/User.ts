@@ -1,15 +1,25 @@
-class User {
-  name: string;
-  email: string;
-  password: string;
-  agreeWithPolicies: boolean;
 
-  constructor(name: string, email: string, password: string, agreeWithPolicies: boolean) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.agreeWithPolicies = agreeWithPolicies
+export default class User {
+  name: string
+  email: string
+  password: string
+  agreeWithPolicies: boolean
+
+  constructor(input: Input) {
+    this.name = input.name
+    this.email = input.email
+    this.password = input.password
+    this.agreeWithPolicies = input.agreeWithPolicies
+  }
+
+  static create (input: Input) {
+    return new User(input)
   }
 }
 
-export { User };
+type Input = {
+  name: string,
+  email: string,
+  password: string,
+  agreeWithPolicies: boolean
+}

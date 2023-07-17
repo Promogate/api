@@ -1,27 +1,8 @@
-class User {
-  name: string
-  email: string
-  password: string
-  agreeWithPolicies: boolean
-
-  constructor(input: Input) {
-    this.name = input.name
-    this.email = input.email
-    this.password = input.password
-    this.agreeWithPolicies = input.agreeWithPolicies
-  }
-}
-
-type Input = {
-  name: string,
-  email: string,
-  password: string,
-  agreeWithPolicies: boolean
-}
+import User from '@/v2/domain/models/User';
 
 describe('User', () => {
   test('should create a new User', () => {
-    const sut = new User({
+    const sut = User.create({
       name: 'any_name',
       email: 'any_email',
       password: 'any_password',
@@ -32,7 +13,6 @@ describe('User', () => {
     expect(sut.password).toBe('any_password');
     expect(sut.agreeWithPolicies).toBe(true);
   })
-
 })
 
-export { }
+export { };
