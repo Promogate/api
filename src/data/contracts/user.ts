@@ -1,5 +1,21 @@
 import { Resources, User, UserProfile } from '@prisma/client'
 
+export interface SaveUserRepository {
+  save(input: SaveUserRepository.Input): Promise<SaveUserRepository.Ouput>
+}
+
+export namespace SaveUserRepository {
+  export type Input = {
+    name: string
+    email: string
+    password: string
+    agreeWithPolicies: boolean
+  }
+  export type Ouput = {
+    id: string
+  }
+}
+
 export interface CreateUserRepository {
   create: (input: CreateUserRepository.Input) => Promise<CreateUserRepository.Ouput>
 }

@@ -1,27 +1,14 @@
+import { SaveUserRepository } from '@/data/contracts'
+import { CreateUserError } from '@/domain/error'
 import { CreateUser } from '@/domain/features/CreateUser'
 import { mock, MockProxy } from 'jest-mock-extended'
 
 class CreateUserUseCase implements CreateUser {
   constructor(private readonly userRepository: SaveUserRepository) { }
 
-  async execute(input: CreateUser.Input): Promise<void> {
+  async execute(input: CreateUser.Input): Promise<CreateUserError> {
     await this.userRepository.save(input)
-  }
-}
-
-interface SaveUserRepository {
-  save(input: SaveUserRepository.Input): Promise<SaveUserRepository.Ouput>
-}
-
-namespace SaveUserRepository {
-  export type Input = {
-    name: string
-    email: string
-    password: string
-    agreeWithPolicies: boolean
-  }
-  export type Ouput = {
-    id: string
+    return new CreateUserError()
   }
 }
 
@@ -43,6 +30,11 @@ describe('CreateUserUseCase', () => {
       password: 'any_pass',
       agreeWithPolicies: true,
     })
+  })
+
+  test('it should CreateUserUseCase throws CreateUserError', async () => {
+    const result = await sut.execute(input)
+    expect(result).toEqual(new CreateUserError)
   })
 })
 

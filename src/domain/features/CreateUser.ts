@@ -1,3 +1,5 @@
+import { CreateUserError } from '@/domain/error'
+
 export interface CreateUser {
   execute(input: CreateUser.Input): Promise<CreateUser.Ouput>
 }
@@ -10,5 +12,8 @@ export namespace CreateUser {
     agreeWithPolicies: boolean
   }
 
-  export type Ouput = void
+  export type Ouput = {
+    token: string,
+    id: string
+  } | CreateUserError
 }
