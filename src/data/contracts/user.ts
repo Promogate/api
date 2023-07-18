@@ -11,7 +11,7 @@ export namespace SaveUserRepository {
     password: string
     agreeWithPolicies: boolean
   }
-  export type Ouput = {
+  export type Ouput = undefined | {
     id: string
   }
 }

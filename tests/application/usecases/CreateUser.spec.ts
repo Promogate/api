@@ -10,6 +10,7 @@ describe('CreateUserUseCase', () => {
 
   beforeEach(() => {
     repository = mock()
+    repository.save.mockResolvedValue({ id: 'any_id' })
     sut = new CreateUserUseCase(repository)
   })
 
@@ -21,6 +22,7 @@ describe('CreateUserUseCase', () => {
       password: 'any_pass',
       agreeWithPolicies: true,
     })
+    expect(repository.save).toHaveBeenCalledTimes(1)
   })
 
   test('it should CreateUserUseCase throws CreateUserError', async () => {
