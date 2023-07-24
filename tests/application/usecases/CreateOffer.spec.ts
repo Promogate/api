@@ -1,4 +1,5 @@
 import { SaveOfferRepository } from '@/data/contracts';
+import { CreateShortlinkError } from '@/domain/error';
 import { CreateShortlink } from '@/domain/features';
 import { mock, MockProxy } from 'jest-mock-extended';
 
@@ -43,13 +44,6 @@ class CreateOfferUseCase implements CreateOffer {
     if (!shortLink) throw new CreateShortlinkError()
 
     await this.offerRepository.saveOffer({...input, shortLink: shortLink.shortLink })
-  }
-}
-
-export class CreateShortlinkError extends Error {
-  constructor() {
-    super('Falha ao criar um shortlink ao tentar criar uma oferta')
-    this.name = 'CreateShortlinkError'
   }
 }
 

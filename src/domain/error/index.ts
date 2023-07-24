@@ -1,5 +1,6 @@
 export * from './authentication-failed';
 export * from './create-user-failed';
+export * from './CreateShortlink';
 export * from './CreateUserError';
 export * from './refresh-token-not-found';
 export * from './save-refresh-token';
