@@ -1,70 +1,8 @@
+import { CreateOfferUseCase } from '@/application/usecases';
 import { SaveOfferRepository } from '@/data/contracts';
 import { CreateOfferError, CreateShortlinkError } from '@/domain/error';
 import { CreateShortlink } from '@/domain/features';
 import { mock, MockProxy } from 'jest-mock-extended';
-
-export interface CreateOffer {
-  execute(input: CreateOffer.Input): Promise<CreateOffer.Output>
-}
-
-export namespace CreateOffer {
-  export type Input = {
-    resourceId: string;
-    image: string;
-    title: string;
-    oldPrice?: string;
-    price: string;
-    destinationLink: string;
-    storeImage: string;
-    storeName: string;
-    description?: string;
-    expirationDate: string;
-    isFeatured?: boolean;
-    isOnShowcase?: boolean;
-    isFreeShipping?: boolean;
-  }
-  export type Output = void | CreateShortlinkError
-}
-
-class CreateOfferUseCase implements CreateOffer {
-  constructor(
-    private readonly offerRepository: SaveOfferRepository,
-    private readonly shortlinkService: CreateShortlink
-  ) { }
-
-  async execute(input: CreateOffer.Input): Promise<void> {
-    const shortLink = await this.shortlinkService.execute({
-      destinationLink: input.destinationLink,
-      offerId: '',
-      fullLink: '',
-      resourceId: input.resourceId,
-      storeName: input.storeName
-    })
-    if (!shortLink) throw new CreateShortlinkError()
-    try {
-      await this.offerRepository.saveOffer({ ...input, shortLink: shortLink.shortLink })
-    } catch (error: any) {
-      throw new CreateOfferError()
-    }
-  }
-}
-
-type Input = {
-  resourceId: string;
-  image: string;
-  title: string;
-  oldPrice?: string;
-  price: string;
-  destinationLink: string;
-  storeImage: string;
-  storeName: string;
-  description?: string;
-  expirationDate: string;
-  shortLink: string
-  isFeatured?: boolean;
-  isOnShowcase?: boolean;
-  isFreeShipping?: boolean;
-}
 
 describe('CreateOffer', () => {
   let offerRepository: MockProxy<SaveOfferRepository>
