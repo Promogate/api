@@ -18,15 +18,12 @@ type CreateOfferBody = {
   is_on_showcase: boolean | undefined;
   is_free_shipping: boolean | undefined;
 }
-/*eslint-disable @typescript-eslint/no-explicit-any*/
+
 class CreateOfferController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { resourceId } = req.params as { resourceId: string };
-
     try {
-
       const body = req.body as CreateOfferBody;
-
       const offer = await prisma.offer.create({
         data: {
           image: body.image,

@@ -12,10 +12,15 @@ export namespace SaveOfferRepository {
     title: string;
     oldPrice?: string;
     price: string;
-    destination_link: string;
-    store_image: string;
-    expiration_date: string;
-    short_link: string;
+    destinationLink: string;
+    storeImage: string;
+    storeName: string;
+    description?: string;
+    expirationDate: string;
+    shortLink: string;
+    isFeatured?: boolean;
+    isOnShowcase?: boolean;
+    isFreeShipping?: boolean;
   }
 
   export type Output = void
