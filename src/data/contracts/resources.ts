@@ -151,3 +151,17 @@ export namespace IGetStoreDataRepo {
 
   export type Output = any
 }
+
+export interface GetNumberOfOffersRepository {
+  getNumberOfOffers(input: GetNumberOfOffersRepository.Input): Promise<GetNumberOfOffersRepository.Output>
+}
+
+export namespace GetNumberOfOffersRepository {
+  export type Input = {
+    resourceId: string
+  }
+  export type Output = {
+    offersCount: number
+    role: string
+  }
+}
