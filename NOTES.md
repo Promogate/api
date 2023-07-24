@@ -1,1 +1,1 @@
-- Use dynamic object creation to build multi offer creation query in a single csv mapping;
+[] - for offers, just need destinationLinks

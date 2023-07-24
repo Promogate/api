@@ -1,4 +1,5 @@
 import { SaveOfferRepository } from '@/data/contracts';
+import { CreateShortlink } from '@/domain/features';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 export interface CreateOffer {
@@ -22,19 +23,56 @@ export namespace CreateOffer {
     isOnShowcase?: boolean;
     isFreeShipping?: boolean;
   }
-  export type Output = void
+  export type Output = void | CreateShortlinkError
 }
 
 class CreateOfferUseCase implements CreateOffer {
-  constructor(private readonly offerRepository: SaveOfferRepository) {}
+  constructor(
+    private readonly offerRepository: SaveOfferRepository,
+    private readonly shortlinkService: CreateShortlink
+  ) { }
 
   async execute(input: CreateOffer.Input): Promise<void> {
-    await this.offerRepository.saveOffer(input)
+    const shortLink = await this.shortlinkService.execute({ 
+      destinationLink: input.destinationLink,
+      offerId: '',
+      fullLink: '',
+      resourceId: input.resourceId,
+      storeName: input.storeName
+    })
+    if (!shortLink) throw new CreateShortlinkError()
+
+    await this.offerRepository.saveOffer({...input, shortLink: shortLink.shortLink })
   }
+}
+
+export class CreateShortlinkError extends Error {
+  constructor() {
+    super('Falha ao criar um shortlink ao tentar criar uma oferta')
+    this.name = 'CreateShortlinkError'
+  }
+}
+
+type Input = {
+  resourceId: string;
+  image: string;
+  title: string;
+  oldPrice?: string;
+  price: string;
+  destinationLink: string;
+  storeImage: string;
+  storeName: string;
+  description?: string;
+  expirationDate: string;
+  shortLink: string
+  isFeatured?: boolean;
+  isOnShowcase?: boolean;
+  isFreeShipping?: boolean;
 }
 
 describe('CreateOffer', () => {
   let offerRepository: MockProxy<SaveOfferRepository>
+  let shortlinkUseCase: MockProxy<CreateShortlink>
   let sut: CreateOfferUseCase
   const input = {
     resourceId: 'any_id',
@@ -55,10 +93,21 @@ describe('CreateOffer', () => {
 
   beforeEach(() => {
     offerRepository = mock()
-    sut = new CreateOfferUseCase(offerRepository)
+    shortlinkUseCase = mock()
+    sut = new CreateOfferUseCase(offerRepository, shortlinkUseCase)
   })
 
   test('it should call CreateOfferUseCase with correct params', async () => {
+    shortlinkUseCase.execute.mockResolvedValue({
+      id: 'any_id',
+      code: 'any_code',
+      createdAt: 'any_date',
+      fullLink: 'any_link',
+      offerId: 'any_id',
+      resourceId: 'any_id',
+      shortLink: 'any_link',
+      storeName: 'any_name'
+    })
     await sut.execute(input)
     expect(offerRepository.saveOffer).toHaveBeenCalledWith({
       resourceId: 'any_id',
@@ -76,6 +125,11 @@ describe('CreateOffer', () => {
       isOnShowcase: false,
       isFreeShipping: false,
     })
+  })
+
+  test('it should throw CreateShortlinkError if shortlink usecase returns undefined', async () => {
+    shortlinkUseCase.execute.mockResolvedValueOnce(undefined)
+    await expect(sut.execute(input)).rejects.toThrow(new CreateShortlinkError)
   })
 })
 
