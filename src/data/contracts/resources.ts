@@ -1,6 +1,18 @@
 import { Offer } from '@prisma/client';
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
+export interface FindStoreNameByResourceIdRepository {
+  findStoreNameByResourceId(input:FindStoreNameByResourceIdRepository.Input): Promise<FindStoreNameByResourceIdRepository.Output>
+}
+
+export namespace FindStoreNameByResourceIdRepository {
+  export type Input = {
+    resourceId: string
+  }
+  export type Output = {
+    storeName: string
+  }
+}
+
 export interface SaveOfferRepository {
   saveOffer: (input: SaveOfferRepository.Input) => Promise<SaveOfferRepository.Output>
 }
