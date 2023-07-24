@@ -19,7 +19,6 @@ export namespace CreateOffer {
     storeName: string;
     description?: string;
     expirationDate: string;
-    shortLink: string
     isFeatured?: boolean;
     isOnShowcase?: boolean;
     isFreeShipping?: boolean;
@@ -42,7 +41,6 @@ class CreateOfferUseCase implements CreateOffer {
       storeName: input.storeName
     })
     if (!shortLink) throw new CreateShortlinkError()
-
     try {
       await this.offerRepository.saveOffer({ ...input, shortLink: shortLink.shortLink })
     } catch (error: any) {
@@ -84,10 +82,19 @@ describe('CreateOffer', () => {
     storeName: 'any_name',
     description: 'any_description',
     expirationDate: 'any_date',
-    shortLink: 'any_link',
     isFeatured: false,
     isOnShowcase: false,
     isFreeShipping: false,
+  }
+  const shortlinkOuput = {
+    id: 'any_id',
+    code: 'any_code',
+    createdAt: 'any_date',
+    fullLink: 'any_link',
+    offerId: 'any_id',
+    resourceId: 'any_id',
+    shortLink: 'any_link',
+    storeName: 'any_name'
   }
 
   beforeEach(() => {
@@ -97,16 +104,7 @@ describe('CreateOffer', () => {
   })
 
   test('it should call CreateOfferUseCase with correct params', async () => {
-    shortlinkUseCase.execute.mockResolvedValue({
-      id: 'any_id',
-      code: 'any_code',
-      createdAt: 'any_date',
-      fullLink: 'any_link',
-      offerId: 'any_id',
-      resourceId: 'any_id',
-      shortLink: 'any_link',
-      storeName: 'any_name'
-    })
+    shortlinkUseCase.execute.mockResolvedValue(shortlinkOuput)
     await sut.execute(input)
     expect(offerRepository.saveOffer).toHaveBeenCalledWith({
       resourceId: 'any_id',
