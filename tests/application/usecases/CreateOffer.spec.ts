@@ -49,7 +49,6 @@ class CreateOfferUseCase implements CreateOffer {
   }
 }
 
-
 type Input = {
   resourceId: string;
   image: string;
@@ -127,6 +126,12 @@ describe('CreateOffer', () => {
   test('it should throw CreateShortlinkError if shortlink usecase returns undefined', async () => {
     shortlinkUseCase.execute.mockResolvedValueOnce(undefined)
     await expect(sut.execute(input)).rejects.toThrow(new CreateShortlinkError)
+  })
+
+  test('it should throw CreateOfferError if offerRepository save method fails', async () => {
+    shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput)
+    offerRepository.saveOffer.mockRejectedValue({})
+    await expect(sut.execute(input)).rejects.toThrow(new CreateOfferError)
   })
 })
 
