@@ -20,5 +20,5 @@ export namespace CreateShortlink {
     fullLink: string;
     shortLink: string;
     createdAt: string;
-  }
+  } | undefined
 }
