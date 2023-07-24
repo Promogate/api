@@ -1,5 +1,5 @@
 import { SaveOfferRepository } from '@/data/contracts';
-import { CreateShortlinkError } from '@/domain/error';
+import { CreateOfferError, CreateShortlinkError } from '@/domain/error';
 import { CreateShortlink } from '@/domain/features';
 import { mock, MockProxy } from 'jest-mock-extended';
 
@@ -34,7 +34,7 @@ class CreateOfferUseCase implements CreateOffer {
   ) { }
 
   async execute(input: CreateOffer.Input): Promise<void> {
-    const shortLink = await this.shortlinkService.execute({ 
+    const shortLink = await this.shortlinkService.execute({
       destinationLink: input.destinationLink,
       offerId: '',
       fullLink: '',
@@ -43,9 +43,14 @@ class CreateOfferUseCase implements CreateOffer {
     })
     if (!shortLink) throw new CreateShortlinkError()
 
-    await this.offerRepository.saveOffer({...input, shortLink: shortLink.shortLink })
+    try {
+      await this.offerRepository.saveOffer({ ...input, shortLink: shortLink.shortLink })
+    } catch (error: any) {
+      throw new CreateOfferError()
+    }
   }
 }
+
 
 type Input = {
   resourceId: string;
