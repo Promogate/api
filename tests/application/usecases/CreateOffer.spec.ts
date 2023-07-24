@@ -1,11 +1,11 @@
 import { CreateOfferUseCase } from '@/application/usecases';
-import { SaveOfferRepository } from '@/data/contracts';
-import { CreateOfferError, CreateShortlinkError } from '@/domain/error';
+import { GetNumberOfOffersRepository, SaveOfferRepository } from '@/data/contracts';
+import { CreateOfferError, CreateShortlinkError, OfferLimitError } from '@/domain/error';
 import { CreateShortlink } from '@/domain/features';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('CreateOffer', () => {
-  let offerRepository: MockProxy<SaveOfferRepository>
+  let offerRepository: MockProxy<SaveOfferRepository & GetNumberOfOffersRepository>
   let shortlinkUseCase: MockProxy<CreateShortlink>
   let sut: CreateOfferUseCase
   const input = {
@@ -33,6 +33,7 @@ describe('CreateOffer', () => {
     shortLink: 'any_link',
     storeName: 'any_name'
   }
+  const getNumberOfOffersOuput = { offersCount: 49, role: 'FREE' }
 
   beforeEach(() => {
     offerRepository = mock()
@@ -41,6 +42,7 @@ describe('CreateOffer', () => {
   })
 
   test('it should call CreateOfferUseCase with correct params', async () => {
+    offerRepository.getNumberOfOffers.mockResolvedValue(getNumberOfOffersOuput)
     shortlinkUseCase.execute.mockResolvedValue(shortlinkOuput)
     await sut.execute(input)
     expect(offerRepository.saveOffer).toHaveBeenCalledWith({
@@ -62,14 +64,22 @@ describe('CreateOffer', () => {
   })
 
   test('it should throw CreateShortlinkError if shortlink usecase returns undefined', async () => {
+    offerRepository.getNumberOfOffers.mockResolvedValue(getNumberOfOffersOuput)
     shortlinkUseCase.execute.mockResolvedValueOnce(undefined)
     await expect(sut.execute(input)).rejects.toThrow(new CreateShortlinkError)
   })
 
   test('it should throw CreateOfferError if offerRepository save method fails', async () => {
+    offerRepository.getNumberOfOffers.mockResolvedValue(getNumberOfOffersOuput)
     shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput)
     offerRepository.saveOffer.mockRejectedValue({})
     await expect(sut.execute(input)).rejects.toThrow(new CreateOfferError)
+  })
+
+  test('it should throw OfferLimitError if resourceRepository checkOfferNumber method', async () => {
+    offerRepository.getNumberOfOffers.mockResolvedValueOnce({ offersCount: 50, role: 'FREE' })
+    shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput)
+    await expect(sut.execute(input)).rejects.toThrow(new OfferLimitError())
   })
 })
 
