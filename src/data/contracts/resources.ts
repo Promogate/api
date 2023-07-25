@@ -100,7 +100,7 @@ export namespace FindOfferByIdRepository {
     store_image: string | null,
     expiration_date: string | null,
     resourceId: string
-  }
+  } | undefined
 }
 
 export interface FindOffersByAPIKeyRepository {
