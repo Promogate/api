@@ -5,7 +5,6 @@ import { Request, Response, Router } from 'express';
 
 const analyticsRouter = Router();
 
-/*eslint-disable  @typescript-eslint/no-explicit-any*/
 analyticsRouter.get('/redirect/offer/:id', async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
 

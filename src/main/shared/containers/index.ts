@@ -11,7 +11,6 @@ import {
   ISignInRepo,
   ISignUpRepo,
   ListOffersRepository,
-  SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
 import {
@@ -32,7 +31,6 @@ container.registerSingleton<
 >('UserRepository', UserRepository);
 
 container.registerSingleton<
-  SaveOfferRepository &
   ListOffersRepository &
   FindOfferByIdRepository &
   SaveOffersFromCSVRepository &
