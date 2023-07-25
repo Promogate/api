@@ -28,3 +28,4 @@ export * from './UpdateShortlinkDestinationLink';
 export * from './upload-file';
 export * from './user';
 export * from './verify-refresh-token';
+export * from './RedirectByOfferId'
