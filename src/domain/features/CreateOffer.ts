@@ -12,10 +12,10 @@ export namespace CreateOffer {
     oldPrice?: string;
     price: string;
     destinationLink: string;
-    storeImage: string;
+    storeImage?: string;
     storeName: string;
     description?: string;
-    expirationDate: string;
+    expirationDate?: string;
     isFeatured?: boolean;
     isOnShowcase?: boolean;
     isFreeShipping?: boolean;
