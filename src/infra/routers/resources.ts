@@ -21,6 +21,17 @@ import { Router } from 'express';
 
 const resourcesRouter = Router();
 
+resourcesRouter.get('/offer', async (req, res) => {
+  const { 'x-short-link': shortlink } = req.headers as  { 'x-short-link': string }
+  const foundOffer = await prisma.offer.findFirst({
+    where: {
+      short_link: shortlink
+    }
+  })
+
+  return res.status(200).json(foundOffer)
+})
+
 resourcesRouter.get('/stores', getStoresNamesController.handle);
 
 resourcesRouter.get('/offers/:store', getOffersFromStoreController.handle);
@@ -52,16 +63,5 @@ resourcesRouter.put('/offer/:offerId/update/featured', updateFeaturedOfferStatus
 resourcesRouter.put('/:resourcesId/offer/:offerId/update/category', connectCategoryToOfferController.handle);
 
 resourcesRouter.delete('/offer/:id', deleteOfferController.handle);
-
-resourcesRouter.get('/offer', async (req, res) => {
-  const { 'x-short-link': shortlink } = req.headers as  { 'x-short-link': string }
-  const foundOffer = await prisma.offer.findFirst({
-    where: {
-      short_link: shortlink
-    }
-  })
-
-  return res.status(200).json(foundOffer)
-})
 
 export { resourcesRouter };
