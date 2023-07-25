@@ -12,7 +12,6 @@ import {
   getStoresNamesController,
   updateFeaturedOfferStatusController,
   updateOfferController,
-  updateShortlinkController,
   updateShowcaseOfferStatusController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
@@ -33,7 +32,7 @@ resourcesRouter.use(verifyToken);
 
 resourcesRouter.get('/social-soul/stores', getStoresController.handle);
 
-resourcesRouter.post('/:resourceId/offer/create', createOfferController.handle);
+resourcesRouter.post('/:resourceId/offer/create', async (req, res) => await createOfferController.handle(req, res));
 
 resourcesRouter.post('/category/:categoryId/subcategory/create', createSubcategoryController.handle);
 
@@ -44,8 +43,6 @@ resourcesRouter.get('/:resourcesId/offers', getResourceOffersController.handle);
 resourcesRouter.get('/:resourceId/categories', getResourceCategoriesController.handle);
 
 resourcesRouter.put('/:resourceId/offer/:offerId/update', updateOfferController.handle);
-
-resourcesRouter.put('/offer/:offerId/shortlink', updateShortlinkController.handle);
 
 resourcesRouter.put('/offer/:offerId/update/showcase', updateShowcaseOfferStatusController.handle);
 
