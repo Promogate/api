@@ -15,6 +15,7 @@ import {
   updateShowcaseOfferStatusController
 } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
+import { prisma } from '@/main/config';
 import { getStoresController } from '@/modules/social-soul/controllers';
 import { Router } from 'express';
 
@@ -52,5 +53,15 @@ resourcesRouter.put('/:resourcesId/offer/:offerId/update/category', connectCateg
 
 resourcesRouter.delete('/offer/:id', deleteOfferController.handle);
 
+resourcesRouter.get('/offer', async (req, res) => {
+  const { 'x-short-link': shortlink } = req.headers as  { 'x-short-link': string }
+  const foundOffer = await prisma.offer.findFirst({
+    where: {
+      short_link: shortlink
+    }
+  })
+
+  return res.status(200).json(foundOffer)
+})
 
 export { resourcesRouter };
