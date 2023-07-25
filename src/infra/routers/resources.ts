@@ -29,7 +29,11 @@ resourcesRouter.get('/offer', async (req, res) => {
     }
   })
 
-  return res.status(200).json(foundOffer)
+  return res.status(200).json({
+    status: 'success',
+    message: 'Offer found',
+    offer: foundOffer
+  })
 })
 
 resourcesRouter.get('/stores', getStoresNamesController.handle);
