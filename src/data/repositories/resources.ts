@@ -1,6 +1,10 @@
 import { makeSkipPointer } from '@/application/utils';
 import {
-  FindOfferByIdRepository, IGetShowcaseOffersRepo, IGetStoreDataRepo, ListOffersRepository,
+  FindOfferByIdRepository,
+  GetNumberOfOffersRepository,
+  IGetShowcaseOffersRepo,
+  IGetStoreDataRepo,
+  ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
@@ -13,7 +17,35 @@ export class ResourcesRepository implements
   FindOfferByIdRepository,
   SaveOffersFromCSVRepository,
   IGetShowcaseOffersRepo,
-  IGetStoreDataRepo {
+  IGetStoreDataRepo,
+  GetNumberOfOffersRepository {
+
+  async getNumberOfOffers(input: GetNumberOfOffersRepository.Input): Promise<GetNumberOfOffersRepository.Output> {
+    const result = await prisma.resources.findFirst({
+      where: {
+        id: input.resourceId,
+      },
+      include: {
+        user_profile: {
+          select: {
+            role: true
+          }
+        },
+        _count: {
+          select: {
+            offers: true
+          }
+        }
+      }
+    })
+
+    if (!result || !result.user_profile) return
+
+    return {
+      offersCount: result._count.offers,
+      role: result.user_profile.role
+    }
+  }
 
   async getStore(input: IGetStoreDataRepo.Input): Promise<any> {
     const store = await prisma.userProfile.findUnique({
@@ -50,9 +82,9 @@ export class ResourcesRepository implements
           title: input.title,
           old_price: input.oldPrice,
           price: input.price,
-          store_image: input.store_image,
-          destination_link: input.destination_link,
-          expiration_date: input.expiration_date,
+          store_image: input.storeImage,
+          destination_link: input.destinationLink,
+          expiration_date: input.expirationDate,
           store_name: 'Promogate', //TODO: Need to change
           short_link: 'pgate.app', //TODO: Need to change
         }

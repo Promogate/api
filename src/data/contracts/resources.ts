@@ -14,7 +14,7 @@ export namespace FindStoreNameByResourceIdRepository {
 }
 
 export interface SaveOfferRepository {
-  saveOffer: (input: SaveOfferRepository.Input) => Promise<SaveOfferRepository.Output>
+  saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output>
 }
 
 export namespace SaveOfferRepository {
@@ -25,10 +25,10 @@ export namespace SaveOfferRepository {
     oldPrice?: string;
     price: string;
     destinationLink: string;
-    storeImage: string;
+    storeImage?: string;
     storeName: string;
     description?: string;
-    expirationDate: string;
+    expirationDate?: string;
     shortLink: string;
     isFeatured?: boolean;
     isOnShowcase?: boolean;
@@ -163,5 +163,5 @@ export namespace GetNumberOfOffersRepository {
   export type Output = {
     offersCount: number
     role: string
-  }
+  } | undefined
 }
