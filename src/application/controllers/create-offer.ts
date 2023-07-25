@@ -1,100 +1,46 @@
 import { CreateShortlinkService } from '@/application/services';
+import { ErrorHandler, HttpStatusCode } from '@/application/utils';
+import { ResourcesRepository } from '@/data/repositories/prisma';
+import { CreateOffer } from '@/domain/features';
 import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
 import { Response } from 'express';
-import { container } from 'tsyringe';
-
-type CreateOfferBody = {
-  image: string;
-  title: string;
-  old_price: string | null;
-  price: string;
-  destination_link: string;
-  store_image: string | null;
-  store_name: string;
-  description: string | null;
-  expiration_date: string | null;
-  is_featured: boolean | undefined;
-  is_on_showcase: boolean | undefined;
-  is_free_shipping: boolean | undefined;
-}
+import { CreateOfferUseCase } from '../usecases';
 
 class CreateOfferController {
+  constructor(private readonly createOfferUseCase: CreateOffer) {}
+
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { resourceId } = req.params as { resourceId: string };
+    const body = req.body as Input
     try {
-      const body = req.body as CreateOfferBody;
-      const offer = await prisma.offer.create({
-        data: {
-          image: body.image,
-          title: body.title.replace(/[%]/g, ''),
-          destination_link: body.destination_link,
-          description: body.description,
-          price: body.price,
-          old_price: body.old_price,
-          store_name: body.store_name,
-          store_image: body.store_image,
-          is_featured: body.is_featured,
-          is_free_shipping: body.is_free_shipping,
-          is_on_showcase: body.is_on_showcase,
-          expiration_date: body.expiration_date,
-          short_link: 'pgate.app',
-          resources: {
-            connect: {
-              id: resourceId
-            }
-          }
-        },
-        include: {
-          resources: {
-            include: {
-              user_profile: {
-                select: {
-                  store_name: true,
-                  store_name_display: true,
-                }
-              }
-            }
-          }
-        }
-      })
-
-      const productName = offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s/]/g, '-');
-    
-      const offerUrl = `https://promogate.app/${offer.resources.user_profile?.store_name}/produto/${productName}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`
-
-      const createShorlinkService = container.resolve(CreateShortlinkService);
-      const { shortLink } = await createShorlinkService.execute({ 
-        fullLink: offerUrl,
-        offerId: offer.id,
-        resourceId: offer.resources_id,
-        storeName: offer.resources.user_profile?.store_name_display as string,
-        destinationLink: offer.destination_link
-      })
-
-      const updatedOffer = await prisma.offer.update({
-        where: {
-          id: offer.id,
-        },
-        data: {
-          short_link: shortLink
-        }
-      })
-
-      return res.status(201).json({
-        status: 'success',
-        message: 'Oferta criada com sucesso!',
-        offer: updatedOffer
-      })
-
+      await this.createOfferUseCase.execute({...body, resourceId })
+      return res.status(HttpStatusCode.OK).json({ message: 'Oferta adicionada com sucesso' })
     } catch (error: any) {
-      return res.status(400).json({
-        status: 'error',
-        error: error.message,
-        message: 'Algo deu erro ao tentar criar uma nova oferta'
+      throw new ErrorHandler({
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        name: error.name,
+        message: error.stack
       })
     }
   }
 }
 
-export const createOfferController = new CreateOfferController()
+type Input = {
+  image: string;
+  title: string;
+  oldPrice?: string;
+  price: string;
+  destinationLink: string;
+  storeImage?: string;
+  storeName: string;
+  description?: string;
+  expirationDate?: string;
+  isFeatured?: boolean;
+  isOnShowcase?: boolean;
+  isFreeShipping?: boolean;
+}
+
+const resourcesRepository = new ResourcesRepository()
+const shortLinkUseCase = new CreateShortlinkService()
+const createOfferUseCase = new CreateOfferUseCase(resourcesRepository, shortLinkUseCase)
+export const createOfferController = new CreateOfferController(createOfferUseCase)
