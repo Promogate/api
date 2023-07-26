@@ -3,15 +3,12 @@ import {
   SaveOffersFromCSVRepository
 } from '@/data/contracts';
 import { ICSVFile, UploadOffersFromCSV } from '@/domain/features';
-import { container, inject, injectable } from 'tsyringe';
+import { container } from 'tsyringe';
 import { ConvertCSVToJSONService } from './convert-csv-to-json';
 
-@injectable()
 export class UploadOffersFromCSVService implements UploadOffersFromCSV {
   constructor(
-    @inject('ResourcesRepository')
     private readonly resourcesRepo: SaveOffersFromCSVRepository,
-    @inject('UserRepository')
     private readonly userRepo: FindUserByIdIncludingResourcesRepository
   ) { }
 

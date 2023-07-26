@@ -3,16 +3,10 @@ import { VerifiedTokenRequest } from '@/domain/models';
 import { Response } from 'express';
 import { container } from 'tsyringe';
 
-type Body = {
-  storeName: string;
-  storeNameDisplay: string;
-  storeImage: string;
-}
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 class CreateProfileController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
-    const body = req.body as Body;
+    const body = req.body as Input;
     const service = container.resolve(CreateProfileService);
     const result = await service.execute({ 
       storeName: body.storeName,
@@ -27,6 +21,12 @@ class CreateProfileController {
       data: result
      })
   }
+}
+
+type Input = {
+  storeName: string;
+  storeNameDisplay: string;
+  storeImage: string;
 }
 
 export const createProfileController = new CreateProfileController();

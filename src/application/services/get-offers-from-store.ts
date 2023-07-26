@@ -1,6 +1,5 @@
 import { prisma } from '@/main/config'
 import { Offer, UserProfile } from '@prisma/client'
-import { injectable } from 'tsyringe'
 
 export interface IGetOffersFromStore {
   execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output>
@@ -22,7 +21,6 @@ export namespace IGetOffersFromStore {
 })
 }
 
-@injectable()
 export class GetOffersFromStoreService implements IGetOffersFromStore {
   async execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output> {
     const result = await prisma.userProfile.findFirst({

@@ -1,11 +1,8 @@
 import { ListOffersRepository } from '@/data/contracts';
 import { ListOffers } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class ListOffersService implements ListOffers {
   constructor(
-    @inject('ResourcesRepository')
     private readonly resourcesRepository: ListOffersRepository,
   ) { }
 

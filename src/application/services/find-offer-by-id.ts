@@ -1,9 +1,7 @@
 import { AddOfferClickRepository, FindOfferByIdRepository } from '@/data/contracts';
 import { FindOfferById } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 import { ErrorHandler, HttpStatusCode } from '../utils';
 
-@injectable()
 export class FindOfferByIdService implements FindOfferById {
   constructor (
     private readonly offerRepository: FindOfferByIdRepository,

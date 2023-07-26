@@ -1,8 +1,6 @@
 import { GetCache, SetCache } from '@/domain/features';
 import { redis } from '@/infra/lib';
-import { injectable } from 'tsyringe';
 
-@injectable()
 export class CacheService implements SetCache, GetCache {
   EXPIRES_IN_A_MONTH = 2678400
 

@@ -1,11 +1,16 @@
-import { ISignInRepo, ISignUpRepo } from '@/data/contracts';
+import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from '@/data/contracts';
 import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class AuthenticationRepository implements
   ISignInRepo,
-  ISignUpRepo {
+  ISignUpRepo,
+  SaveAccessKeysRepository {
+
+  async save (input: SaveAccessKeysRepository.Input): Promise<SaveAccessKeysRepository.Output> {
+    const saved = input
+  }
+
   async signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Output> {
     const user = await prisma.user.findUnique({
       where: {

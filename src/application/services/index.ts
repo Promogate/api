@@ -1,3 +1,4 @@
+export * from './UpdateShortlinkDestinationLink';
 export * from './convert-csv-to-json';
 export * from './create-api-key';
 export * from './create-profile';
@@ -22,5 +23,5 @@ export * from './sign-in';
 export * from './update-featured-offer-status';
 export * from './update-offer';
 export * from './update-showcase-offer-status';
-export * from './UpdateShortlinkDestinationLink';
 export * from './upload-offers-from-csv';
+

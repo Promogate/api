@@ -1,7 +1,6 @@
 import { getProfileController, redirectController } from '@/application/controllers';
 import { verifyToken } from '@/application/middlewares';
-import { prisma } from '@/main/config';
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 
 const analyticsRouter = Router();
 

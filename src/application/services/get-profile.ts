@@ -1,11 +1,8 @@
 import { IGetProfileRepository } from '@/data/contracts';
 import { IGetProfile } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class GetProfileService implements IGetProfile {
   constructor(
-    @inject('AnalyticsRepository')
     private readonly analyticsRepo: IGetProfileRepository
   ) {}
 

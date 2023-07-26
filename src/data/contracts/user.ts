@@ -97,19 +97,20 @@ export namespace FindUserByAPIKeyRepository {
   export type Ouput = User
 }
 
-export interface ICreateProfileRepository {
-  createProfile(input: ICreateProfileRepository.Input): Promise<ICreateProfileRepository.Output>
+export interface CreateProfileRepository {
+  createProfile(input: CreateProfileRepository.Input): Promise<CreateProfileRepository.Output>
 }
 
-export namespace ICreateProfileRepository {
+export namespace CreateProfileRepository {
   export type Input = {
-    user: string;
-    store_image: string;
-    store_name: string;
+    userId: string
+    storeImage: string
+    storeName: string
+    storeNameDisplay: string
   }
 
   export type Output = {
-    profile: string;
+    profileId: string;
   }
 }
 

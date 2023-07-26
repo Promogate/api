@@ -1,7 +1,5 @@
 import { prisma } from '@/main/config';
-import { injectable } from 'tsyringe';
 
-@injectable()
 export class GetOffersAtFeaturedService {
   async execute(user_id: string): Promise<number> {
     const countOffers = await prisma.offer.count({

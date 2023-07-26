@@ -1,11 +1,8 @@
 import { ListAPIKeysRepository } from '@/data/contracts';
 import { ListAPIKeys } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class ListAPIKeysService implements ListAPIKeys {
   constructor (
-    @inject('AccessKeysRepository')
     private readonly acceccKeysRepository: ListAPIKeysRepository
   ) {}
 

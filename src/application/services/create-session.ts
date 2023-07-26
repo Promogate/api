@@ -4,12 +4,9 @@ import { CreateSession } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class CreateSessionService implements CreateSession {
   constructor(
-    @inject('UserRepository')
     private readonly userRepository: FindUserByEmailIncludingPasswordRepository,
   ) { }
 

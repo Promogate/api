@@ -1,7 +1,6 @@
 import { RedirectByOfferIdUseCase } from "@/application/usecases"
 import { ErrorHandler, HttpStatusCode } from "@/application/utils"
 import { FindOfferByIdRepository } from "@/data/contracts"
-import { RedirectByOfferId } from "@/domain/features"
 import { MockProxy, mock } from "jest-mock-extended"
 
 describe('RedirectByOfferIdUseCase', () => {

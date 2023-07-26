@@ -1,13 +1,11 @@
 import { verifyFeaturedLimit } from '@/application/utils';
 import { UpdateOfferFeaturedStatus } from '@/domain/features';
 import { prisma } from '@/main/config';
-import { container, injectable } from 'tsyringe';
 import { GetOffersAtFeaturedService } from './get-offers-at-featured';
 
-@injectable()
 export class UpdateFeaturedOfferStatusService implements UpdateOfferFeaturedStatus {
   async execute(input: UpdateOfferFeaturedStatus.Input): Promise<UpdateOfferFeaturedStatus.Output> {
-    const getFeaturedOffersNumberService = container.resolve(GetOffersAtFeaturedService)
+    const getFeaturedOffersNumberService = new GetOffersAtFeaturedService()
     const featuredOffers = await getFeaturedOffersNumberService.execute(input.user_id)
 
     verifyFeaturedLimit({

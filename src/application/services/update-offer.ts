@@ -1,10 +1,8 @@
 import { UpdateOffer } from '@/domain/features';
 import { prisma } from '@/main/config';
-import { container, injectable } from 'tsyringe';
 import { ErrorHandler, HttpStatusCode } from '../utils';
 import { UpdateShortlinkDestinationLinkService } from './UpdateShortlinkDestinationLink';
 
-@injectable()
 export class UpdateOfferService implements UpdateOffer {
   async execute(input: UpdateOffer.Input): Promise<UpdateOffer.Ouput> {
     const foundOffer = await prisma.offer.findUnique({ where: { id: input.offerId } })
@@ -30,7 +28,7 @@ export class UpdateOfferService implements UpdateOffer {
           description: input.description,
         }
       })
-      const updateShortlinkService = container.resolve(UpdateShortlinkDestinationLinkService);
+      const updateShortlinkService = new UpdateShortlinkDestinationLinkService()
       await updateShortlinkService.execute({ 
         destinationLink: input.destinationLink,
         offerId: input.offerId

@@ -1,24 +1,9 @@
 import { verifyOfferLimit } from '@/application/utils';
+import { UpdateOfferShowcaseStatus } from '@/domain/features';
 import { prisma } from '@/main/config';
-import { Offer } from '@prisma/client';
-import { container, injectable } from 'tsyringe';
+import { container } from 'tsyringe';
 import { GetOffersAtShowcaseService } from './get-offers-at-showcase';
 
-interface UpdateOfferShowcaseStatus {
-  execute(input: UpdateOfferShowcaseStatus.Input): Promise<UpdateOfferShowcaseStatus.Output>
-}
-
-namespace UpdateOfferShowcaseStatus {
-  export type Input = {
-    offer_id: string;
-    is_on_showcase: boolean;
-    user_id: string;
-  }
-
-  export type Output = Offer
-}
-
-@injectable()
 export class UpdateShowcaseOfferStatusService implements UpdateOfferShowcaseStatus {
   async execute(input: UpdateOfferShowcaseStatus.Input): Promise<UpdateOfferShowcaseStatus.Output> {
     const { is_on_showcase, offer_id, user_id } = input;

@@ -1,20 +1,11 @@
-import { CreateProfileInput } from '@/domain/@types';
 import { prisma } from '@/main/config';
 
 import { ErrorHandler, generateApiKey, generateExpirationDate, HttpStatusCode, makeUniqueStoreName } from '@/application/utils';
-import { UserProfile } from '@prisma/client';
-import { injectable } from 'tsyringe';
+import { CreateProfile } from '@/domain/features';
 
-type Output = UserProfile & {
-  resources: {
-      id: string;
-  } | null;
-}
 
-@injectable()
-/*eslint-disable @typescript-eslint/no-explicit-any*/
-export class CreateProfileService {
-  async execute(input: CreateProfileInput): Promise<Output> {
+export class CreateProfileService implements CreateProfile {
+  async execute(input: CreateProfile.Input): Promise<CreateProfile.Output> {
     const uniqueStoreName = makeUniqueStoreName(input.storeName);
     try {
       const profileAlreadyExists = await prisma.userProfile.findUnique({
@@ -72,7 +63,9 @@ export class CreateProfileService {
         }
       });
   
-      return profile
+      return {
+        profileId: profile.id
+      }
     } catch (error: any) {
       throw new ErrorHandler({
         statusCode: error.statusCode,

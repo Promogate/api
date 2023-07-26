@@ -1,11 +1,8 @@
 import { FindUserByIdRepository } from '@/data/contracts';
 import { FindUserById } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class FindUserByIdService implements FindUserById {
   constructor(
-    @inject('UserRepository')
     private readonly userRepository: FindUserByIdRepository
   ) {}
 

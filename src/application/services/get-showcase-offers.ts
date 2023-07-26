@@ -1,11 +1,8 @@
 import { IGetShowcaseOffersRepo, IGetStoreDataRepo } from '@/data/contracts';
 import { IGetShowcaseOffers } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class GetShowcaseOffersService implements IGetShowcaseOffers {
   constructor(
-    @inject('ResourcesRepository')
     private readonly resourcesRepo: IGetShowcaseOffersRepo & IGetStoreDataRepo
   ) {}
 

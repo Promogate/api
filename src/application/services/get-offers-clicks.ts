@@ -3,14 +3,10 @@ import {
   GetOffersClicksRepository
 } from '@/data/contracts';
 import { GetOffersClicks } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class GetOffersClicksService implements GetOffersClicks {
   constructor(
-    @inject('AnalyticsRepository')
     private readonly analyticsRepository: GetOffersClicksRepository,
-    @inject('UserRepository')
     private readonly userRepository: FindUserByIdIncludingResourcesRepository
   ) { }
 

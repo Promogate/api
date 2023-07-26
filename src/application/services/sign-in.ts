@@ -4,22 +4,16 @@ import { ISignIn } from '@/domain/features';
 import { TOKEN_SECRET } from '@/main/config';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import { inject, injectable } from 'tsyringe';
 
-@injectable()
 export class SignInService implements ISignIn {
   constructor(
-    @inject('AuthenticationRepository')
     private readonly authenticationRepo: ISignInRepo
   ) { }
 
   async execute(input: ISignIn.Input): Promise<ISignIn.Output> {
     const user = await this.authenticationRepo.signIn(input)
-
     const passwordMatch = await compare(input.password, user.password);
-
     if (passwordMatch === false) throw new AuthenticationFailed();
-    
     const token = sign({ id: user.id, role: user.user_profile?.role }, TOKEN_SECRET, { expiresIn: '1d' })
 
     return {
