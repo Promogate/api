@@ -14,7 +14,7 @@ const userRouter = Router()
 
 userRouter.post('/signin', createSessionController.handle);
 
-userRouter.post('/signup', createUserController.handle);
+userRouter.post('/signup', async (req, res) => await createUserController.handle(req, res));
 
 userRouter.use(verifyToken);
 
