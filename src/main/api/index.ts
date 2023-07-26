@@ -4,12 +4,9 @@ dotenv.config();
 import '../config/module-alias';
 
 import 'express-async-errors';
-import 'reflect-metadata';
 
 import cors from 'cors';
 import express from 'express';
-
-import '../shared/containers';
 
 import {
   analyticsRouter,

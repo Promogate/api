@@ -1,12 +1,28 @@
 import {
-  AddOfferClickRepository, IGetProfileRepository
+  AddOfferClickRepository,
+  GetOffersClicksRepository,
+  GetOffersWithClicksCountRepo,
+  IGetProfileRepository
 } from '@/data/contracts';
 import { prisma } from '@/main/config';
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class AnalyticsRepository implements
   AddOfferClickRepository,
-  IGetProfileRepository {
+  IGetProfileRepository,
+  GetOffersClicksRepository,
+  GetOffersWithClicksCountRepo {
+  
+  async getOffersWithClicksCount(input: GetOffersWithClicksCountRepo.Input): Promise<GetOffersWithClicksCountRepo.Output> {
+    return {
+      offerClicks: 30 //TODO: Need to be implemented
+    }
+  }
+
+  async getClicks(input: GetOffersClicksRepository.Input): Promise<GetOffersClicksRepository.Output> {
+    return {
+      clicks: 30 //TODO: Need to be implemented
+    }
+  }
 
   async getProfile(input: IGetProfileRepository.Input): Promise<IGetProfileRepository.Ouput> {
     const profile = await prisma.userProfile.findFirst({

@@ -1,3 +1,4 @@
+export * from './RedirectOfferById';
 export * from './connect-category-to-offer';
 export * from './create-api-key';
 export * from './create-category';
@@ -6,7 +7,6 @@ export * from './create-profile';
 export * from './create-session';
 export * from './create-subcategory';
 export * from './create-user';
-export * from './delete-api-key';
 export * from './delete-offer';
 export * from './find-offer-by-id';
 export * from './find-user-by-email';
@@ -22,7 +22,6 @@ export * from './get-single-offer';
 export * from './get-store-data';
 export * from './get-user-with-token';
 export * from './getStoresNames';
-export * from './list-api-keys';
 export * from './list-offers';
 export * from './me';
 export * from './me-categories';
@@ -32,4 +31,4 @@ export * from './update-offer';
 export * from './update-profile';
 export * from './update-showcase-offer-status';
 export * from './upload-offers-from-csv';
-export * from './RedirectOfferById'
+

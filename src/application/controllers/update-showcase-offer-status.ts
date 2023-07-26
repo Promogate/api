@@ -1,7 +1,6 @@
 import { UpdateShowcaseOfferStatusService } from '@/application/services';
 import { VerifiedTokenRequest } from '@/domain/models';
 import { Response } from 'express';
-import { container } from 'tsyringe';
 import { HttpStatusCode } from '../utils';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
@@ -12,7 +11,7 @@ class UpdateShowcaseOfferStatusController {
 
     try {
       const userId = req.user as string;
-      const updateShowcaseOfferStatusService = container.resolve(UpdateShowcaseOfferStatusService)
+      const updateShowcaseOfferStatusService = new UpdateShowcaseOfferStatusService()
       const result = await updateShowcaseOfferStatusService.execute({
         is_on_showcase: body.is_on_showcase,
         offer_id: offerId,

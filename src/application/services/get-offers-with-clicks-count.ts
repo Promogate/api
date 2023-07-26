@@ -8,6 +8,6 @@ export class GetOffersWithClicksCountService implements GetOffersWithClicksCount
 
   async execute (input: GetOffersWithClicksCount.Input): Promise<GetOffersWithClicksCount.Output> {
     const offers = await this.analyticsRepo.getOffersWithClicksCount({ user_id: input.user_id });
-    return offers
+    return offers //TODO: need to be revalidated
   }
 }

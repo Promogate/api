@@ -1,13 +1,12 @@
 import { GetOffersFromStoreService } from '@/application/services';
 import { Request, Response } from 'express';
-import { container } from 'tsyringe';
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class GetOffersFromStoreController {
 
   async handle(req: Request, res: Response): Promise<Response> {
     const { store } = req.params as { store: string };
-    const service = container.resolve(GetOffersFromStoreService)
+    const service = new GetOffersFromStoreService()
     try {
       const result = await service.execute({ storeName: store });
       return res.status(200).json({

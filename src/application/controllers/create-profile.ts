@@ -1,13 +1,11 @@
 import { CreateProfileService } from '@/application/services';
 import { VerifiedTokenRequest } from '@/domain/models';
 import { Response } from 'express';
-import { container } from 'tsyringe';
-
 
 class CreateProfileController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const body = req.body as Input;
-    const service = container.resolve(CreateProfileService);
+    const service = new CreateProfileService()
     const result = await service.execute({ 
       storeName: body.storeName,
       storeNameDisplay: body.storeNameDisplay,

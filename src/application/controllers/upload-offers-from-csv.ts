@@ -1,11 +1,13 @@
 import { UploadOffersFromCSVService } from '@/application/services';
+import { ResourcesRepository, UserRepository } from '@/data/repositories';
 import { Request, Response } from 'express';
-import { container } from 'tsyringe';
 
 class UploadOffersFromCSVConstroller {
   async handle(req: Request & { user?: string }, res: Response): Promise<Response> {
     const { file } = req;
-    const uploadOffersFromCSVService = container.resolve(UploadOffersFromCSVService)
+    const resourcesRepository = new ResourcesRepository()
+    const userRepository = new UserRepository()
+    const uploadOffersFromCSVService = new UploadOffersFromCSVService(resourcesRepository, userRepository)
 
     const { json } = await uploadOffersFromCSVService.execute({ 
       file: file as Express.Multer.File,

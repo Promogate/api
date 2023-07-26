@@ -1,14 +1,13 @@
 import { verifyOfferLimit } from '@/application/utils';
 import { UpdateOfferShowcaseStatus } from '@/domain/features';
 import { prisma } from '@/main/config';
-import { container } from 'tsyringe';
 import { GetOffersAtShowcaseService } from './get-offers-at-showcase';
 
 export class UpdateShowcaseOfferStatusService implements UpdateOfferShowcaseStatus {
   async execute(input: UpdateOfferShowcaseStatus.Input): Promise<UpdateOfferShowcaseStatus.Output> {
     const { is_on_showcase, offer_id, user_id } = input;
 
-    const numberOfOffersAtShowcase = container.resolve(GetOffersAtShowcaseService);
+    const numberOfOffersAtShowcase = new GetOffersAtShowcaseService()
     const offerOnShowcase = await numberOfOffersAtShowcase.execute(user_id);
 
     const userProfile = await prisma.userProfile.findFirst({
