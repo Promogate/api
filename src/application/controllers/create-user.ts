@@ -1,13 +1,17 @@
 import { CreateUserService } from '@/application/services';
+import { AuthenticationRepository } from '@/data/repositories';
+import { CreateUser } from '@/domain/features';
 import { Request, Response } from 'express';
-import { container } from 'tsyringe';
 
 class CreateUserController {
+  constructor (private readonly createUserUseCase: CreateUser) {}
+
   async handle(req: Request, res: Response): Promise<Response> {
-    const createUserService = container.resolve(CreateUserService);
-    const result = await createUserService.execute(req.body);
+    const result = await this.createUserUseCase.execute(req.body);
     return res.status(201).json(result)
   }
 }
 
-export const createUserController = new CreateUserController()
+const userRepository = new AuthenticationRepository()
+const createUserUseCase = new CreateUserService(userRepository)
+export const createUserController = new CreateUserController(createUserUseCase)

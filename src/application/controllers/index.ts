@@ -32,3 +32,4 @@ export * from './update-offer';
 export * from './update-profile';
 export * from './update-showcase-offer-status';
 export * from './upload-offers-from-csv';
+export * from './RedirectOfferById'
