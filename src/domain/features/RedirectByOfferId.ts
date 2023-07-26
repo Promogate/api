@@ -8,5 +8,5 @@ export namespace RedirectByOfferId {
     }
     export type Output = {
         destinationLink: string
-    } | undefined
+    }
 }
