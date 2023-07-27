@@ -1,10 +1,10 @@
-import { CreateProfileService } from "@/application/services"
+import { CreateProfileUseCase } from "@/application/usecases"
 import { CreateProfileRepository, FindProfileByNameRepository } from "@/data/contracts"
 import { MockProxy, mock } from "jest-mock-extended"
 
 describe('CreateProfileUseCase', () => {
     let userRepository: MockProxy<FindProfileByNameRepository & CreateProfileRepository>
-    let sut: CreateProfileService
+    let sut: CreateProfileUseCase
     const input = {
         storeImage: '',
         storeName: '',
@@ -14,7 +14,7 @@ describe('CreateProfileUseCase', () => {
 
     beforeEach(() => {
         userRepository = mock()
-        sut = new CreateProfileService(userRepository)
+        sut = new CreateProfileUseCase(userRepository)
     })
 
     test('it should call CreateProfileUseCase with correct params', async () => {
