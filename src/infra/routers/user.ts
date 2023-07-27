@@ -9,7 +9,6 @@ import {
 import { verifyToken } from '@/application/middlewares';
 import { Router } from 'express';
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 const userRouter = Router()
 
 userRouter.post('/signin', createSessionController.handle);
@@ -18,7 +17,7 @@ userRouter.post('/signup', async (req, res) => await createUserController.handle
 
 userRouter.use(verifyToken);
 
-userRouter.post('/:id/profile/create', createProfileController.handle);
+userRouter.post('/:id/profile/create', async (req, res) => await createProfileController.handle(req, res));
 
 userRouter.put('/profile/:id/update', updateProfileController.handle);
 
