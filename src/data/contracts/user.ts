@@ -114,16 +114,16 @@ export namespace CreateProfileRepository {
   }
 }
 
-export interface ICheckProfileRepository {
-  checkProfile(input: ICheckProfileRepository.Input): Promise<ICheckProfileRepository.Output>
+export interface FindProfileByNameRepository {
+  checkProfile(input: FindProfileByNameRepository.Input): Promise<FindProfileByNameRepository.Output>
 }
 
-export namespace ICheckProfileRepository {
+export namespace FindProfileByNameRepository {
   export type Input = {
-    store_name: string
+    storeName: string
   }
 
   export type Output = {
-    profile: UserProfile | null
-  }
+    profile: UserProfile
+  } | undefined
 }
