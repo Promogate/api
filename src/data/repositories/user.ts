@@ -1,28 +1,76 @@
+import { generateApiKey, generateExpirationDate } from '@/application/utils';
 import {
-  CreateUserRepository, FindUserByEmailIncludingPasswordRepository,
+  CreateProfileRepository,
+  CreateUserRepository,
+  FindProfileByNameRepository,
+  FindUserByEmailIncludingPasswordRepository,
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
-  FindUserByIdRepository,
-  ICheckProfileRepository
+  FindUserByIdRepository
 } from '@/data/contracts';
 import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
 import { prisma } from '@/main/config';
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class UserRepository implements
   CreateUserRepository,
   FindUserByEmailRepository,
   FindUserByIdRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByEmailIncludingPasswordRepository,
-  ICheckProfileRepository {
+  FindProfileByNameRepository,
+  CreateProfileRepository {
+  
+  async createProfile(input: CreateProfileRepository.Input): Promise<CreateProfileRepository.Output> {
+    const profile = await prisma.userProfile.create({
+      data: {
+        store_name: input.storeName,
+        store_name_display: input.storeNameDisplay,
+        store_image: input.storeImage,
+        user: {
+          connect: {
+            id: input.userId,
+          }
+        },
+        resources: {
+          create: {
+            analytics: {
+              create: {
+                user_profile: {
+                  connect: {}
+                },
+              }
+            }
+          }
+        },
+        api_key: {
+          create: {
+            key: generateApiKey(),
+            expiration_date: generateExpirationDate(1, 'year'),
+          }
+        }
+      }, include: {
+        resources: {
+          select: {
+            id: true
+          }
+        },
+        user: true
+      }
+    });
 
-  async checkProfile(input: ICheckProfileRepository.Input): Promise<ICheckProfileRepository.Output> {
+    return {
+      profileId: profile.id
+    }
+  }
+
+  async checkProfile(input: FindProfileByNameRepository.Input): Promise<FindProfileByNameRepository.Output> {
     const profile = await prisma.userProfile.findFirst({
       where: {
-        store_name: input.store_name,
+        store_name: input.storeName,
       }
     })
+
+    if(!profile) throw new Error('Spiking error in repository')
 
     return {
       profile: profile
