@@ -124,6 +124,6 @@ export namespace FindProfileByNameRepository {
   }
 
   export type Output = {
-    profile: UserProfile
+    profile: string
   } | undefined
 }
