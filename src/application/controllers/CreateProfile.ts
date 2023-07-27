@@ -1,4 +1,4 @@
-import { CreateProfileService } from '@/application/services';
+import { CreateProfileUseCase } from '@/application/usecases';
 import { ErrorHandler, HttpStatusCode } from '@/application/utils';
 import { UserRepository } from '@/data/repositories';
 import { CreateProfile } from '@/domain/features';
@@ -10,12 +10,13 @@ class CreateProfileController {
 
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const body = req.body as Input;
+    const params = req.params as  { id: string }
     try {
       const result = await this.createProfileUseCase.execute({ 
         storeName: body.storeName,
         storeNameDisplay: body.storeNameDisplay,
         storeImage: body.storeImage,
-        userId: req.user as string
+        userId: params.id
        })
        return res.status(200).json({
         status: 'succcess',
@@ -39,5 +40,5 @@ type Input = {
 }
 
 const userRepository = new UserRepository()
-const createProfileUseCase = new CreateProfileService(userRepository)
+const createProfileUseCase = new CreateProfileUseCase(userRepository)
 export const createProfileController = new CreateProfileController(createProfileUseCase);

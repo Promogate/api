@@ -1,7 +1,6 @@
 export * from './UpdateShortlinkDestinationLink';
 export * from './convert-csv-to-json';
 export * from './create-api-key';
-export * from './create-profile';
 export * from './create-session';
 export * from './create-shortlink';
 export * from './create-user';
