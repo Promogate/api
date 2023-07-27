@@ -70,10 +70,10 @@ export class UserRepository implements
       }
     })
 
-    if(!profile) throw new Error('Spiking error in repository')
+    if(!profile) return
 
     return {
-      profile: profile
+      profile: profile.id
     }
   }
 
