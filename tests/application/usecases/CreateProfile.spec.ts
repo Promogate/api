@@ -1,4 +1,5 @@
 import { CreateProfileUseCase } from "@/application/usecases"
+import { ErrorHandler, HttpStatusCode } from "@/application/utils"
 import { CreateProfileRepository, FindProfileByNameRepository } from "@/data/contracts"
 import { MockProxy, mock } from "jest-mock-extended"
 
@@ -6,10 +7,10 @@ describe('CreateProfileUseCase', () => {
     let userRepository: MockProxy<FindProfileByNameRepository & CreateProfileRepository>
     let sut: CreateProfileUseCase
     const input = {
-        storeImage: '',
-        storeName: '',
-        storeNameDisplay: '',
-        userId: ''
+        storeImage: 'any_image',
+        storeName: 'any_name',
+        storeNameDisplay: 'any_name',
+        userId: 'any_id'
     }
 
     beforeEach(() => {
@@ -22,10 +23,19 @@ describe('CreateProfileUseCase', () => {
         userRepository.createProfile.mockResolvedValue({ profileId: '' })
         await sut.execute(input)
         expect(userRepository.createProfile).toHaveBeenCalledWith({
-            storeImage: '',
-            storeName: '',
-            storeNameDisplay: '',
-            userId: ''
+            storeImage: 'any_image',
+            storeName: 'any_name',
+            storeNameDisplay: 'any_name',
+            userId: 'any_id'
         })
+    })
+
+    test('it should throw Error UserProfileAlreadyExists when checkProfile method returns value', async () => {
+        userRepository.checkProfile.mockResolvedValue({ profile: '' })
+        await expect(sut.execute(input)).rejects.toThrow(new ErrorHandler({
+            statusCode: HttpStatusCode.BAD_REQUEST,
+            name: 'UserProfileAlreadyExists',
+            message: `Perfil já existe. (${input.storeNameDisplay} / ${input.storeName})`
+        }))
     })
 })
