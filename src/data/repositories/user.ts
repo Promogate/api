@@ -32,15 +32,7 @@ export class UserRepository implements
           }
         },
         resources: {
-          create: {
-            analytics: {
-              create: {
-                user_profile: {
-                  connect: {}
-                },
-              }
-            }
-          }
+          create: {},
         },
         api_key: {
           create: {
@@ -57,6 +49,13 @@ export class UserRepository implements
         user: true
       }
     });
+
+    await prisma.analytics.create({
+      data: {
+        user_profile_id: profile.id as string,
+        resources_id: profile.resources?.id as string
+      }
+    })
 
     return {
       profileId: profile.id
