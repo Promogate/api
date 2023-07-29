@@ -3,6 +3,7 @@ export * from './CreateShortlink';
 export * from './CreateUserError';
 export * from './GetNumberOfOffers';
 export * from './OfferLimit';
+export * from './UpdateProfile';
 export * from './authentication-failed';
 export * from './create-user-failed';
 export * from './refresh-token-not-found';
