@@ -38,4 +38,10 @@ describe('CreateProfileUseCase', () => {
             message: `Perfil já existe. (${input.storeNameDisplay} / ${input.storeName})`
         }))
     })
+
+    test('it should throw Error when createProfile method fails', async () => {
+        userRepository.checkProfile.mockResolvedValue(undefined)
+        userRepository.createProfile.mockRejectedValue({})
+        await expect(() => sut.execute(input)).rejects.toThrow(ErrorHandler)
+    })
 })
