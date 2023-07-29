@@ -3,24 +3,10 @@ import { prisma } from '@/main/config';
 import { Response } from 'express';
 import { ErrorHandler, HttpStatusCode } from '../utils';
 
-type UpdateProfileBody = {
-  name?: string;
-  store_image?: string;
-  store_name?: string;
-  store_name_display?: string;
-  facebook?: string;
-  instagram?: string;
-  whatsapp?: string;
-  telegram?: string;
-  twitter?: string;
-  lomadeeSourceId?: string;
-}
-
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 class UpdateProfileController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { id } = req.params as { id: string };
-    const body = req.body as UpdateProfileBody;
+    const body = req.body as Input;
     const loadedProfileByID = await prisma.userProfile.findUnique({ where: { id: id } })
     if (loadedProfileByID?.store_name === body.store_name) {
       const profile = await prisma.userProfile.update({
@@ -111,6 +97,19 @@ class UpdateProfileController {
       profile
     })
   }
+}
+
+type Input = {
+  name?: string;
+  store_image?: string;
+  store_name?: string;
+  store_name_display?: string;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
+  telegram?: string;
+  twitter?: string;
+  lomadeeSourceId?: string;
 }
 
 export const updateProfileController = new UpdateProfileController();
