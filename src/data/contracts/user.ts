@@ -127,3 +127,24 @@ export namespace FindProfileByNameRepository {
     profile: string
   } | undefined
 }
+
+export interface UpdateProfileRepository {
+  updateProfile(input: UpdateProfileRepository.Input): Promise<UpdateProfileRepository.Output>
+}
+
+export namespace UpdateProfileRepository {
+  export type Input = {
+    profileId: string
+    name?: string;
+    storeImage?: string;
+    storeName?: string;
+    storeNameDisplay?: string;
+    facebook?: string;
+    instagram?: string;
+    whatsapp?: string;
+    telegram?: string;
+    twitter?: string;
+    lomadeeSourceId?: string;
+}
+  export type Output = void
+}
