@@ -1,5 +1,6 @@
 import { GetUserInfoUseCase } from "@/application/usecases"
 import { GetUserInfoRepository } from "@/data/contracts"
+import { GetUserInfoError } from "@/domain/error"
 import { MockProxy, mock } from "jest-mock-extended"
 
 describe('GetUserInfoUseCase', () => {
@@ -26,5 +27,10 @@ describe('GetUserInfoUseCase', () => {
         profileRepository.getUserInfo.mockResolvedValueOnce(output)
         await sut.execute(input)
         expect(profileRepository.getUserInfo).toHaveBeenCalledWith({ userId: 'any_id' })
+    })
+
+    test('it should throw GetUserInfoError when getUserInfo returns undefined', async () => {
+        profileRepository.getUserInfo.mockResolvedValueOnce(undefined)
+        await expect(() => sut.execute(input)).rejects.toThrow(GetUserInfoError)
     })
 })
