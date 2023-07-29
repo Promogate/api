@@ -148,3 +148,23 @@ export namespace UpdateProfileRepository {
 }
   export type Output = void
 }
+
+export interface GetUserInfoRepository {
+  getUserInfo(input: GetUserInfoRepository.Input): Promise<GetUserInfoRepository.Output>
+}
+
+export namespace GetUserInfoRepository {
+  export type Input = {
+      userId: string
+  }
+  export type Output = {
+      id: string,
+      name: string,
+      email: string,
+      userProfile: {
+          storeImage: string,
+          storeName: string,
+          storeNameDisplay: string,
+      }
+  }
+}
