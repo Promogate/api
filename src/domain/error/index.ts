@@ -2,6 +2,7 @@ export * from './CreateOffer';
 export * from './CreateShortlink';
 export * from './CreateUserError';
 export * from './GetNumberOfOffers';
+export * from './GetUserInfo';
 export * from './OfferLimit';
 export * from './UpdateProfile';
 export * from './authentication-failed';
