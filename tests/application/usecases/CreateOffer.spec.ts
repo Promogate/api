@@ -1,8 +1,8 @@
 import { CreateOfferUseCase } from '@/application/usecases';
 import { GetNumberOfOffersRepository, SaveOfferRepository } from '@/data/contracts';
-import { CreateOfferError, CreateShortlinkError, OfferLimitError } from '@/domain/error';
+import { CreateOfferError, CreateShortlinkError, GetNumberOfOffersError, OfferLimitError } from '@/domain/error';
 import { CreateShortlink } from '@/domain/features';
-import { mock, MockProxy } from 'jest-mock-extended';
+import { MockProxy, mock } from 'jest-mock-extended';
 
 describe('CreateOffer', () => {
   let offerRepository: MockProxy<SaveOfferRepository & GetNumberOfOffersRepository>
@@ -80,6 +80,11 @@ describe('CreateOffer', () => {
     offerRepository.getNumberOfOffers.mockResolvedValueOnce({ offersCount: 50, role: 'FREE' })
     shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput)
     await expect(sut.execute(input)).rejects.toThrow(new OfferLimitError())
+  })
+
+  test('it should throw GetNumberOfOffersError when getNumberOfOffers method returns undefined', async () => {
+    offerRepository.getNumberOfOffers.mockResolvedValueOnce(undefined)
+    await expect(() => sut.execute(input)).rejects.toThrow(GetNumberOfOffersError)
   })
 })
 
