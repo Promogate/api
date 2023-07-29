@@ -1,6 +1,7 @@
 export * from './CheckUniqueStoreName';
 export * from './CreateOffer';
 export * from './GetCache';
+export * from './GetUserInfo';
 export * from './RedirectByOfferId';
 export * from './SetCache';
 export * from './UpdateOfferShowcaseStatus';
