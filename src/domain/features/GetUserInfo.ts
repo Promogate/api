@@ -1,8 +1,8 @@
 export interface GetUserInfo {
-    execute(input: GetUseInfo.Input): Promise<GetUseInfo.Output>
+    execute(input: GetUserInfo.Input): Promise<GetUserInfo.Output>
 }
 
-export namespace GetUseInfo {
+export namespace GetUserInfo {
     export type Input = {
         userId: string
     }
