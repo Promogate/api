@@ -2,7 +2,7 @@ import { VerifiedTokenRequest } from '@/domain/models';
 import { prisma } from '@/main/config';
 import { Response } from 'express';
 
-class MeController {
+class GetUserInfoController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     try {
       const userId = req.user;
@@ -46,4 +46,4 @@ class MeController {
   }
 }
 
-export const meController = new MeController();
+export const meController = new GetUserInfoController();
