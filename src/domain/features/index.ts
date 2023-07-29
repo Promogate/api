@@ -4,6 +4,7 @@ export * from './GetCache';
 export * from './RedirectByOfferId';
 export * from './SetCache';
 export * from './UpdateOfferShowcaseStatus';
+export * from './UpdateProfile';
 export * from './UpdateShortlinkDestinationLink';
 export * from './authentication';
 export * from './convet-csv-to-json';
