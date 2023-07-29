@@ -1,4 +1,5 @@
 import { GetUserInfoRepository } from "@/data/contracts"
+import { GetUserInfoError } from "@/domain/error"
 import { GetUserInfo } from "@/domain/features"
 
 export class GetUserInfoUseCase implements GetUserInfo {
@@ -6,6 +7,7 @@ export class GetUserInfoUseCase implements GetUserInfo {
 
     async execute(input: GetUserInfo.Input): Promise<GetUserInfo.Output> {
         const output = await this.profileRepository.getUserInfo(input)
+        if (!output) throw new GetUserInfoError()
         return {
             id: output.id,
             email: output.email,

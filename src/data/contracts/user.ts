@@ -166,5 +166,5 @@ export namespace GetUserInfoRepository {
           storeName: string,
           storeNameDisplay: string,
       }
-  }
+  } | undefined
 }
