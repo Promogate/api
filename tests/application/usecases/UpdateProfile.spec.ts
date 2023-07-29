@@ -1,29 +1,7 @@
-import { ErrorHandler, HttpStatusCode } from "@/application/utils"
+import { UpdateProfileUseCase } from "@/application/usecases"
 import { UpdateProfileRepository } from "@/data/contracts"
-import { UpdateProfile } from "@/domain/features"
+import { UpdateProfileError } from "@/domain/error"
 import { MockProxy, mock } from "jest-mock-extended"
-
-class UpdateProfileUseCase implements UpdateProfile {
-    constructor(private readonly profileRepository: UpdateProfileRepository){}
-
-    async execute(input: UpdateProfile.Input): Promise<void> {
-        try {
-            await this.profileRepository.updateProfile(input)
-        } catch {
-            throw new UpdateProfileError()
-        }
-    }
-}
-
-export class UpdateProfileError extends ErrorHandler {
-    constructor() {
-        super({
-            message: 'Serviço de atualização de perfil do usuário falhou ao tentar executar',
-            name: 'UpdateProfileError',
-            statusCode: HttpStatusCode.INTERNAL_SERVER
-        })
-    }
-}
 
 describe('UpdateProfileUseCase', () => {
     let sut: UpdateProfileUseCase
@@ -61,5 +39,10 @@ describe('UpdateProfileUseCase', () => {
             twitter: '',
             lomadeeSourceId: '',
         })
+    })
+
+    test('it should throw UpdateProfileError is updateProfile repository method fails', async () => {
+        profileRepository.updateProfile.mockRejectedValue({})
+        await expect(() => sut.execute(input)).rejects.toThrow(UpdateProfileError)
     })
 })
