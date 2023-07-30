@@ -1,5 +1,5 @@
 import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from '@/data/contracts';
-import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
+import { UserAlredyExistsError, UserNotFoundError } from '@/domain/error';
 import { prisma } from '@/main/config';
 
 export class AuthenticationRepository implements
@@ -24,7 +24,7 @@ export class AuthenticationRepository implements
       }
     });
 
-    if (user === null) throw new UserNotFound()
+    if (user === null) throw new UserNotFoundError()
 
     return user
   }
