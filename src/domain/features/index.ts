@@ -5,6 +5,7 @@ export * from './GetUserInfo';
 export * from './RedirectByOfferId';
 export * from './SetCache';
 export * from './SignIn';
+export * from './TokenIssuer';
 export * from './UpdateOfferShowcaseStatus';
 export * from './UpdateProfile';
 export * from './UpdateShortlinkDestinationLink';
