@@ -1,13 +1,12 @@
 import { FindUserByEmailIncludingPasswordRepository } from "@/data/contracts";
 import { SignInError, UserNotFoundError } from "@/domain/error";
-import { SignIn, VerifyPassword } from "@/domain/features";
-import { TOKEN_SECRET } from "@/main/config";
-import { sign } from "jsonwebtoken";
+import { SignIn, TokenIssuer, VerifyPassword } from "@/domain/features";
 
 export class SignInUseCase implements SignIn {
     constructor(
         private readonly userRepository: FindUserByEmailIncludingPasswordRepository,
-        private readonly verifyPasswordUseCase: VerifyPassword
+        private readonly verifyPasswordUseCase: VerifyPassword,
+        private readonly tokenIsserUseCase: TokenIssuer
       ) { }
 
     async execute(input: SignIn.Input): Promise<SignIn.Output> {
@@ -16,7 +15,7 @@ export class SignInUseCase implements SignIn {
         if (!(await this.verifyPasswordUseCase.execute({ password: input.password, encryptedPassword: user.password }))) {
             throw new SignInError()
         }
-        const token = sign({ id: user.id, role: user.role }, TOKEN_SECRET, { expiresIn: '1d' });
+        const { token } = this.tokenIsserUseCase.execute({ id: user.id, role: user.role })
         return {
             token
         }
