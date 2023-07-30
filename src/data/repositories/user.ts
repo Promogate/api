@@ -8,7 +8,7 @@ import {
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository
 } from '@/data/contracts';
-import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
+import { UserAlredyExistsError, UserNotFoundError } from '@/domain/error';
 import { prisma } from '@/main/config';
 
 export class UserRepository implements
@@ -130,7 +130,12 @@ export class UserRepository implements
       throw new Error('Usuário ou email estão incorretos. Tente novamente.')
     }
 
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      role: user.user_profile?.role as string
+    }
   }
 
   async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
@@ -148,7 +153,7 @@ export class UserRepository implements
     });
 
     if (!user) {
-      throw new UserNotFound()
+      throw new UserNotFoundError()
     }
 
     return user
@@ -169,7 +174,7 @@ export class UserRepository implements
     });
 
     if (!user) {
-      throw new UserNotFound()
+      throw new UserNotFoundError()
     }
 
     if (!user.user_profile?.resources) {
