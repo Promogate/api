@@ -56,7 +56,12 @@ export namespace FindUserByEmailIncludingPasswordRepository {
     email: string
   };
 
-  export type Output = (User & { user_profile: UserProfile | null;})
+  export type Output = {
+    id: string
+    email: string
+    password: string
+    role: string
+  } | undefined
 }
 
 export interface FindUserByIdRepository {
