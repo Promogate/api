@@ -4,7 +4,6 @@ services:
 
   db:
     image: postgres
-    restart: always
     container_name: coupon-db
     environment:
       - POSTGRES_USER=coupondb
@@ -18,4 +17,4 @@ services:
     ports:
       - '6379:6379'
     environment:
-      REDIS_PASSWORD: wavvvesredis
+      REDIS_PASSWORD: redis
