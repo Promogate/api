@@ -2,7 +2,6 @@ import { VerifiedTokenRequest } from "@/domain/models";
 import { prisma } from "@/main/config";
 import { Response } from "express";
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 class ConnectCategoryToOfferController {
   async handle (req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { resourcesId, offerId } = req.params as { resourcesId: string, offerId: string };
