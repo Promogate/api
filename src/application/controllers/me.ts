@@ -1,6 +1,6 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
 
 class GetUserInfoController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
@@ -33,15 +33,15 @@ class GetUserInfoController {
       });
 
       if (!user) {
-        return res.status(401).json({ message: 'User not found!' })
+        return res.status(401).json({ message: "User not found!" });
       }
 
       return res.status(200).json({
-        status: 'success',
+        status: "success",
         user
       });
     } catch {
-      return res.status(401).json({ message: 'Token is missing' })
+      return res.status(401).json({ message: "Token is missing" });
     }
   }
 }

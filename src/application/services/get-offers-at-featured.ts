@@ -1,4 +1,4 @@
-import { prisma } from '@/main/config';
+import { prisma } from "@/main/config";
 
 export class GetOffersAtFeaturedService {
   async execute(user_id: string): Promise<number> {
@@ -19,8 +19,8 @@ export class GetOffersAtFeaturedService {
           }
         ]
       }
-    })
+    });
 
-    return countOffers
+    return countOffers;
   }
 }

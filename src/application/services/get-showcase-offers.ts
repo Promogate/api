@@ -1,5 +1,5 @@
-import { IGetShowcaseOffersRepo, IGetStoreDataRepo } from '@/data/contracts';
-import { IGetShowcaseOffers } from '@/domain/features';
+import { IGetShowcaseOffersRepo, IGetStoreDataRepo } from "@/data/contracts";
+import { IGetShowcaseOffers } from "@/domain/features";
 
 export class GetShowcaseOffersService implements IGetShowcaseOffers {
   constructor(
@@ -12,8 +12,8 @@ export class GetShowcaseOffersService implements IGetShowcaseOffers {
     const result = {
       store,
       offers
-    }
-    return result
+    };
+    return result;
   }
 
 }

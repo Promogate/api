@@ -10,14 +10,14 @@ export class SignInUseCase implements SignIn {
       ) { }
 
     async execute(input: SignIn.Input): Promise<SignIn.Output> {
-        const user = await this.userRepository.findByEmailIncludingPassword({ email: input.email })
-        if(!user) throw new UserNotFoundError()
+        const user = await this.userRepository.findByEmailIncludingPassword({ email: input.email });
+        if(!user) throw new UserNotFoundError();
         if (!(await this.verifyPasswordUseCase.execute({ password: input.password, encryptedPassword: user.password }))) {
-            throw new SignInError()
+            throw new SignInError();
         }
-        const { token } = this.tokenIsserUseCase.execute({ id: user.id, role: user.role })
+        const { token } = this.tokenIsserUseCase.execute({ id: user.id, role: user.role });
         return {
             token
-        }
+        };
     }
 }

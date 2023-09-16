@@ -1,5 +1,5 @@
-import { prisma } from '@/main/config';
-import { Request, Response } from 'express';
+import { prisma } from "@/main/config";
+import { Request, Response } from "express";
 
 class GetStoresNamesController {
   async handle (req: Request, res: Response): Promise<Response> {
@@ -7,7 +7,7 @@ class GetStoresNamesController {
       select: {
         store_name: true,
       }
-    })
+    });
 
     return res.status(200).json(stores);
   }

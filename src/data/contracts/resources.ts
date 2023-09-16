@@ -1,4 +1,4 @@
-import { Offer } from '@prisma/client';
+import { Offer } from "@prisma/client";
 
 export interface FindStoreNameByResourceIdRepository {
   findStoreNameByResourceId(input:FindStoreNameByResourceIdRepository.Input): Promise<FindStoreNameByResourceIdRepository.Output>

@@ -1,7 +1,7 @@
-import { UpdateOfferService } from '@/application/services';
-import { UpdateOfferParams } from '@/domain/@types';
-import { VerifiedTokenRequest } from '@/domain/models';
-import { Response } from 'express';
+import { UpdateOfferService } from "@/application/services";
+import { UpdateOfferParams } from "@/domain/@types";
+import { VerifiedTokenRequest } from "@/domain/models";
+import { Response } from "express";
 
 type UrlParams = {
   resourceId: string;
@@ -10,9 +10,9 @@ type UrlParams = {
 
 class UpdateOfferController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
-    const { offerId } = req.params as UrlParams
+    const { offerId } = req.params as UrlParams;
     const body = req.body as UpdateOfferParams;
-    const service = new UpdateOfferService()
+    const service = new UpdateOfferService();
     const result = await service.execute({
       offerId,
       image: body.image,
@@ -26,10 +26,10 @@ class UpdateOfferController {
     });
 
     return res.status(200).json({
-      status: 'success',
-      message: 'Oferta atualizada com sucesso!',
+      status: "success",
+      message: "Oferta atualizada com sucesso!",
       data: result
-    })
+    });
   }
 }
 

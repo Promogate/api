@@ -1,13 +1,13 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
-import { ErrorHandler, HttpStatusCode } from '../utils';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
+import { ErrorHandler, HttpStatusCode } from "../utils";
 
 class UpdateProfileController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     const { id } = req.params as { id: string };
     const body = req.body as Input;
-    const loadedProfileByID = await prisma.userProfile.findUnique({ where: { id: id } })
+    const loadedProfileByID = await prisma.userProfile.findUnique({ where: { id: id } });
     if (loadedProfileByID?.store_name === body.store_name) {
       const profile = await prisma.userProfile.update({
         where: {
@@ -40,22 +40,22 @@ class UpdateProfileController {
         include: {
           social_media: true,
         }
-      })
+      });
 
       return res.status(200).json({
-        status: 'success',
-        message: 'Atualizado com sucesso',
+        status: "success",
+        message: "Atualizado com sucesso",
         profile
-      })
+      });
     }
     if(body.store_name) {
       const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: body.store_name } });
       if (findStoreByName) {
         throw new ErrorHandler({
-          name: 'ProfileAlreadyExists',
-          message: 'Identificador único de perfil já está sendo utilizado. Tente outro.',
+          name: "ProfileAlreadyExists",
+          message: "Identificador único de perfil já está sendo utilizado. Tente outro.",
           statusCode: HttpStatusCode.FORBIDDEN
-        })
+        });
       }
     }
     const profile = await prisma.userProfile.update({
@@ -89,13 +89,13 @@ class UpdateProfileController {
       include: {
         social_media: true,
       }
-    })
+    });
 
     return res.status(200).json({
-      status: 'success',
-      message: 'Atualizado com sucesso',
+      status: "success",
+      message: "Atualizado com sucesso",
       profile
-    })
+    });
   }
 }
 

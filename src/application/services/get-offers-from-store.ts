@@ -1,5 +1,5 @@
-import { prisma } from '@/main/config'
-import { Offer, UserProfile } from '@prisma/client'
+import { prisma } from "@/main/config";
+import { Offer, UserProfile } from "@prisma/client";
 
 export interface IGetOffersFromStore {
   execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output>
@@ -27,7 +27,7 @@ export class GetOffersFromStoreService implements IGetOffersFromStore {
       where: {
         store_name: {
           equals: input.storeName,
-          mode: 'insensitive',
+          mode: "insensitive",
         }
       }, include: {
         social_media: true,
@@ -50,10 +50,10 @@ export class GetOffersFromStoreService implements IGetOffersFromStore {
           }
         }
       }
-    })
+    });
 
-    if (!result || !result.resources?.offers) throw new Error('Falha ao encontrar as ofertas da loja.')
+    if (!result || !result.resources?.offers) throw new Error("Falha ao encontrar as ofertas da loja.");
 
-    return result
+    return result;
   }
 }

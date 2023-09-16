@@ -1,6 +1,6 @@
-import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from '@/data/contracts';
-import { UserAlredyExistsError, UserNotFoundError } from '@/domain/error';
-import { prisma } from '@/main/config';
+import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from "@/data/contracts";
+import { UserAlredyExistsError, UserNotFoundError } from "@/domain/error";
+import { prisma } from "@/main/config";
 
 export class AuthenticationRepository implements
   ISignInRepo,
@@ -24,9 +24,9 @@ export class AuthenticationRepository implements
       }
     });
 
-    if (user === null) throw new UserNotFoundError()
+    if (user === null) throw new UserNotFoundError();
 
-    return user
+    return user;
   }
 
   async signUp(input: ISignUpRepo.Input): Promise<ISignUpRepo.Output> {
@@ -48,11 +48,11 @@ export class AuthenticationRepository implements
             },
           }
         }
-      })
+      });
 
-      return user
+      return user;
     } catch (error: any) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 }

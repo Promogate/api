@@ -1,6 +1,6 @@
-import { AddOfferClickRepository, FindOfferByIdRepository } from '@/data/contracts';
-import { FindOfferById } from '@/domain/features';
-import { ErrorHandler, HttpStatusCode } from '../utils';
+import { AddOfferClickRepository, FindOfferByIdRepository } from "@/data/contracts";
+import { FindOfferById } from "@/domain/features";
+import { ErrorHandler, HttpStatusCode } from "../utils";
 
 export class FindOfferByIdService implements FindOfferById {
   constructor (
@@ -13,12 +13,12 @@ export class FindOfferByIdService implements FindOfferById {
 
     if(!offer) throw new ErrorHandler({
       statusCode: HttpStatusCode.NOT_FOUND,
-      name: 'OfferNotFound',
-      message: 'Falha ao tentar encontrar a oferta com id: ' + input.id
-    })
+      name: "OfferNotFound",
+      message: "Falha ao tentar encontrar a oferta com id: " + input.id
+    });
 
-    if (input.methods && input.methods['addClick']) {
-      await this.analyticsRepository.addClick({ id: offer.id })
+    if (input.methods && input.methods["addClick"]) {
+      await this.analyticsRepository.addClick({ id: offer.id });
     }
 
     return {
@@ -31,6 +31,6 @@ export class FindOfferByIdService implements FindOfferById {
       store_image: offer.store_image,
       expiration_date: offer.expiration_date,
       resourceId: offer.resourceId
-    }
+    };
   }
 }

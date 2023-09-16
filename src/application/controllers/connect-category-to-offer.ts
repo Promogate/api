@@ -1,6 +1,6 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class ConnectCategoryToOfferController {
@@ -19,17 +19,17 @@ class ConnectCategoryToOfferController {
       });
   
       return res.status(200).json({
-        status: 'success',
-        message: 'Categoria adicionada com sucesso à oferta',
+        status: "success",
+        message: "Categoria adicionada com sucesso à oferta",
         offer
       });
   
     } catch (error: any) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         error: error.message,
-        message: 'Algo deu errado ao tentar atualizar a oferta'
-      })
+        message: "Algo deu errado ao tentar atualizar a oferta"
+      });
     }
   }
 }

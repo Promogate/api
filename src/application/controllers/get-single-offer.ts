@@ -1,5 +1,5 @@
-import { prisma } from '@/main/config';
-import { Request, Response } from 'express';
+import { prisma } from "@/main/config";
+import { Request, Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class GetSingleOfferController {
@@ -35,14 +35,14 @@ export class GetSingleOfferController {
             }
           }
         }
-      })
+      });
 
       if (!offer) {
         return res.status(400).json({
-          status: 'error',
-          error: 'Oferta não encontrada',
-          message: 'Algo deu erro ao tentar criar uma nova oferta'
-        })
+          status: "error",
+          error: "Oferta não encontrada",
+          message: "Algo deu erro ao tentar criar uma nova oferta"
+        });
       }
 
       if (utm_click) {
@@ -56,30 +56,30 @@ export class GetSingleOfferController {
               }
             }
           }
-        })
+        });
 
-        const transaction = await prisma.$transaction([offer, resource])
+        const transaction = await prisma.$transaction([offer, resource]);
 
         return res.status(200).json({
-          status: 'success',
-          message: 'Oferta encontrada',
+          status: "success",
+          message: "Oferta encontrada",
           offer: transaction[0]
-        })
+        });
       }
 
-      const transaction = await prisma.$transaction([offer])
+      const transaction = await prisma.$transaction([offer]);
 
       return res.status(200).json({
-        status: 'success',
-        message: 'Oferta encontrada',
+        status: "success",
+        message: "Oferta encontrada",
         offer: transaction[0]
-      })
+      });
     } catch (error: any) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         error: error.message,
-        message: 'Algo deu erro ao tentar criar uma nova oferta'
-      })
+        message: "Algo deu erro ao tentar criar uma nova oferta"
+      });
     }
   }
 }

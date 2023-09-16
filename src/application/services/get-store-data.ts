@@ -1,5 +1,5 @@
-import { IGetStoreDataRepo } from '@/data/contracts';
-import { IGetStoreData } from '@/domain/features';
+import { IGetStoreDataRepo } from "@/data/contracts";
+import { IGetStoreData } from "@/domain/features";
 
 export class GetStoreDataService implements IGetStoreData {
   constructor(

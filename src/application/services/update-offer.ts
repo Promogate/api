@@ -1,16 +1,16 @@
-import { UpdateOffer } from '@/domain/features';
-import { prisma } from '@/main/config';
-import { ErrorHandler, HttpStatusCode } from '../utils';
-import { UpdateShortlinkDestinationLinkService } from './UpdateShortlinkDestinationLink';
+import { UpdateOffer } from "@/domain/features";
+import { prisma } from "@/main/config";
+import { ErrorHandler, HttpStatusCode } from "../utils";
+import { UpdateShortlinkDestinationLinkService } from "./update-shortlink-destination-link";
 
 export class UpdateOfferService implements UpdateOffer {
   async execute(input: UpdateOffer.Input): Promise<UpdateOffer.Ouput> {
-    const foundOffer = await prisma.offer.findUnique({ where: { id: input.offerId } })
+    const foundOffer = await prisma.offer.findUnique({ where: { id: input.offerId } });
     if(!foundOffer) {
       throw new ErrorHandler({ 
         statusCode: HttpStatusCode.NOT_FOUND, 
-        name: 'NotFoundOffer',
-        message: 'Produto não encontrado.'
+        name: "NotFoundOffer",
+        message: "Produto não encontrado."
       });
     }
     if(input.destinationLink && input.destinationLink !== foundOffer.destination_link) {
@@ -27,14 +27,14 @@ export class UpdateOfferService implements UpdateOffer {
           store_name: input.storeName,
           description: input.description,
         }
-      })
-      const updateShortlinkService = new UpdateShortlinkDestinationLinkService()
+      });
+      const updateShortlinkService = new UpdateShortlinkDestinationLinkService();
       await updateShortlinkService.execute({ 
         destinationLink: input.destinationLink,
         offerId: input.offerId
-      })
+      });
 
-      return updatedOffer
+      return updatedOffer;
     }
     const updatedOffer = await prisma.offer.update({
       where: {
@@ -49,8 +49,8 @@ export class UpdateOfferService implements UpdateOffer {
         store_name: input.storeName,
         description: input.description,
       }
-    })
+    });
 
-    return updatedOffer
+    return updatedOffer;
   }
 }

@@ -1,7 +1,7 @@
-import { CreateApiKeyService } from '@/application/services';
-import { AuthenticationRepository } from '@/data/repositories';
-import { CreateApiKey } from '@/domain/features';
-import { Request, Response } from 'express';
+import { CreateApiKeyService } from "@/application/services";
+import { AuthenticationRepository } from "@/data/repositories";
+import { CreateApiKey } from "@/domain/features";
+import { Request, Response } from "express";
 
 class CreateApiKeyController {
   constructor(private readonly createApiKeyService:CreateApiKey) {}
@@ -13,6 +13,6 @@ class CreateApiKeyController {
   }
 }
 
-const createAPiKeyRepository = new AuthenticationRepository()
-const createApiKeyService = new CreateApiKeyService(createAPiKeyRepository)
+const createAPiKeyRepository = new AuthenticationRepository();
+const createApiKeyService = new CreateApiKeyService(createAPiKeyRepository);
 export const createApiKeyController = new CreateApiKeyController(createApiKeyService);

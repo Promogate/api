@@ -3,8 +3,8 @@ import {
   GetOffersClicksRepository,
   GetOffersWithClicksCountRepo,
   IGetProfileRepository
-} from '@/data/contracts';
-import { prisma } from '@/main/config';
+} from "@/data/contracts";
+import { prisma } from "@/main/config";
 
 export class AnalyticsRepository implements
   AddOfferClickRepository,
@@ -15,13 +15,13 @@ export class AnalyticsRepository implements
   async getOffersWithClicksCount(input: GetOffersWithClicksCountRepo.Input): Promise<GetOffersWithClicksCountRepo.Output> {
     return {
       offerClicks: 30 //TODO: Need to be implemented
-    }
+    };
   }
 
   async getClicks(input: GetOffersClicksRepository.Input): Promise<GetOffersClicksRepository.Output> {
     return {
       clicks: 30 //TODO: Need to be implemented
-    }
+    };
   }
 
   async getProfile(input: IGetProfileRepository.Input): Promise<IGetProfileRepository.Ouput> {
@@ -58,20 +58,20 @@ export class AnalyticsRepository implements
               },
               orderBy: {
                 offer_clicks: {
-                  _count: 'desc'
+                  _count: "desc"
                 }
               }
             }
           }
         },
       },
-    })
+    });
 
     if (!profile) {
-      throw new Error('Não foi possível encontrar o perfil.')
+      throw new Error("Não foi possível encontrar o perfil.");
     }
 
-    return profile
+    return profile;
   }
     
   async addClick(input: AddOfferClickRepository.Input): Promise<void> {
@@ -91,16 +91,16 @@ export class AnalyticsRepository implements
             }
           }
         }
-      })
+      });
 
       await prisma.offerClicks.create({
         data: {
           offer_id: offer.id,
           analytics_id: offer.resources.analytics?.id as string
         }
-      })
+      });
     } catch (error: any) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 }

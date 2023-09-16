@@ -1,4 +1,4 @@
-import { CreateUserError } from '@/domain/error'
+import { CreateUserError } from "@/domain/error";
 
 export interface CreateUser {
   execute(input: CreateUser.Input): Promise<CreateUser.Ouput>

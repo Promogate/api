@@ -1,4 +1,4 @@
-import { CreateOfferError, CreateShortlinkError } from '@/domain/error';
+import { CreateOfferError, CreateShortlinkError } from "@/domain/error";
 
 export interface CreateOffer {
   execute(input: CreateOffer.Input): Promise<CreateOffer.Output>

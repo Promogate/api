@@ -1,5 +1,5 @@
-import { FindUserByEmailRepository } from '@/data/contracts';
-import { FindUserByEmail } from '@/domain/features';
+import { FindUserByEmailRepository } from "@/data/contracts";
+import { FindUserByEmail } from "@/domain/features";
 
 export class FindUserByEmailService implements FindUserByEmail {
   constructor(
@@ -15,7 +15,7 @@ export class FindUserByEmailService implements FindUserByEmail {
       name: user.name,
       created_at: user.created_at,
       agree_with_policies: user.agree_with_policies
-    }
+    };
   }
 
 }

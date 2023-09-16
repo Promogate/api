@@ -1,4 +1,4 @@
-import { generateApiKey, generateExpirationDate } from '@/application/utils';
+import { generateApiKey, generateExpirationDate } from "@/application/utils";
 import {
   CreateProfileRepository,
   CreateUserRepository,
@@ -7,9 +7,9 @@ import {
   FindUserByEmailRepository,
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository
-} from '@/data/contracts';
-import { UserAlredyExistsError, UserNotFoundError } from '@/domain/error';
-import { prisma } from '@/main/config';
+} from "@/data/contracts";
+import { UserAlredyExistsError, UserNotFoundError } from "@/domain/error";
+import { prisma } from "@/main/config";
 
 export class UserRepository implements
   CreateUserRepository,
@@ -37,7 +37,7 @@ export class UserRepository implements
         api_key: {
           create: {
             key: generateApiKey(),
-            expiration_date: generateExpirationDate(1, 'year'),
+            expiration_date: generateExpirationDate(1, "year"),
           }
         }
       }, include: {
@@ -55,11 +55,11 @@ export class UserRepository implements
         user_profile_id: profile.id as string,
         resources_id: profile.resources?.id as string
       }
-    })
+    });
 
     return {
       profileId: profile.id
-    }
+    };
   }
 
   async checkProfile(input: FindProfileByNameRepository.Input): Promise<FindProfileByNameRepository.Output> {
@@ -67,13 +67,13 @@ export class UserRepository implements
       where: {
         store_name: input.storeName,
       }
-    })
+    });
 
-    if(!profile) return
+    if(!profile) return;
 
     return {
       profile: profile.id
-    }
+    };
   }
 
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
@@ -90,14 +90,14 @@ export class UserRepository implements
           email: input.email,
           password: input.password
         }
-      })
+      });
 
       return {
         user_id: user.id,
-        profile_id: ''
-      }
+        profile_id: ""
+      };
     } catch (error: any) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 
@@ -108,13 +108,13 @@ export class UserRepository implements
       }, include: {
         user_profile: true
       }
-    })
+    });
 
     if (user === null) {
-      throw new Error('Usuário ou email estão incorretos. Tente novamente.')
+      throw new Error("Usuário ou email estão incorretos. Tente novamente.");
     }
 
-    return user
+    return user;
   }
 
   async findByEmailIncludingPassword(input: FindUserByEmailIncludingPasswordRepository.Input): Promise<FindUserByEmailIncludingPasswordRepository.Output> {
@@ -127,7 +127,7 @@ export class UserRepository implements
     });
 
     if (user === null) {
-      throw new Error('Usuário ou email estão incorretos. Tente novamente.')
+      throw new Error("Usuário ou email estão incorretos. Tente novamente.");
     }
 
     return {
@@ -135,7 +135,7 @@ export class UserRepository implements
       email: user.email,
       password: user.password,
       role: user.user_profile?.role as string
-    }
+    };
   }
 
   async findById(input: FindUserByIdRepository.Input): Promise<FindUserByIdRepository.Output> {
@@ -153,10 +153,10 @@ export class UserRepository implements
     });
 
     if (!user) {
-      throw new UserNotFoundError()
+      throw new UserNotFoundError();
     }
 
-    return user
+    return user;
   }
 
   async findByIdIncludingResources(input: FindUserByIdIncludingResourcesRepository.Input): Promise<FindUserByIdIncludingResourcesRepository.Output> {
@@ -174,11 +174,11 @@ export class UserRepository implements
     });
 
     if (!user) {
-      throw new UserNotFoundError()
+      throw new UserNotFoundError();
     }
 
     if (!user.user_profile?.resources) {
-      throw new Error('Failed to find resources from this user.')
+      throw new Error("Failed to find resources from this user.");
     }
 
     return {
@@ -188,6 +188,6 @@ export class UserRepository implements
       created_at: user.created_at,
       resources: user.user_profile.resources,
       agree_with_policies: user.agree_with_policies
-    }
+    };
   }
 }

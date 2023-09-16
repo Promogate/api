@@ -1,6 +1,6 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class CreateSubcategoryController {
@@ -14,19 +14,19 @@ class CreateSubcategoryController {
           name: body.name,
           category_id: categoryId
         }
-      })
+      });
   
       return res.status(201).json({
-        status: 'success',
-        message: 'Categoria criada com sucesso!',
+        status: "success",
+        message: "Categoria criada com sucesso!",
         subcategory
       });
   
     } catch (error: any) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         error: error.message,
-        message: 'Falha ao tentar criar uma nova subcategoria.'
+        message: "Falha ao tentar criar uma nova subcategoria."
       });
     }
   }

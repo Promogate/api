@@ -1,8 +1,8 @@
-import uuidAPIKey from 'uuid-apikey';
+import uuidAPIKey from "uuid-apikey";
 
-import { SaveAccessKeysRepository } from '@/data/contracts';
-import { CreateApiKey } from '@/domain/features';
-import dayjs from 'dayjs';
+import { SaveAccessKeysRepository } from "@/data/contracts";
+import { CreateApiKey } from "@/domain/features";
+import dayjs from "dayjs";
 
 export class CreateApiKeyService implements CreateApiKey {
   constructor (
@@ -11,14 +11,14 @@ export class CreateApiKeyService implements CreateApiKey {
 
   async execute (input: CreateApiKey.Input): Promise<CreateApiKey.Output> {
     const { apiKey } = uuidAPIKey.create();
-    const key = apiKey.replace(/[-]/g, '')
-    const now = dayjs()
-    const expirationDate = now.add(1, 'year').format();
+    const key = apiKey.replace(/[-]/g, "");
+    const now = dayjs();
+    const expirationDate = now.add(1, "year").format();
 
-    await this.accessKeysRepository.save({ userId: input.id, key, expirationDate })
+    await this.accessKeysRepository.save({ userId: input.id, key, expirationDate });
 
     return {
       key
-    }
+    };
   }
 }

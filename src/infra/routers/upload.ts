@@ -1,12 +1,12 @@
-import { verifyToken } from '@/application/middlewares';
-import { Router } from 'express';
-import fs from 'fs';
-import multer from 'multer';
-import path from 'path';
+import { verifyToken } from "@/application/middlewares";
+import { Router } from "express";
+import fs from "fs";
+import multer from "multer";
+import path from "path";
 
 const uploadRouter = Router();
 
-const upload = multer({ dest: './public' })
+const upload = multer({ dest: "./public" });
 
 function createDestinationFolder(destinationPath: string) {
   if (!checkDestinationFolder(destinationPath)) {
@@ -28,29 +28,29 @@ function moveFileToDestination(file: Express.Multer.File, destinationPath: strin
   fs.renameSync(file.path, destination);
 }
 
-uploadRouter.get('/:storeName/:fileName', (req, res) => {
+uploadRouter.get("/:storeName/:fileName", (req, res) => {
   const { storeName, fileName } = req.params as { storeName: string, fileName: string };
   return res.sendFile(path.resolve(`public/${storeName}/${fileName}`));
-})
+});
 
 uploadRouter.use(verifyToken);
 
-uploadRouter.post('/:storeName', upload.single('file'), (req, res) => {
+uploadRouter.post("/:storeName", upload.single("file"), (req, res) => {
   const file = req.file;
   const { storeName } = req.params as { storeName: string };
 
   try {
-    createDestinationFolder('public/' + storeName);
+    createDestinationFolder("public/" + storeName);
 
-    if (!file) throw new Error('Arquivo não identificado');
+    if (!file) throw new Error("Arquivo não identificado");
 
-    moveFileToDestination(file, 'public/' + storeName);
+    moveFileToDestination(file, "public/" + storeName);
 
   } catch (error) {
-    throw new Error('Falha ao fazer upload');
+    throw new Error("Falha ao fazer upload");
   }
 
-  return res.send('Arquivo recebido com sucesso!');
-})
+  return res.send("Arquivo recebido com sucesso!");
+});
 
 export { uploadRouter };

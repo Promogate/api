@@ -1,6 +1,6 @@
-import { ErrorHandler, HttpStatusCode } from '@/application/utils';
-import { GetNumberOfOffersRepository, SaveOfferRepository } from '@/data/contracts';
-import { prisma } from '@/main/config';
+import { ErrorHandler, HttpStatusCode } from "@/application/utils";
+import { GetNumberOfOffersRepository, SaveOfferRepository } from "@/data/contracts";
+import { prisma } from "@/main/config";
 
 export class ResourcesRepository implements
   SaveOfferRepository,
@@ -22,24 +22,24 @@ export class ResourcesRepository implements
             }
           }
         }
-      })
+      });
       if (!result || !result.user_profile) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.BAD_REQUEST,
-          name: 'RepositoryFailedToGetNumberOfOffers',
-          message: 'Repositório falhou ao tentar buscar a quantidade de ofertas já cadastradas'
-        })
+          name: "RepositoryFailedToGetNumberOfOffers",
+          message: "Repositório falhou ao tentar buscar a quantidade de ofertas já cadastradas"
+        });
       }
       return {
         offersCount: result._count.offers,
         role: result.user_profile.role
-      }
+      };
     } catch (error: any) {
       throw new ErrorHandler({
         statusCode: HttpStatusCode.BAD_REQUEST,
-        name: 'RepositoryFailedToGetNumberOfOffers',
-        message: 'Repositório falhou ao tentar buscar a quantidade de ofertas já cadastradas'
-      })
+        name: "RepositoryFailedToGetNumberOfOffers",
+        message: "Repositório falhou ao tentar buscar a quantidade de ofertas já cadastradas"
+      });
     }
   }
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
@@ -61,13 +61,13 @@ export class ResourcesRepository implements
           is_free_shipping: input.isFreeShipping,
           is_on_showcase: input.isOnShowcase,
         }
-      })
+      });
     } catch (error: any) {
       throw new ErrorHandler({
         statusCode: HttpStatusCode.BAD_REQUEST,
-        name: 'RepositoryFailedToSaveOffer',
-        message: 'Repositório falhou ao tentar salvar uma nova oferta'
-      })
+        name: "RepositoryFailedToSaveOffer",
+        message: "Repositório falhou ao tentar salvar uma nova oferta"
+      });
     }
   }
 

@@ -1,5 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const pgateClient = axios.create({
-  baseURL: 'https://pgate.app/'
-})
+  baseURL: "https://pgate.app/"
+});

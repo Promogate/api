@@ -1,8 +1,8 @@
 import {
   FindUserByIdIncludingResourcesRepository,
   GetOffersClicksRepository
-} from '@/data/contracts';
-import { GetOffersClicks } from '@/domain/features';
+} from "@/data/contracts";
+import { GetOffersClicks } from "@/domain/features";
 
 export class GetOffersClicksService implements GetOffersClicks {
   constructor(
@@ -11,12 +11,12 @@ export class GetOffersClicksService implements GetOffersClicks {
   ) { }
 
   async execute(input: GetOffersClicks.Input): Promise<GetOffersClicks.Output> {
-    const { resources: { id } } = await this.userRepository.findByIdIncludingResources({ id: input.id })
+    const { resources: { id } } = await this.userRepository.findByIdIncludingResources({ id: input.id });
 
-    const { clicks } = await this.analyticsRepository.getClicks({ resourceId: id })
+    const { clicks } = await this.analyticsRepository.getClicks({ resourceId: id });
 
     return {
       clicks
-    }
+    };
   }
 }

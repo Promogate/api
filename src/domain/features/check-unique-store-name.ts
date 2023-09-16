@@ -1,4 +1,4 @@
-import { UserProfile } from '@prisma/client';
+import { UserProfile } from "@prisma/client";
 
 export interface CheckUniqueStoreName {
   execute(input: CheckUniqueStoreName.Input): Promise<CheckUniqueStoreName.Output>

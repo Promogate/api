@@ -1,4 +1,4 @@
-import { Offer } from '@prisma/client';
+import { Offer } from "@prisma/client";
 
 export interface UpdateOffer {
   execute(input: UpdateOffer.Input): Promise<UpdateOffer.Ouput>

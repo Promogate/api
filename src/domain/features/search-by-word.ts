@@ -1,4 +1,4 @@
-import { Offer } from '@prisma/client'
+import { Offer } from "@prisma/client";
 
 export interface ISearchByWord {
   execute(input: ISearchByWord.Input): Promise<ISearchByWord.Output>

@@ -1,6 +1,6 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class MeCategoriesController {
@@ -29,22 +29,22 @@ class MeCategoriesController {
 
       if (!user) {
         return res.status(401).json({
-          status: 'error',
-          error: 'Não autorizado',
-          message: 'Error ao buscar informações sobre o usuário'
+          status: "error",
+          error: "Não autorizado",
+          message: "Error ao buscar informações sobre o usuário"
         });
       }
 
       return res.status(200).json({
-        status: 'sucess',
-        message: 'Usuário encontrado',
+        status: "sucess",
+        message: "Usuário encontrado",
         user
       });
     } catch (error: any) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         error: error.message,
-        message: 'Error ao buscar informações sobre o usuário'
+        message: "Error ao buscar informações sobre o usuário"
       });
     }
   }

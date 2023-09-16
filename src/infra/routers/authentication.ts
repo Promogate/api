@@ -1,8 +1,8 @@
-import { signInController } from '@/application/controllers';
-import { Router } from 'express';
+import { signInController } from "@/application/controllers";
+import { Router } from "express";
 
 const authenticationRouter = Router();
 
-authenticationRouter.post('/signin', signInController.handle);
+authenticationRouter.post("/signin", signInController.handle);
 
 export { authenticationRouter };

@@ -1,1 +1,1 @@
-export * from './express-error-handler';
+export * from "./express-error-handler";

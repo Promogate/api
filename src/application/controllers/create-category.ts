@@ -1,6 +1,6 @@
-import { VerifiedTokenRequest } from '@/domain/models';
-import { prisma } from '@/main/config';
-import { Response } from 'express';
+import { VerifiedTokenRequest } from "@/domain/models";
+import { prisma } from "@/main/config";
+import { Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class CreateCategoryController {
@@ -17,16 +17,16 @@ class CreateCategoryController {
       });
   
       return res.status(201).json({
-        status: 'success',
-        message: 'Categoria criada com sucesso!',
+        status: "success",
+        message: "Categoria criada com sucesso!",
         category
       });
   
     } catch (error: any) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         error: error.message,
-        message: 'Falha ao tentar criar uma nova categoria.'
+        message: "Falha ao tentar criar uma nova categoria."
       });
     }
   }
