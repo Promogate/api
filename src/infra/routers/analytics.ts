@@ -34,11 +34,7 @@ analyticsRouter.get('/redirect/offer/with-query', async (req: Request, res: Resp
       })
     }
 
-    return res.status(200).json({
-      status: 'success',
-      message: 'Oferta',
-      offer
-    })
+    res.redirect(offer.destination_link);
   } catch (error: any) {
     return res.status(400).json({
       status: 'error',
