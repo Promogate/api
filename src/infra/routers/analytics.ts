@@ -6,13 +6,13 @@ import { Request, Response, Router } from 'express';
 const analyticsRouter = Router();
 
 /*eslint-disable  @typescript-eslint/no-explicit-any*/
-analyticsRouter.get('/redirect/offer/:id', async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string };
+analyticsRouter.get('/redirect/offer/with-query', async (req: Request, res: Response) => {
+  const { shortLink } = req.query as { shortLink: string };
 
   try {
-    const offer = await prisma.offer.findUnique({
+    const offer = await prisma.offer.findFirst({
       where: {
-        id
+        short_link: shortLink
       },
       include: {
         resources: {
@@ -37,7 +37,7 @@ analyticsRouter.get('/redirect/offer/:id', async (req: Request, res: Response) =
     await prisma.destinationClicks.create({
       data: {
         destination_link: offer.destination_link,
-        offer_id: id,
+        offer_id: "UNAVAILABLE",
         analytics_id: offer.resources.analytics?.id as string
       }
     })
