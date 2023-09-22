@@ -34,14 +34,6 @@ analyticsRouter.get('/redirect/offer/with-query', async (req: Request, res: Resp
       })
     }
 
-    await prisma.destinationClicks.create({
-      data: {
-        destination_link: offer.destination_link,
-        offer_id: "UNAVAILABLE",
-        analytics_id: offer.resources.analytics?.id as string
-      }
-    })
-
     return res.status(200).json({
       status: 'success',
       message: 'Oferta',
