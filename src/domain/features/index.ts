@@ -11,6 +11,7 @@ export * from "./delete-api-key";
 export * from "./find-offer-by-id";
 export * from "./find-user-by-email";
 export * from "./find-user-by-id";
+export * from "./generate-api-key";
 export * from "./get-cache";
 export * from "./get-offers-clicks";
 export * from "./get-offers-with-clicks-count";
