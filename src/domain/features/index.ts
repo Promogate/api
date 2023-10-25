@@ -6,6 +6,7 @@ export * from "./create-offer";
 export * from "./create-profile";
 export * from "./create-session";
 export * from "./create-shortlink";
+export * from "./create-user";
 export * from "./delete-api-key";
 export * from "./find-offer-by-id";
 export * from "./find-user-by-email";

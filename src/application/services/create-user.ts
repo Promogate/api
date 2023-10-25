@@ -11,19 +11,12 @@ export class CreateUserService implements CreateUser {
 
   async execute(input: CreateUser.Input): Promise<CreateUser.Output> {
     const hashedPassword = await hash(input.password, 10);
-    const savedUser = await this.authenticationRepository.signUp({ ...input, password: hashedPassword });
+    const savedUser = await this.authenticationRepository.signUp({ ...input, password: hashedPassword, agree_with_policies: input.agreeWithPolicies });
     const token = sign({ id: savedUser.id, role: savedUser.user_profile?.role }, TOKEN_SECRET, { expiresIn: "1d" });
 
     return {
       token,
-      user: {
-        id: savedUser.id,
-        name: savedUser.name,
-        email: savedUser.email,
-        created_at: savedUser.created_at,
-        user_profile: savedUser.user_profile,
-        agree_with_policies: savedUser.agree_with_policies
-      }
+      id: savedUser.id
     };
   }
 }

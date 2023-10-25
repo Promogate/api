@@ -1,6 +1,6 @@
 import { SaveUserRepository } from "@/data/contracts";
 import { CreateUserError } from "@/domain/error";
-import { CreateUser } from "@/domain/features/CreateUser";
+import { CreateUser } from "@/domain/features";
 
 export class CreateUserUseCase implements CreateUser {
   constructor(private readonly userRepository: SaveUserRepository) { }

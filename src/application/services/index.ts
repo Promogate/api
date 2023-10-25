@@ -16,7 +16,6 @@ export * from "./get-store-data";
 export * from "./get-user-with-token";
 export * from "./list-offers";
 export * from "./sign-in";
-export * from "./stripe";
 export * from "./update-featured-offer-status";
 export * from "./update-offer";
 export * from "./update-shortlink-destination-link";
