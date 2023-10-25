@@ -1,10 +1,48 @@
-import { getProfileController, redirectController } from "@/application/controllers";
+import { getProfileController } from "@/application/controllers";
 import { verifyToken } from "@/application/middlewares";
-import { Router } from "express";
+import { prisma } from "@/main/config";
+import { Request, Response, Router } from "express";
 
 const analyticsRouter = Router();
 
-analyticsRouter.get("/redirect/offer/:id", async (req, res) => await redirectController.handle(req, res));
+/*eslint-disable  @typescript-eslint/no-explicit-any*/
+analyticsRouter.get("/redirect/offer/with-query", async (req: Request, res: Response) => {
+  const { shortLink } = req.query as { shortLink: string };
+
+  try {
+    const offer = await prisma.offer.findFirst({
+      where: {
+        short_link: shortLink
+      },
+      include: {
+        resources: {
+          include: {
+            analytics: {
+              select: {
+                id: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!offer) {
+      return res.status(404).json({
+        status: "error",
+        message: "Oferta não encontrada"
+      });
+    }
+
+    res.redirect(offer.destination_link);
+  } catch (error: any) {
+    return res.status(400).json({
+      status: "error",
+      error: error.message,
+      message: "Algo deu erro ao tentar encontrar a oferta"
+    });
+  }
+});
 
 analyticsRouter.use(verifyToken);
 analyticsRouter.get("/profile/:id", getProfileController.handle);
