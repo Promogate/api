@@ -1,5 +1,6 @@
+import { ErrorHandler, HttpStatusCode } from "@/application/utils";
 import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from "@/data/contracts";
-import { UserAlredyExistsError, UserNotFoundError } from "@/domain/error";
+import { UserNotFoundError } from "@/domain/error";
 import { prisma } from "@/main/config";
 
 export class AuthenticationRepository implements
@@ -31,9 +32,11 @@ export class AuthenticationRepository implements
 
   async signUp(input: ISignUpRepo.Input): Promise<ISignUpRepo.Output> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
-    if (userAlreadyExists) {
-      throw new UserAlredyExistsError();
-    }
+    if (userAlreadyExists) throw new ErrorHandler({
+      statusCode: HttpStatusCode.FORBIDDEN,
+      name: "UserAlreadyExists",
+      message: "Usuário indisponível. Tente novamente."
+    });
     try {
       const user = await prisma.user.create({
         data: {

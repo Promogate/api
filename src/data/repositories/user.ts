@@ -1,4 +1,4 @@
-import { generateApiKey, generateExpirationDate } from "@/application/utils";
+import { ErrorHandler, HttpStatusCode, generateApiKey, generateExpirationDate } from "@/application/utils";
 import {
   CreateProfileRepository,
   CreateUserRepository,
@@ -8,7 +8,7 @@ import {
   FindUserByIdIncludingResourcesRepository,
   FindUserByIdRepository
 } from "@/data/contracts";
-import { UserAlredyExistsError, UserNotFoundError } from "@/domain/error";
+import { UserNotFoundError } from "@/domain/error";
 import { prisma } from "@/main/config";
 
 export class UserRepository implements
@@ -79,9 +79,11 @@ export class UserRepository implements
   async create(input: CreateUserRepository.Input): Promise<CreateUserRepository.Ouput> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
 
-    if (userAlreadyExists) {
-      throw new UserAlredyExistsError();
-    }
+    if (userAlreadyExists) throw new ErrorHandler({
+      statusCode: HttpStatusCode.FORBIDDEN,
+      name: "UserAlreadyExists",
+      message: "Usuário indisponível. Tente novamente"
+    });
 
     try {
       const user = await prisma.user.create({

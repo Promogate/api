@@ -66,20 +66,20 @@ describe("CreateOffer", () => {
   test("it should throw CreateShortlinkError if shortlink usecase returns undefined", async () => {
     offerRepository.getNumberOfOffers.mockResolvedValue(getNumberOfOffersOuput);
     shortlinkUseCase.execute.mockResolvedValueOnce(undefined);
-    await expect(sut.execute(input)).rejects.toThrow(new CreateShortlinkError);
+    await expect(sut.execute(input)).rejects.toThrow(CreateShortlinkError);
   });
 
   test("it should throw CreateOfferError if offerRepository save method fails", async () => {
     offerRepository.getNumberOfOffers.mockResolvedValue(getNumberOfOffersOuput);
     shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput);
     offerRepository.saveOffer.mockRejectedValue({});
-    await expect(sut.execute(input)).rejects.toThrow(new CreateOfferError);
+    await expect(sut.execute(input)).rejects.toThrow(CreateOfferError);
   });
 
   test("it should throw OfferLimitError if resourceRepository checkOfferNumber method", async () => {
     offerRepository.getNumberOfOffers.mockResolvedValueOnce({ offersCount: 50, role: "FREE" });
     shortlinkUseCase.execute.mockResolvedValueOnce(shortlinkOuput);
-    await expect(sut.execute(input)).rejects.toThrow(new OfferLimitError());
+    await expect(sut.execute(input)).rejects.toThrow(OfferLimitError);
   });
 
   test("it should throw GetNumberOfOffersError when getNumberOfOffers method returns undefined", async () => {
