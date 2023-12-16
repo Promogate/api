@@ -76,11 +76,12 @@ model ApiKey {
 }
 
 model Resources {
-  id         String     @id @default(uuid())
-  offers     Offer[]
-  categories Category[]
-  created_at DateTime   @default(now())
-  analytics  Analytics?
+  id          String       @id @default(uuid())
+  offers      Offer[]
+  categories  Category[]
+  created_at  DateTime     @default(now())
+  analytics   Analytics?
+  redirectors Redirector[]
 
   user_profile    UserProfile? @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
   user_profile_id String       @unique
@@ -188,8 +189,22 @@ model DestinationClicks {
   @@map("destination_clicks")
 }
 
-model Redirectors {
+model Redirector {
   id          String  @id @default(uuid())
   title       String
   description String?
+  groups      Group[]
+
+  resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
+  resources_id String    @unique
+}
+
+model Group {
+  id               String  @id @default(uuid())
+  title            String?
+  destination_link String
+  group_limit      Int?
+
+  redirector    Redirector @relation(fields: [redirector_id], references: [id], onDelete: Cascade)
+  redirector_id String     @unique
 }
