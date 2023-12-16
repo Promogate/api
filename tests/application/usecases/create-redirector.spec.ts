@@ -1,27 +1,8 @@
-import { ErrorHandler } from "@/application/utils";
-import { Group } from "@/domain/@types";
+import { CreateRedirectorService } from "@/application/services";
+import { ErrorHandler, HttpStatusCode } from "@/application/utils";
+import { CreateRedirectorRepository } from "@/data/contracts";
 import { CreateRedirector } from "@/domain/features/create-redirector";
 import { MockProxy, mock } from "jest-mock-extended";
-
-export interface CreateRedirectorRepository {
-  create(input: CreateRedirectorRepository.Input): Promise<void | ErrorHandler>
-}
-
-export namespace CreateRedirectorRepository {
-  export type Input = {
-    title: string;
-    description?: string;
-    groups?: Group[]
-  }
-}
-
-export class CreateRedirectorService implements CreateRedirector {
-  constructor(readonly redirectorRepository: CreateRedirectorRepository) { }
-
-  async execute(input: CreateRedirector.Input): Promise<CreateRedirector.Output> {
-    await this.redirectorRepository.create(input);
-  }
-}
 
 describe("CreateRedirector", function () {
   let redirectorRepository: MockProxy<CreateRedirectorRepository>;
@@ -37,12 +18,21 @@ describe("CreateRedirector", function () {
     sut = new CreateRedirectorService(redirectorRepository);
   });
 
-  it("should create Redirector with correct params", async function () {
+  it("should create a redirector with correct params", async function () {
     await sut.execute(input);
     expect(redirectorRepository.create).toHaveBeenCalledWith({
       title: "any_title",
       description: "any_description",
       groups: []
     });
+  });
+
+  it("should not to throw or return any value", async function () {
+    await expect(sut.execute(input)).resolves.not.toThrow();
+  });
+
+  it("should throw an error if service do not work", async function () {
+    redirectorRepository.create.mockRejectedValue(new ErrorHandler({ message: "any_message", name: "any_name", statusCode: HttpStatusCode.INTERNAL_SERVER }));
+    await expect(sut.execute(input)).rejects.toThrow(ErrorHandler);
   });
 });

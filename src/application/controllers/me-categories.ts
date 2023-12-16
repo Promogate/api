@@ -2,7 +2,6 @@ import { VerifiedTokenRequest } from "@/domain/models";
 import { prisma } from "@/main/config";
 import { Response } from "express";
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 class MeCategoriesController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
     try {
