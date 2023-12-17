@@ -1,3 +1,4 @@
+import { ErrorHandler } from "@/application/utils";
 import { User, UserProfile, UserSocialMedia } from "@prisma/client";
 
 export interface ISignIn {
@@ -17,5 +18,5 @@ export namespace ISignIn {
         social_media: UserSocialMedia | null;
       }) | null;
     })
-  }
+  } | ErrorHandler
 }
