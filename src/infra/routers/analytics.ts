@@ -5,7 +5,6 @@ import { Request, Response, Router } from "express";
 
 const analyticsRouter = Router();
 
-/*eslint-disable  @typescript-eslint/no-explicit-any*/
 analyticsRouter.get("/redirect/offer/with-query", async (req: Request, res: Response) => {
   const { shortLink } = req.query as { shortLink: string };
 

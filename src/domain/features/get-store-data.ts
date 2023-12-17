@@ -1,10 +1,10 @@
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 
-export interface IGetStoreData {
-  execute(input: IGetStoreData.Input): Promise<IGetStoreData.Output>
+export interface GetStoreData {
+  execute(input: GetStoreData.Input): Promise<GetStoreData.Output>
 }
 
-export namespace IGetStoreData {
+export namespace GetStoreData {
   export type Input = {
     store_name: string
   }

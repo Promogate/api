@@ -36,12 +36,14 @@ resourcesRouter.get("/offer", async (req, res) => {
   });
 });
 
+// NEED TO BE REFACTORED
 resourcesRouter.get("/stores", getStoresNamesController.handle);
 
 resourcesRouter.get("/offers/:store", getOffersFromStoreController.handle);
 
 resourcesRouter.get("/store/:store", getStoreDataController.handle);
 
+// NEED TO BE REFACTORED
 resourcesRouter.get("/:resourceId/offer/:offerId", getSingleOfferController.handle);
 
 resourcesRouter.use(verifyToken);

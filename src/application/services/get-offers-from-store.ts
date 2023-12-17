@@ -1,28 +1,8 @@
+import { GetOffersFromStore } from "@/domain/features";
 import { prisma } from "@/main/config";
-import { Offer, UserProfile } from "@prisma/client";
 
-export interface IGetOffersFromStore {
-  execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output>
-}
-
-export namespace IGetOffersFromStore {
-  export type Input = {
-    storeName: string
-  }
-
-  export type Output = (UserProfile & {
-    resources: {
-        offers: (Offer & {
-            _count: {
-                offer_clicks: number;
-            };
-        })[];
-    } | null;
-})
-}
-
-export class GetOffersFromStoreService implements IGetOffersFromStore {
-  async execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output> {
+export class GetOffersFromStoreService implements GetOffersFromStore {
+  async execute(input: GetOffersFromStore.Input): Promise<GetOffersFromStore.Output> {
     const result = await prisma.userProfile.findFirst({
       where: {
         store_name: {
