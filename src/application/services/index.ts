@@ -16,6 +16,7 @@ export * from "./get-showcase-offers";
 export * from "./get-store-data";
 export * from "./get-user-with-token";
 export * from "./list-offers";
+export * from "./logging";
 export * from "./sign-in";
 export * from "./update-featured-offer-status";
 export * from "./update-offer";

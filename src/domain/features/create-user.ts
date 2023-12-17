@@ -1,4 +1,4 @@
-import { CreateUserError } from "@/domain/error";
+import { ErrorHandler } from "@/application/utils";
 
 export interface CreateUser {
   execute(input: CreateUser.Input): Promise<CreateUser.Output>
@@ -15,5 +15,5 @@ export namespace CreateUser {
   export type Output = {
     token: string,
     id: string
-  } | CreateUserError
+  } | ErrorHandler
 }

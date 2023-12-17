@@ -23,6 +23,7 @@ export * from "./get-store-data";
 export * from "./get-user-info";
 export * from "./list-api-keys";
 export * from "./list-offers";
+export * from "./logging";
 export * from "./redirect-by-offer-id";
 export * from "./revalidate-refresh-token";
 export * from "./search-by-word";

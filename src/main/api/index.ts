@@ -3,9 +3,6 @@ dotenv.config();
 
 import "../config/module-alias";
 
-import "express-async-errors";
-
-
 import {
   AnalyticsController,
   AuthenticationController,
@@ -21,6 +18,7 @@ import {
   GetOffersFromStoreService,
   GetProfileService,
   GetStoreDataService,
+  LoggingService,
   SignInService,
   UpdateFeaturedOfferStatusService,
   UpdateOfferService,
@@ -41,6 +39,7 @@ import { ExpressAdapter } from "@/infra/http";
 
 const PORT = process.env.PORT || 8080;
 
+const loggingService = new LoggingService();
 const redirectorRepository = new RedirectorRepository();
 const createRedirector = new CreateRedirectorService(redirectorRepository);
 const authenticationRepository = new AuthenticationRepository();
@@ -55,7 +54,7 @@ const updateOfferShowcaseStatus = new UpdateShowcaseOfferStatusService();
 const updateOfferFeaturedStatus = new UpdateFeaturedOfferStatusService();
 const analyticsRepository = new AnalyticsRepository();
 const getProfileService = new GetProfileService(analyticsRepository);
-const createUserService = new CreateUserService(authenticationRepository);
+const createUserService = new CreateUserService(loggingService, authenticationRepository);
 const userRepository = new UserRepository();
 const createProfileService = new CreateProfileUseCase(userRepository);
 const createApiKeyController = new CreateApiKeyService(authenticationRepository);

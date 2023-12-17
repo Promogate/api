@@ -1,5 +1,6 @@
 import { ErrorHandler, HttpStatusCode } from "@/application/utils";
 import express, { Request, Response } from "express";
+import "express-async-errors";
 import { HttpServer } from "./http-server";
 
 export class ExpressAdapter implements HttpServer {
@@ -8,7 +9,6 @@ export class ExpressAdapter implements HttpServer {
   constructor() {
     this.app = express();
     this.app.use(express.json());
-    this.app.use(ErrorHandler);
   }
 
   on(method: string, url: string, middlewares: Function[], callback: Function): void {
