@@ -199,5 +199,17 @@ export class AuthenticationController {
       const output = await createApiKey.execute(params);
       return output;
     });
+
+    httpServer.on("get", "/users/me/:id", [verifyToken], async function (params: any, body: any) {
+      const output = await prisma.user.findFirst({
+        where: {
+          id: params.params.id
+        },
+        include: {
+          user_profile: true
+        }
+      });
+      return output;
+    });
   }
 }

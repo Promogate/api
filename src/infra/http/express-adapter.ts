@@ -1,14 +1,21 @@
+const asyncErrors = require("express-async-errors");
+
 import { ErrorHandler, HttpStatusCode } from "@/application/utils";
-import express, { Request, Response } from "express";
-import "express-async-errors";
+import cors from "cors";
+import express, { NextFunction, Request, Response } from "express";
 import { HttpServer } from "./http-server";
 
 export class ExpressAdapter implements HttpServer {
   app: any;
 
   constructor() {
+    asyncErrors;
     this.app = express();
+    this.app.use(cors());
     this.app.use(express.json());
+    this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+      res.status(500).send("Something broke!");
+    });
   }
 
   on(method: string, url: string, middlewares: Function[], callback: Function): void {

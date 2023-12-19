@@ -175,7 +175,7 @@ export class ResourcesController {
       try {
         const output = await prisma.offer.findMany({
           where: {
-            resources_id: params.resourcesId,
+            resources_id: params.params.resourcesId,
           }, include: {
             categories: {
               select: {
