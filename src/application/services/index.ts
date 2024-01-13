@@ -23,3 +23,4 @@ export * from "./update-offer";
 export * from "./update-shortlink-destination-link";
 export * from "./update-showcase-offer-status";
 export * from "./upload-offers-from-csv";
+export * from "./create-redirector-shortlink";

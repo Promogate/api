@@ -205,10 +205,24 @@ export class AuthenticationController {
         where: {
           id: params.params.id
         },
-        include: {
-          user_profile: true
+        select: {
+          id: true,
+          email: true,
+          agree_with_policies: true,
+          name: true,
+          created_at: true,
+          user_profile: {
+            include: {
+              resources: {
+                select: {
+                  id: true,
+                }
+              }
+            }
+          }
         }
       });
+      
       return output;
     });
   }

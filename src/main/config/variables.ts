@@ -5,3 +5,4 @@ export const SOCIALSOUL_API_URL = process.env.SOCIALSOUL_API_URL as string;
 export const UPSTASH_REDIS_URL = process.env.UPSTASH_REDIS_URL as string;
 export const STRIPE_DEV_API_KEY = process.env.STRIPE_DEV_API_KEY as string;
 export const STRIPE_LIVE_API_KEY = process.env.STRIPE_LIVE_API_KEY as string;
+export const WHITELIST = ["http://localhost:3000"];

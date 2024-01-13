@@ -13,6 +13,7 @@ import { SocialSoulController } from "@/application/controllers/socialsoul-contr
 import {
   CreateApiKeyService,
   CreateRedirectorService,
+  CreateRedirectorShortlinkService,
   CreateShortlinkService,
   CreateUserService,
   GetOffersFromStoreService,
@@ -36,6 +37,7 @@ import {
   UserRepository
 } from "@/data/repositories";
 import { ExpressAdapter } from "@/infra/http";
+import { RedirectorLinkService } from "@/application/services/redirector-link";
 
 const PORT = process.env.PORT || 8080;
 
@@ -58,6 +60,8 @@ const createUserService = new CreateUserService(loggingService, authenticationRe
 const userRepository = new UserRepository();
 const createProfileService = new CreateProfileUseCase(userRepository);
 const createApiKeyController = new CreateApiKeyService(authenticationRepository);
+const createRedirectorShorlinkService = new CreateRedirectorShortlinkService();
+const redirectorLinkService = new RedirectorLinkService();
 
 const httpServer = new ExpressAdapter();
 
@@ -78,7 +82,7 @@ new AuthenticationController(
   createProfileService,
   createApiKeyController
 );
-new RedirectorController(httpServer, createRedirector);
+new RedirectorController(httpServer, createRedirectorShorlinkService, redirectorLinkService);
 new AnalyticsController(httpServer, getProfileService);
 
 httpServer.listen(Number(PORT));

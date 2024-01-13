@@ -19,8 +19,6 @@ model User {
   agree_with_policies Boolean? @default(false)
 
   user_profile UserProfile?
-
-  @@map("users")
 }
 
 model UserProfile {
@@ -39,8 +37,6 @@ model UserProfile {
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique
-
-  @@map("user_profile")
 }
 
 model UserSocialMedia {
@@ -53,8 +49,6 @@ model UserSocialMedia {
 
   user_profile    UserProfile? @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
   user_profile_id String       @unique
-
-  @@map("user_social_media")
 }
 
 enum Role {
@@ -71,8 +65,6 @@ model ApiKey {
 
   user_profile    UserProfile @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
   user_profile_id String      @unique
-
-  @@map("api_key")
 }
 
 model Resources {
@@ -111,8 +103,6 @@ model Offer {
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String
-
-  @@map("offers")
 }
 
 model Category {
@@ -123,8 +113,6 @@ model Category {
   resources    Resources           @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String
   offers       CategoriesOnOffer[]
-
-  @@map("categories")
 }
 
 model CategoriesOnOffer {
@@ -144,8 +132,6 @@ model SubCategory {
 
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
   category_id String
-
-  @@map("sub_categories")
 }
 
 model Analytics {
@@ -158,8 +144,6 @@ model Analytics {
 
   user_profile    UserProfile @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
   user_profile_id String      @unique
-
-  @@map("analytics")
 }
 
 model OfferClicks {
@@ -171,8 +155,6 @@ model OfferClicks {
 
   offer    Offer  @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   offer_id String
-
-  @@map("offer_clicks")
 }
 
 model DestinationClicks {
@@ -185,15 +167,18 @@ model DestinationClicks {
 
   offer    Offer  @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   offer_id String
-
-  @@map("destination_clicks")
 }
 
 model Redirector {
-  id          String  @id @default(uuid())
-  title       String
-  description String?
-  groups      Group[]
+  id               String  @id @default(uuid())
+  title            String
+  description      String?
+  groups           Group[]
+  redirectorLink   String? @unique
+  timesClicked     Int?    @default(0)
+  type             String? @default("sequential")
+  currentGroup     Int     @default(0)
+  redirectorStatus String  @default("started")
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String    @unique
@@ -203,8 +188,9 @@ model Group {
   id               String  @id @default(uuid())
   title            String?
   destination_link String
-  group_limit      Int?
+  members          Int
+  limit            Int     @default(1024)
 
   redirector    Redirector @relation(fields: [redirector_id], references: [id], onDelete: Cascade)
-  redirector_id String     @unique
+  redirector_id String
 }

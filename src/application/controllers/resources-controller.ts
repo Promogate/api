@@ -171,7 +171,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/:resourcesId/offers", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourcesId/offers", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.offer.findMany({
           where: {
@@ -258,6 +258,51 @@ export class ResourcesController {
             id: params.id
           }
         });
+        return output;
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToDeleteOffer",
+          message: error.message
+        });
+      }
+    });
+
+    httpServer.on("post", "/resources/:resourcesId/redirector/create", [verifyToken], async function (params: any, body: any) {
+      try {
+        const output = await prisma.redirector.create({
+          data: {
+            title: body.title,
+            description: body.description,
+            groups: body.groups,
+            resources: {
+              connect: {
+                id: params.params.resourcesId
+              }
+            }
+          }
+        });
+        return output;
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToDeleteOffer",
+          message: error.message
+        });
+      }
+    });
+    
+    httpServer.on("get", "/resources/:resourcesId/redirectors", [verifyToken], async function (params: any, body: any) {
+      try {
+        const output = await prisma.redirector.findMany({
+          where: {
+            resources_id: params.params.resourcesId
+          },
+          include: {
+            groups: true
+          }
+        });
+        console.log(output);
         return output;
       } catch (error: any) {
         throw new ErrorHandler({
