@@ -1,4 +1,3 @@
-import { Offer } from '@prisma/client'
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export interface AddOfferClickRepository {
@@ -36,11 +35,9 @@ export namespace GetOffersWithClicksCountRepo {
     user_id: string
   }
 
-  export type Output = (Offer & {
-    _count: {
-      offer_clicks: number;
-    };
-  })[]
+  export type Output = {
+    offerClicks: number
+  }
 }
 
 export interface IGetProfileRepository {

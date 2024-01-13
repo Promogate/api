@@ -1,12 +1,12 @@
-import { SOCIALSOUL_API_URL, SOCIALSOUL_APP_ID } from '@/main/config';
+import { SOCIALSOUL_API_URL, SOCIALSOUL_APP_ID } from "@/main/config";
 import {
   CouponsResponse,
   GetOffersParams,
   OffersResponse,
   SingleOfferResponse,
   StoresResponse
-} from '@/modules/social-soul/@types';
-import axios, { AxiosInstance } from 'axios';
+} from "@/modules/social-soul/@types";
+import axios, { AxiosInstance } from "axios";
 
 export namespace ConnectSocialsoul {
   export type Input = {
@@ -33,15 +33,15 @@ export class ConnectSocialsoulService {
   private readonly sourceId: string;
 
   constructor({ sourceId }: ConnectSocialsoul.Input) {
-    this.appId = SOCIALSOUL_APP_ID
-    this.apiUrl = SOCIALSOUL_API_URL
-    this.sourceId = sourceId
+    this.appId = SOCIALSOUL_APP_ID;
+    this.apiUrl = SOCIALSOUL_API_URL;
+    this.sourceId = sourceId;
     this.apiClient = axios.create({
       baseURL: this.apiUrl,
       headers: {
         "Accept": "*/*, application/json, text/plain",
       }
-    })
+    });
   }
 
   async getCoupons(): Promise<CouponsResponse> {
@@ -49,9 +49,9 @@ export class ConnectSocialsoulService {
       params: {
         sourceId: this.sourceId
       }
-    })
+    });
 
-    return data
+    return data;
   }
 
   async getStores(): Promise<StoresResponse> {
@@ -59,8 +59,8 @@ export class ConnectSocialsoulService {
       params: {
         sourceId: this.sourceId
       }
-    })
-    return data
+    });
+    return data;
   }
 
   async getOffersByStoreId({ storeId, params }: ConnectSocialsoul.GetOffers): Promise<OffersResponse> {
@@ -69,9 +69,9 @@ export class ConnectSocialsoulService {
         sourceId: this.sourceId,
         ...params
       }
-    })
+    });
 
-    return data
+    return data;
   }
 
   async getOfferById({ offerId, params }: ConnectSocialsoul.GetOfferById): Promise<SingleOfferResponse> {
@@ -80,8 +80,8 @@ export class ConnectSocialsoulService {
         sourceId: this.sourceId,
         ...params
       }
-    })
+    });
 
-    return data
+    return data;
   }
 }

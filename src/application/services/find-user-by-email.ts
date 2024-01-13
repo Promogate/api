@@ -1,11 +1,8 @@
-import { FindUserByEmailRepository } from '@/data/contracts';
-import { FindUserByEmail } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
+import { FindUserByEmailRepository } from "@/data/contracts";
+import { FindUserByEmail } from "@/domain/features";
 
-@injectable()
 export class FindUserByEmailService implements FindUserByEmail {
   constructor(
-    @inject('UserRepository')
     private readonly userRepository: FindUserByEmailRepository
   ) { }
 
@@ -18,7 +15,7 @@ export class FindUserByEmailService implements FindUserByEmail {
       name: user.name,
       created_at: user.created_at,
       agree_with_policies: user.agree_with_policies
-    }
+    };
   }
 
 }

@@ -1,5 +1,5 @@
-import { User } from '@prisma/client'
-import { UserNotFound } from '../error'
+import { User } from "@prisma/client";
+import { UserNotFoundError } from "../error";
 
 export interface FindUserByEmail {
   execute: (input: FindUserByEmail.Input) => Promise<FindUserByEmail.Output>
@@ -7,5 +7,5 @@ export interface FindUserByEmail {
 
 export namespace FindUserByEmail {
   export type Input = { email: string }
-  export type Output = Omit<User, 'password'> | UserNotFound
+  export type Output = Omit<User, "password"> | UserNotFoundError
 }

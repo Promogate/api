@@ -1,23 +1,19 @@
-import { User, UserProfile, UserSocialMedia } from '@prisma/client';
+import { ErrorHandler } from "@/application/utils";
 
 export interface CreateUser {
-  execute: (input: CreateUser.Input) => Promise<CreateUser.Output>
+  execute(input: CreateUser.Input): Promise<CreateUser.Output>
 }
 
 export namespace CreateUser {
   export type Input = {
-    name: string;
-    email: string;
-    password: string;
-    agree_with_policies: boolean;
+    name: string
+    email: string
+    password: string
+    agreeWithPolicies: boolean
   }
 
   export type Output = {
-    token: string;
-    user: (Omit<User, "password"> & {
-    user_profile: (UserProfile & {
-      social_media: UserSocialMedia | null;
-    }) | null;
-  })
-  }
+    token: string,
+    id: string
+  } | ErrorHandler
 }

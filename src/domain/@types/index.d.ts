@@ -15,3 +15,10 @@ export type UpdateOfferParams = {
   expiration_date?: string,
   description?: string
 }
+
+export type Group = {
+  title: string;
+  participantsLimit: number;
+  description?: string;
+  clicks?: number;
+}

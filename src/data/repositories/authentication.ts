@@ -1,11 +1,17 @@
-import { ISignInRepo, ISignUpRepo } from '@/data/contracts';
-import { UserAlredyExistsError, UserNotFound } from '@/domain/error';
-import { prisma } from '@/main/config';
+import { ErrorHandler, HttpStatusCode } from "@/application/utils";
+import { ISignInRepo, ISignUpRepo, SaveAccessKeysRepository } from "@/data/contracts";
+import { UserNotFoundError } from "@/domain/error";
+import { prisma } from "@/main/config";
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
 export class AuthenticationRepository implements
   ISignInRepo,
-  ISignUpRepo {
+  ISignUpRepo,
+  SaveAccessKeysRepository {
+
+  async save (input: SaveAccessKeysRepository.Input): Promise<SaveAccessKeysRepository.Output> {
+    //
+  }
+
   async signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Output> {
     const user = await prisma.user.findUnique({
       where: {
@@ -19,16 +25,18 @@ export class AuthenticationRepository implements
       }
     });
 
-    if (user === null) throw new UserNotFound()
+    if (user === null) throw new UserNotFoundError();
 
-    return user
+    return user;
   }
 
   async signUp(input: ISignUpRepo.Input): Promise<ISignUpRepo.Output> {
     const userAlreadyExists = await prisma.user.findUnique({ where: { email: input.email } });
-    if (userAlreadyExists) {
-      throw new UserAlredyExistsError();
-    }
+    if (userAlreadyExists) throw new ErrorHandler({
+      statusCode: HttpStatusCode.FORBIDDEN,
+      name: "UserAlreadyExists",
+      message: "Usuário indisponível. Tente novamente."
+    });
     try {
       const user = await prisma.user.create({
         data: {
@@ -43,11 +51,11 @@ export class AuthenticationRepository implements
             },
           }
         }
-      })
+      });
 
-      return user
+      return user;
     } catch (error: any) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 }

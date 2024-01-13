@@ -1,35 +1,13 @@
-import { prisma } from '@/main/config'
-import { Offer, UserProfile } from '@prisma/client'
-import { injectable } from 'tsyringe'
+import { GetOffersFromStore } from "@/domain/features";
+import { prisma } from "@/main/config";
 
-export interface IGetOffersFromStore {
-  execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output>
-}
-
-export namespace IGetOffersFromStore {
-  export type Input = {
-    storeName: string
-  }
-
-  export type Output = (UserProfile & {
-    resources: {
-        offers: (Offer & {
-            _count: {
-                offer_clicks: number;
-            };
-        })[];
-    } | null;
-})
-}
-
-@injectable()
-export class GetOffersFromStoreService implements IGetOffersFromStore {
-  async execute(input: IGetOffersFromStore.Input): Promise<IGetOffersFromStore.Output> {
+export class GetOffersFromStoreService implements GetOffersFromStore {
+  async execute(input: GetOffersFromStore.Input): Promise<GetOffersFromStore.Output> {
     const result = await prisma.userProfile.findFirst({
       where: {
         store_name: {
           equals: input.storeName,
-          mode: 'insensitive',
+          mode: "insensitive",
         }
       }, include: {
         social_media: true,
@@ -52,10 +30,10 @@ export class GetOffersFromStoreService implements IGetOffersFromStore {
           }
         }
       }
-    })
+    });
 
-    if (!result || !result.resources?.offers) throw new Error('Falha ao encontrar as ofertas da loja.')
+    if (!result || !result.resources?.offers) throw new Error("Falha ao encontrar as ofertas da loja.");
 
-    return result
+    return result;
   }
 }

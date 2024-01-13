@@ -1,4 +1,4 @@
-import { User, UserProfile, UserSocialMedia } from '@prisma/client';
+import { User, UserProfile, UserSocialMedia } from "@prisma/client";
 
 export interface ISignInRepo {
   signIn(input: ISignInRepo.Input): Promise<ISignInRepo.Output>;

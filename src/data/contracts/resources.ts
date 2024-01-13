@@ -1,4 +1,4 @@
-import { Offer } from '@prisma/client';
+import { Offer } from "@prisma/client";
 
 export interface FindStoreNameByResourceIdRepository {
   findStoreNameByResourceId(input:FindStoreNameByResourceIdRepository.Input): Promise<FindStoreNameByResourceIdRepository.Output>
@@ -100,7 +100,7 @@ export namespace FindOfferByIdRepository {
     store_image: string | null,
     expiration_date: string | null,
     resourceId: string
-  }
+  } | undefined
 }
 
 export interface FindOffersByAPIKeyRepository {

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
@@ -76,16 +76,18 @@ model ApiKey {
 }
 
 model Resources {
-  id         String     @id @default(uuid())
-  offers     Offer[]
-  categories Category[]
-  created_at DateTime   @default(now())
-  analytics  Analytics?
+  id          String       @id @default(uuid())
+  offers      Offer[]
+  categories  Category[]
+  created_at  DateTime     @default(now())
+  analytics   Analytics?
+  redirectors Redirector[]
 
   user_profile    UserProfile? @relation(fields: [user_profile_id], references: [id], onDelete: Cascade)
   user_profile_id String       @unique
 
   @@map("resources")
+  
 }
 
 model Offer {
@@ -186,4 +188,30 @@ model DestinationClicks {
   offer_id String
 
   @@map("destination_clicks")
+}
+
+model Redirector {
+  id               String  @id @default(uuid())
+  title            String
+  description      String?
+  groups           Group[]
+  redirectorLink   String  @unique
+  timesClicked     Int     @default(0)
+  type             String  @default("sequential")
+  currentGroup     Int     @default(0)
+  redirectorStatus String  @default("started")
+
+  resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
+  resources_id String    @unique
+}
+
+model Group {
+  id               String  @id @default(uuid())
+  title            String?
+  destination_link String
+  members          Int
+  limit            Int     @default(1024)
+
+  redirector    Redirector @relation(fields: [redirector_id], references: [id], onDelete: Cascade)
+  redirector_id String
 }

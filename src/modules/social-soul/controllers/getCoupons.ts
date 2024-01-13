@@ -1,12 +1,12 @@
-import { ErrorHandler, HttpStatusCode } from '@/application/utils';
-import { VerifiedTokenRequest } from '@/domain/models';
-import { ConnectSocialsoulService } from '@/modules/social-soul/services';
-import { Response } from 'express';
+import { ErrorHandler, HttpStatusCode } from "@/application/utils";
+import { VerifiedTokenRequest } from "@/domain/models";
+import { ConnectSocialsoulService } from "@/modules/social-soul/services";
+import { Response } from "express";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 class GetCouponsController {
   async handle(req: VerifiedTokenRequest, res: Response): Promise<Response> {
-    const { 'x-source-id': sourceId } = req.headers as { 'x-source-id': string };
+    const { "x-source-id": sourceId } = req.headers as { "x-source-id": string };
 
     const getCouponsService = new ConnectSocialsoulService({ sourceId });
 
@@ -19,7 +19,7 @@ class GetCouponsController {
         statusCode: HttpStatusCode.BAD_REQUEST,
         name: error.name,
         message: error.message
-      })
+      });
     }
   }
 }

@@ -1,22 +1,19 @@
-import { IGetShowcaseOffersRepo, IGetStoreDataRepo } from '@/data/contracts';
-import { IGetShowcaseOffers } from '@/domain/features';
-import { inject, injectable } from 'tsyringe';
+import { IGetShowcaseOffersRepo, IGetStoreDataRepo } from "@/data/contracts";
+import { IGetShowcaseOffers } from "@/domain/features";
 
-@injectable()
 export class GetShowcaseOffersService implements IGetShowcaseOffers {
   constructor(
-    @inject('ResourcesRepository')
-    private readonly resourcesRepo: IGetShowcaseOffersRepo & IGetStoreDataRepo
+    private readonly resourcesRepository: IGetShowcaseOffersRepo & IGetStoreDataRepo
   ) {}
 
   async execute(input: IGetShowcaseOffers.Input): Promise<IGetShowcaseOffers.Output> {
-    const store = await this.resourcesRepo.getStore({ store_name: input.store_name });
-    const offers = await this.resourcesRepo.getOffers({ store_name: input.store_name });
+    const store = await this.resourcesRepository.getStore({ store_name: input.store_name });
+    const offers = await this.resourcesRepository.getOffers({ store_name: input.store_name });
     const result = {
       store,
       offers
-    }
-    return result
+    };
+    return result;
   }
 
 }

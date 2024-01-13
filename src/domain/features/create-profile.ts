@@ -1,15 +1,16 @@
-export interface ICreateProfile {
-  execute(input: ICreateProfile.Input): Promise<ICreateProfile.Output>
+export interface CreateProfile {
+  execute(input: CreateProfile.Input): Promise<CreateProfile.Output>
 }
 
-export namespace ICreateProfile {
+export namespace CreateProfile {
   export type Input = {
-    store_image: string;
-    store_name: string;
-    user: string;
+    storeImage: string; 
+    storeName: string;
+    storeNameDisplay: string;
+    userId: string;
   }
 
   export type Output = {
-    profile: string
+    profileId: string
   }
 }

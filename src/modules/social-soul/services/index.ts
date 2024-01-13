@@ -1,1 +1,1 @@
-export * from './connect-socialsoul';
+export * from "./connect-socialsoul";

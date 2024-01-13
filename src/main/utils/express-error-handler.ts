@@ -1,10 +1,10 @@
-import { ErrorHandler } from '@/application/utils';
-import { NextFunction, Request, Response } from 'express';
+import { ErrorHandler } from "@/application/utils";
+import { NextFunction, Request, Response } from "express";
 
 export function errorHandler (error: ErrorHandler, req: Request, res: Response, next: NextFunction) {
   const errorStatus = error.statusCode || 500;
-  const message = error.message || 'Error interno do servidor';
-  const name = error.name || 'ServerError';
+  const message = error.message || "Error interno do servidor";
+  const name = error.name || "ServerError";
   
   if (res.headersSent) {
     return next(error);
@@ -13,6 +13,6 @@ export function errorHandler (error: ErrorHandler, req: Request, res: Response, 
   return res.status(errorStatus).json({
     name: name,
     message: message,
-  })
+  });
   
 }

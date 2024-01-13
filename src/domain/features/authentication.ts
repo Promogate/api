@@ -1,4 +1,5 @@
-import { User, UserProfile, UserSocialMedia } from '@prisma/client';
+import { ErrorHandler } from "@/application/utils";
+import { User, UserProfile, UserSocialMedia } from "@prisma/client";
 
 export interface ISignIn {
   execute(input: ISignIn.Input): Promise<ISignIn.Output>
@@ -17,5 +18,5 @@ export namespace ISignIn {
         social_media: UserSocialMedia | null;
       }) | null;
     })
-  }
+  } | ErrorHandler
 }

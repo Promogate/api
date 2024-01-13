@@ -1,4 +1,4 @@
-import { makeSkipPointer } from '@/application/utils';
+import { makeSkipPointer } from "@/application/utils";
 import {
   FindOfferByIdRepository,
   GetNumberOfOffersRepository,
@@ -7,8 +7,8 @@ import {
   ListOffersRepository,
   SaveOfferRepository,
   SaveOffersFromCSVRepository
-} from '@/data/contracts';
-import { prisma } from '@/main/config';
+} from "@/data/contracts";
+import { prisma } from "@/main/config";
 
 /*eslint-disable @typescript-eslint/no-explicit-any*/
 export class ResourcesRepository implements
@@ -37,14 +37,14 @@ export class ResourcesRepository implements
           }
         }
       }
-    })
+    });
 
-    if (!result || !result.user_profile) return
+    if (!result || !result.user_profile) return;
 
     return {
       offersCount: result._count.offers,
       role: result.user_profile.role
-    }
+    };
   }
 
   async getStore(input: IGetStoreDataRepo.Input): Promise<any> {
@@ -54,7 +54,7 @@ export class ResourcesRepository implements
       }
     });
 
-    if (!store) throw new Error('Loja não encontrada!');
+    if (!store) throw new Error("Loja não encontrada!");
 
     return store;
   }
@@ -68,9 +68,9 @@ export class ResourcesRepository implements
           }
         }
       }
-    })
+    });
 
-    return showcaseOffers
+    return showcaseOffers;
   }
 
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
@@ -85,8 +85,8 @@ export class ResourcesRepository implements
           store_image: input.storeImage,
           destination_link: input.destinationLink,
           expiration_date: input.expirationDate,
-          store_name: 'Promogate', //TODO: Need to change
-          short_link: 'pgate.app', //TODO: Need to change
+          store_name: "Promogate", //TODO: Need to change
+          short_link: "pgate.app", //TODO: Need to change
         }
       });
     } catch (err: any) {
@@ -111,9 +111,9 @@ export class ResourcesRepository implements
         skip: makeSkipPointer(page, per_page),
         take: per_page,
         orderBy: {
-          created_at: 'desc'
+          created_at: "desc"
         }
-      })
+      });
 
       const totalOffers = prisma.offer.count({
         where: {
@@ -123,7 +123,7 @@ export class ResourcesRepository implements
             }
           }
         }
-      })
+      });
 
       const featuredOffers = prisma.offer.count({
         where: {
@@ -142,7 +142,7 @@ export class ResourcesRepository implements
             }
           ]
         }
-      })
+      });
 
       const showcaseOffers = prisma.offer.count({
         where: {
@@ -161,14 +161,14 @@ export class ResourcesRepository implements
             }
           ]
         }
-      })
+      });
 
       const transaction = await prisma.$transaction([
         offers,
         totalOffers,
         featuredOffers,
         showcaseOffers
-      ])
+      ]);
 
       return {
         page: page,
@@ -177,9 +177,9 @@ export class ResourcesRepository implements
         total_featured_offers: transaction[2],
         total_showcase_offers: transaction[3],
         offers: transaction[0],
-      }
+      };
     } catch (err: any) {
-      throw new Error(err.message)
+      throw new Error(err.message);
     }
   }
 
@@ -192,7 +192,7 @@ export class ResourcesRepository implements
       });
 
 
-      if (offer === null) throw new Error('Failed to find offer in repo');
+      if (offer === null) throw new Error("Failed to find offer in repo");
 
       return {
         id: offer.id,
@@ -204,9 +204,9 @@ export class ResourcesRepository implements
         store_image: offer.store_image,
         expiration_date: offer.expiration_date,
         resourceId: offer.resources_id
-      }
+      };
     } catch (err: any) {
-      throw new Error(err.message)
+      throw new Error(err.message);
     }
   }
 
@@ -216,16 +216,16 @@ export class ResourcesRepository implements
         return {
           ...el,
           resources_id: input.resource_id,
-          store_name: 'Promogate', //TODO: Need to change
-          short_link: 'pgate.app/' //TODO: Need to change
-        }
-      })
+          store_name: "Promogate", //TODO: Need to change
+          short_link: "pgate.app/" //TODO: Need to change
+        };
+      });
 
       await prisma.offer.createMany({
         data: offersWithResourceId
-      })
+      });
     } catch {
-      throw new Error('Failed to save offers from CSV')
+      throw new Error("Failed to save offers from CSV");
     }
   }
 }
