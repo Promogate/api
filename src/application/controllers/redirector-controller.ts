@@ -91,7 +91,7 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("get", "/redirector/:redirectorId", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/redirector/:redirectorId", [], async function (params: any, body: any) {
       try {
         const output = await redirectorLinkService.execute({ redirectorId: params.params.redirectorId });
         return output;
