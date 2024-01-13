@@ -44,7 +44,7 @@ export class ResourcesRepository implements
   }
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
     try {
-      await prisma.offer.create({
+      const { id } = await prisma.offer.create({
         data: {
           title: input.title,
           destination_link: input.destinationLink,
@@ -62,6 +62,7 @@ export class ResourcesRepository implements
           is_on_showcase: input.isOnShowcase,
         }
       });
+      return { id };
     } catch (error: any) {
       throw new ErrorHandler({
         statusCode: HttpStatusCode.BAD_REQUEST,
