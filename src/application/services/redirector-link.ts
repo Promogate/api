@@ -26,6 +26,13 @@ export class RedirectorLinkService implements RedirectorLink {
           members: updatedMembersQuantity
         }
       });
+      const addedTimesClicked = redirector.timesClicked + 1;
+      await prisma.redirector.update({
+        where: { id: input.redirectorId },
+        data: {
+          timesClicked: addedTimesClicked
+        }
+      });
       return redirector.groups[redirector.currentGroup].destination_link;
     }
     if (redirector.groups[redirector.currentGroup].members === redirector.groups[redirector.currentGroup].limit) {
@@ -39,10 +46,12 @@ export class RedirectorLinkService implements RedirectorLink {
         });
         return null;
       }
+      const addedTimesClicked = redirector.timesClicked + 1;
       await prisma.redirector.update({
         where: { id: input.redirectorId },
         data: {
-          currentGroup: newGroupPosition
+          currentGroup: newGroupPosition,
+          timesClicked: addedTimesClicked
         }
       });
       return redirector.groups[newGroupPosition].destination_link;
