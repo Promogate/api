@@ -1,7 +1,6 @@
 const asyncErrors = require("express-async-errors");
 
 import { ErrorHandler, HttpStatusCode } from "@/application/utils";
-import { WHITELIST } from "@/main/config";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { HttpServer } from "./http-server";
@@ -13,16 +12,7 @@ export class ExpressAdapter implements HttpServer {
   constructor() {
     asyncErrors;
     this.app = express();
-    this.app.use(cors({
-      origin: function (origin, callback) {
-        if (WHITELIST.indexOf(origin as string) !== -1 || !origin) {
-          callback(null, true);
-        } else {
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
-      
-    }));
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
       res.status(500).send("Something broke!");
