@@ -203,6 +203,8 @@ model Redirector {
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
   resources_id String    @unique
+
+  @@map("redirectors")
 }
 
 model Group {
@@ -214,4 +216,6 @@ model Group {
 
   redirector    Redirector @relation(fields: [redirector_id], references: [id], onDelete: Cascade)
   redirector_id String
+
+  @@map("groups")
 }

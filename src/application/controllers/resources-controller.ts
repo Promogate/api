@@ -102,11 +102,6 @@ export class ResourcesController {
       }
     });
 
-    // NEED TO ME MOVED TO SOCIALSOULCONTROLLER
-    // httpServer.on("get", "/social-soul/stores", [verifyToken], async function (params: any, body: any) {
-    //   getStoresController.handle;
-    // });
-
     httpServer.on("post", "/:resourceId/offer/create", [verifyToken], async function (params: any, body: any) {
       const output = await createOffer.execute(params);
       return output;

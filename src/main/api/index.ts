@@ -42,8 +42,6 @@ import { RedirectorLinkService } from "@/application/services/redirector-link";
 const PORT = process.env.PORT || 8080;
 
 const loggingService = new LoggingService();
-const redirectorRepository = new RedirectorRepository();
-const createRedirector = new CreateRedirectorService(redirectorRepository);
 const authenticationRepository = new AuthenticationRepository();
 const signInService = new SignInService(authenticationRepository);
 const getOfferFromStoreService = new GetOffersFromStoreService();

@@ -75,7 +75,7 @@ export class ResourcesRepository implements
 
   async saveOffer(input: SaveOfferRepository.Input): Promise<SaveOfferRepository.Output> {
     try {
-      await prisma.offer.create({
+      const data = await prisma.offer.create({
         data: {
           resources_id: input.resourceId,
           image: input.image,
@@ -85,10 +85,11 @@ export class ResourcesRepository implements
           store_image: input.storeImage,
           destination_link: input.destinationLink,
           expiration_date: input.expirationDate,
-          store_name: "Promogate", //TODO: Need to change
-          short_link: "pgate.app", //TODO: Need to change
+          store_name: input.storeName,
+          short_link: input.shortLink,
         }
       });
+      return { id: data.id };
     } catch (err: any) {
       throw new Error(err.message);
     }
