@@ -7,7 +7,7 @@ import { verifyToken } from "../middlewares";
 export class RedirectorController {
   constructor(
     httpServer: HttpServer,
-    shortlinkService: CreateRedirectorShortlink,
+    createRedirectorShortlinkService: CreateRedirectorShortlink,
     redirectorLinkService: RedirectorLink
   ) {
 
@@ -23,9 +23,10 @@ export class RedirectorController {
           }
         });
 
-        const data = await shortlinkService.execute({
+        const data = await createRedirectorShortlinkService.execute({
           redirectorId: id,
-          destinationLink: `https://api.promogate.app/redirector/${id}`
+          destinationLink: `https://api.promogate.app/redirector/${id}`,
+          type: "redirector"
         });
 
         const result = await prisma.redirector.update({

@@ -1,7 +1,7 @@
 import { Offer } from "@prisma/client";
 
 export interface FindStoreNameByResourceIdRepository {
-  findStoreNameByResourceId(input:FindStoreNameByResourceIdRepository.Input): Promise<FindStoreNameByResourceIdRepository.Output>
+  findStoreNameByResourceId(input: FindStoreNameByResourceIdRepository.Input): Promise<FindStoreNameByResourceIdRepository.Output>
 }
 
 export namespace FindStoreNameByResourceIdRepository {
@@ -35,7 +35,7 @@ export namespace SaveOfferRepository {
     isFreeShipping?: boolean;
   }
 
-  export type Output = void
+  export type Output = { id: string };
 }
 
 export interface SaveOffersFromCSVRepository {
