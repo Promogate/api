@@ -3,6 +3,7 @@ import { ErrorHandler, HttpStatusCode } from "../utils";
 import { prisma } from "@/main/config";
 import { CreateRedirectorShortlink, RedirectorLink } from "@/domain/features";
 import { verifyToken } from "../middlewares";
+import { randomUUID } from "crypto";
 
 export class RedirectorController {
   constructor(
@@ -18,7 +19,7 @@ export class RedirectorController {
             title: body.title,
             resources_id: body.resourcesId,
             description: body.description,
-            redirectorLink: "",
+            redirectorLink: randomUUID(),
             timesClicked: 0
           }
         });
@@ -80,12 +81,11 @@ export class RedirectorController {
             groups: true
           }
         });
-        console.log(output);
         return output;
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
-          name: "FailedToDeleteOffer",
+          name: "FailedToFindRedirector",
           message: error.message
         });
       }
@@ -98,7 +98,21 @@ export class RedirectorController {
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
-          name: "FailedToDeleteOffer",
+          name: "FailedToRedirect",
+          message: error.message
+        });
+      }
+    });
+
+    httpServer.on("delete", "/redirector/delete/:redirectorId", [], async function (params: any, body: any) {
+      try {
+        await prisma.redirector.delete({
+          where: { id: params.params.redirectorId }
+        });
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToDeleteRedirector",
           message: error.message
         });
       }
