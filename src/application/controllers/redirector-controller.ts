@@ -117,5 +117,20 @@ export class RedirectorController {
         });
       }
     });
+
+    httpServer.on("put", "/redirector/update/:redirectorId", [], async function (params: any, body: any) { 
+      try {
+        await prisma.redirector.update({
+          where: { id: params.params.redirectorId },
+          data: body
+        });
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToUpdateRedirector",
+          message: error.message
+        });
+      }
+    });
   }
 }

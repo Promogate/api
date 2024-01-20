@@ -6,7 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  // provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -202,7 +203,7 @@ model Redirector {
   redirectorStatus String  @default("started")
 
   resources    Resources @relation(fields: [resources_id], references: [id], onDelete: Cascade)
-  resources_id String    @unique
+  resources_id String
 
   @@map("redirectors")
 }
