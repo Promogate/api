@@ -102,12 +102,12 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/:resourceId/offer/create", [verifyToken], async function (params: any, body: any) {
-      const output = await createOffer.execute(params);
+    httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (params: any, body: any) {
+      const output = await createOffer.execute({...body, resourceId: params.params.resourceId});
       return output;
     });
 
-    httpServer.on("post", "/:resourceId/category/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.category.create({
           data: {
@@ -127,7 +127,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/category/:categoryId/subcategory/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/resources/category/:categoryId/subcategory/create", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.subCategory.create({
           data: {
@@ -146,7 +146,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/:resourceId/categories", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourceId/categories", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.category.findMany({
           where: {

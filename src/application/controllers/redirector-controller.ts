@@ -118,7 +118,7 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("put", "/redirector/update/:redirectorId", [], async function (params: any, body: any) { 
+    httpServer.on("put", "/redirector/update/:redirectorId", [], async function (params: any, body: any) {
       try {
         await prisma.redirector.update({
           where: { id: params.params.redirectorId },
@@ -128,6 +128,40 @@ export class RedirectorController {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
           name: "FailedToUpdateRedirector",
+          message: error.message
+        });
+      }
+    });
+
+    httpServer.on("put", "/redirector/group/:groupId", [], async function (params: any, body: any) {
+      try {
+        await prisma.group.update({
+          where: { id: params.params.groupId },
+          data: {
+            limit: body.limit,
+            members: body.members,
+            destination_link: body.destinationLink,
+            title: body.title
+          }
+        });
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToUpdateGroup",
+          message: error.message
+        });
+      }
+    });
+
+    httpServer.on("delete", "/redirector/group/:groupId", [], async function (params: any, body: any) {
+      try {
+        await prisma.group.delete({
+          where: { id: params.params.groupId }
+        });
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToDeleteGroup",
           message: error.message
         });
       }
