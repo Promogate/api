@@ -1,6 +1,6 @@
 export class CreateOfferError extends Error {
-  constructor() {
-    super("Falha ao tentar criar uma nova oferta.");
+  constructor(message: string) {
+    super("Falha ao tentar criar uma nova oferta." || message);
     this.name = "CreateOfferError";
   }
 }

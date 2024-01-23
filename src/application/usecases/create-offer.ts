@@ -36,7 +36,8 @@ export class CreateOfferUseCase implements CreateOffer {
       });
 
     } catch (error: any) {
-      throw new CreateOfferError();
+      // throw new CreateOfferError(error.message);
+      throw new Error(error.message);
     }
   }
 }
