@@ -193,9 +193,26 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("put", "/:resourceId/offer/:offerId/update", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/offer/:offerId", [verifyToken], async function (params: any, body: any) {
+      try {
+        const output = await prisma.offer.findUnique({
+          where: {
+            id: params.params.offerId
+          }
+        });
+        return output;
+      } catch (error: any) {
+        throw new ErrorHandler({
+          statusCode: HttpStatusCode.INTERNAL_SERVER,
+          name: "FailedToDeleteOffer",
+          message: error.message
+        });
+      }
+    });
+
+    httpServer.on("put", "/resources/:resourceId/offer/:offerId/update", [verifyToken], async function (params: any, body: any) {
       const output = await updateOffer.execute({
-        offerId: params.offerId,
+        offerId: params.params.offerId,
         image: body.image,
         title: body.title,
         oldPrice: body.old_price,
@@ -208,26 +225,26 @@ export class ResourcesController {
       return output;
     });
 
-    httpServer.on("put", "/offer/:offerId/update/showcase", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (params: any, body: any) {
       const output = await updateOfferShowcaseStatus.execute({
         is_on_showcase: body.is_on_showcase,
-        offer_id: params.offerId,
+        offer_id: params.params.offerId,
         user_id: body.userId
       });
       return output;
     });
 
-    httpServer.on("put", "/offer/:offerId/update/featured", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (params: any, body: any) {
       const output = await updateOfferFeaturedStatus.execute({
         is_featured: body.is_featured,
-        offer_id: params.offerId,
+        offer_id: params.params.offerId,
         user_id: params.user,
         role: params.role
       });
       return output;
     });
 
-    httpServer.on("put", "/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.categoriesOnOffer.create({
           data: {
@@ -246,11 +263,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("delete", "/offer/:id", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("delete", "/resources/offer/:id", [verifyToken], async function (params: any, body: any) {
       try {
         const output = await prisma.offer.delete({
           where: {
-            id: params.id
+            id: params.params.id
           }
         });
         return output;
@@ -273,7 +290,6 @@ export class ResourcesController {
             groups: true
           }
         });
-        console.log(output);
         return output;
       } catch (error: any) {
         throw new ErrorHandler({
