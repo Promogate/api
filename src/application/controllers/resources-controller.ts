@@ -3,6 +3,7 @@ import { HttpServer } from "@/infra/http";
 import { prisma } from "@/main/config";
 import { verifyToken } from "../middlewares";
 import { ErrorHandler, HttpStatusCode } from "../utils";
+import { Request } from "express";
 
 export class ResourcesController {
   constructor(
@@ -14,7 +15,7 @@ export class ResourcesController {
     updateOfferShowcaseStatus: UpdateOfferShowcaseStatus,
     updateOfferFeaturedStatus: UpdateOfferFeaturedStatus
   ) {
-    httpServer.on("get", "/resources/stores", [], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/stores", [], async function (request: Request, body: any) {
       const output = await prisma.userProfile.findMany({
         select: {
           store_name: true,
@@ -23,21 +24,21 @@ export class ResourcesController {
       return output;
     });
 
-    httpServer.on("get", "/resources/offers/:store", [], async function (params: any, body: any) {
-      const output = await getOffersFromStore.execute(params);
-      return output;
+    httpServer.on("get", "/resources/offers/:store", [], async function (request: Request, body: any) {
+      // const output = await getOffersFromStore.execute(params);
+      // return output;
     });
 
-    httpServer.on("get", "/resources/store/:store", [], async function (params: any, body: any) {
-      const output = await getStoreData.execute(params);
-      return output;
+    httpServer.on("get", "/resources/store/:store", [], async function (request: Request, body: any) {
+      // const output = await getStoreData.execute(params);
+      // return output;
     });
 
-    httpServer.on("get", "/resources/:resourceId/offer/:offerId", [], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourceId/offer/:offerId", [], async function (request: Request, body: any) {
       try {
         const offer = prisma.offer.findUnique({
           where: {
-            id: params.offerId
+            id: request.params.offerId
           }, include: {
             _count: {
               select: {
@@ -72,14 +73,14 @@ export class ResourcesController {
           });
         }
 
-        if (params.utm_click) {
+        if (request.params.utm_click) {
           const resource = prisma.analytics.update({
             where: {
-              resources_id: params.resourceId,
+              resources_id: request.params.resourceId,
             }, data: {
               offer_clicks: {
                 create: {
-                  offer_id: params.offerId,
+                  offer_id: request.params.offerId,
                 }
               }
             }
@@ -102,17 +103,17 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (params: any, body: any) {
-      const output = await createOffer.execute({...body, resourceId: params.params.resourceId});
+    httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (request: Request, body: any) {
+      const output = await createOffer.execute({...body, resourceId: request.params.resourceId});
       return output;
     });
 
-    httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.category.create({
           data: {
             name: body.name,
-            resources_id: params.resourceId
+            resources_id: request.params.resourceId
           }
         });
     
@@ -127,12 +128,12 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/resources/category/:categoryId/subcategory/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/resources/category/:categoryId/subcategory/create", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.subCategory.create({
           data: {
             name: body.name,
-            category_id: params.categoryId
+            category_id: request.params.categoryId
           }
         });
 
@@ -146,11 +147,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/:resourceId/categories", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourceId/categories", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.category.findMany({
           where: {
-            resources_id: params.resourceId,
+            resources_id: request.params.resourceId,
           },
           include: {
             sub_categories: true
@@ -166,11 +167,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/:resourcesId/offers", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourcesId/offers", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.offer.findMany({
           where: {
-            resources_id: params.params.resourcesId,
+            resources_id: request.params.resourcesId,
           }, include: {
             categories: {
               select: {
@@ -193,11 +194,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/offer/:offerId", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/offer/:offerId", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.offer.findUnique({
           where: {
-            id: params.params.offerId
+            id: request.params.offerId
           }
         });
         return output;
@@ -210,9 +211,9 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("put", "/resources/:resourceId/offer/:offerId/update", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/:resourceId/offer/:offerId/update", [verifyToken], async function (request: Request, body: any) {
       const output = await updateOffer.execute({
-        offerId: params.params.offerId,
+        offerId: request.params.offerId,
         image: body.image,
         title: body.title,
         oldPrice: body.old_price,
@@ -225,31 +226,31 @@ export class ResourcesController {
       return output;
     });
 
-    httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (request: Request, body: any) {
       const output = await updateOfferShowcaseStatus.execute({
         is_on_showcase: body.is_on_showcase,
-        offer_id: params.params.offerId,
+        offer_id: request.params.offerId,
         user_id: body.userId
       });
       return output;
     });
 
-    httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (request: Request, body: any) {
       const output = await updateOfferFeaturedStatus.execute({
         is_featured: body.is_featured,
-        offer_id: params.params.offerId,
-        user_id: params.user,
-        role: params.role
+        offer_id: request.params.offerId, //NEED TO EXTEND REQUEST TYPE
+        user_id: request.params.user, //NEED TO EXTEND REQUEST TYPE
+        role: request.params.role
       });
       return output;
     });
 
-    httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.categoriesOnOffer.create({
           data: {
-            resource_id: params.resourcesId,
-            offer_id: params.offerId,
+            resource_id: request.params.resourcesId,
+            offer_id: request.params.offerId,
             category_id: body.categoryId,
           }
         });
@@ -263,11 +264,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("delete", "/resources/offer/:id", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("delete", "/resources/offer/:id", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.offer.delete({
           where: {
-            id: params.params.id
+            id: request.params.id
           }
         });
         return output;
@@ -280,11 +281,11 @@ export class ResourcesController {
       }
     });
     
-    httpServer.on("get", "/resources/:resourcesId/redirectors", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/resources/:resourcesId/redirectors", [verifyToken], async function (request: Request, body: any) {
       try {
         const output = await prisma.redirector.findMany({
           where: {
-            resources_id: params.params.resourcesId
+            resources_id: request.params.resourcesId
           },
           include: {
             groups: true
