@@ -39,6 +39,7 @@ import {
 } from "@/data/repositories";
 import { ExpressAdapter } from "@/infra/http";
 import { RedirectorLinkService } from "@/application/services/redirector-link";
+import { DateHandlerService } from "@/application/services/date-handler";
 
 const PORT = process.env.PORT || 8080;
 
@@ -61,6 +62,7 @@ const createProfileService = new CreateProfileUseCase(userRepository);
 const createApiKeyController = new CreateApiKeyService(authenticationRepository);
 const createRedirectorShorlinkService = new CreateRedirectorShortlinkService();
 const redirectorLinkService = new RedirectorLinkService();
+const dateHandlerService = new DateHandlerService();
 
 const httpServer = new ExpressAdapter();
 
@@ -79,7 +81,8 @@ new AuthenticationController(
   signInService,
   createUserService,
   createProfileService,
-  createApiKeyController
+  createApiKeyController,
+  dateHandlerService
 );
 new RedirectorController(httpServer, createRedirectorShorlinkService, redirectorLinkService);
 new AnalyticsController(httpServer, getProfileService);

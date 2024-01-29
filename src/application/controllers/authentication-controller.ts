@@ -4,6 +4,7 @@ import { prisma } from "@/main/config";
 import { verifyToken } from "../middlewares";
 import { ErrorHandler, HttpStatusCode } from "../utils";
 import { Request, Response } from "express";
+import { DateHandler } from "@/domain/features/date-handler";
 
 export class AuthenticationController {
   constructor(
@@ -11,7 +12,8 @@ export class AuthenticationController {
     signInService: ISignIn,
     createUserService: CreateUser,
     createProfileService: CreateProfile,
-    createApiKey: CreateApiKey
+    createApiKey: CreateApiKey,
+    dateHandler: DateHandler
   ) {
     httpServer.on("post", "/users/signin", [], async function (request: Request, response: Response) {
       const output = await signInService.execute(request.body);
@@ -185,7 +187,7 @@ export class AuthenticationController {
             statusCode: HttpStatusCode.NOT_FOUND
           });
         }
-  
+
         return output;
       } catch (error: any) {
         throw new ErrorHandler({
@@ -235,8 +237,24 @@ export class AuthenticationController {
       const userSubscription = await prisma.userSubscription.findUnique({
         where: { userId: id }
       });
-      const output = {...user, userSubscription: userSubscription};
-      
+      if (userSubscription && dateHandler.hasEnded(userSubscription?.stripeCurrentPeriodEnd as Date) && user.user_profile?.role === "PREMIUM" || user.user_profile?.role === "MASTER") {
+        const updatedUser = await prisma.user.update({
+          where: { id: id },
+          data: {
+            user_profile: {
+              update: {
+                role: "FREE",
+              }
+            }
+          },
+          include: {
+            user_profile: true
+          }
+        });
+        const output = { ...updatedUser, userSubscription: userSubscription };
+        return output;
+      }
+      const output = { ...user, userSubscription: userSubscription };
       return output;
     });
   }
