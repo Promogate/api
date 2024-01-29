@@ -5,3 +5,4 @@ export * from "./make-skip-pointer";
 export * from "./make-unique-store-nome";
 export * from "./verify-featured-limit";
 export * from "./verify-offer-limit";
+export * from "./get-absolute-url";

@@ -3,6 +3,7 @@ import { HttpServer } from "@/infra/http";
 import { prisma } from "@/main/config";
 import { verifyToken } from "../middlewares";
 import { ErrorHandler, HttpStatusCode } from "../utils";
+import { Request, Response } from "express";
 
 export class AuthenticationController {
   constructor(
@@ -12,8 +13,8 @@ export class AuthenticationController {
     createProfileService: CreateProfile,
     createApiKey: CreateApiKey
   ) {
-    httpServer.on("post", "/users/signin", [], async function (params: any, body: any) {
-      const output = await signInService.execute(body);
+    httpServer.on("post", "/users/signin", [], async function (request: Request, response: Response) {
+      const output = await signInService.execute(request.body);
       return output;
     });
 

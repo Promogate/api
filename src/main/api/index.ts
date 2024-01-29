@@ -7,7 +7,8 @@ import {
   AnalyticsController,
   AuthenticationController,
   RedirectorController,
-  ResourcesController
+  ResourcesController,
+  StripeController
 } from "@/application/controllers";
 import { SocialSoulController } from "@/application/controllers/socialsoul-controller";
 import {
@@ -82,5 +83,6 @@ new AuthenticationController(
 );
 new RedirectorController(httpServer, createRedirectorShorlinkService, redirectorLinkService);
 new AnalyticsController(httpServer, getProfileService);
+new StripeController(httpServer);
 
 httpServer.listen(Number(PORT));

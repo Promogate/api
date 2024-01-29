@@ -5,7 +5,6 @@ import cors from "cors";
 import { ErrorHandler, HttpStatusCode } from "@/application/utils";
 import { HttpServer } from "./http-server";
 
-
 export class ExpressAdapter implements HttpServer {
   app: Express;
 
@@ -22,11 +21,11 @@ export class ExpressAdapter implements HttpServer {
     });
   }
 
-  on(method: string, url: string, middlewares: Function[], callback: (request: Request, body: any) => Promise<any>): void {
+  on(method: string, url: string, middlewares: Function[], callback: (request: Request, response: Response) => Promise<any>): void {
     this.app._router[method](url, [...middlewares], async function (req: Request, res: Response) {
       try {
-        const output = await callback(req, req.body);
-        res.json(output);
+        const output = await callback(req, res);
+        res.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.BAD_REQUEST,
