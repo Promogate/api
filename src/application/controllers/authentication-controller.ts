@@ -201,10 +201,11 @@ export class AuthenticationController {
       return output;
     });
 
-    httpServer.on("get", "/users/me/:id", [verifyToken], async function (request: Request, response: Response) {
-      const output = await prisma.user.findFirst({
+    httpServer.on("get", "/users/me", [verifyToken], async function (request: Request & { user?: string }, response: Response) {
+      const { user: id } = request;
+      const user = await prisma.user.findUnique({
         where: {
-          id: request.params.id
+          id: id
         },
         select: {
           id: true,
@@ -218,11 +219,23 @@ export class AuthenticationController {
                 select: {
                   id: true,
                 }
-              }
+              },
+
             }
           }
         }
       });
+      if (!user) {
+        throw new ErrorHandler({
+          name: "UserNotFound",
+          message: "Usuário não encontrado",
+          statusCode: HttpStatusCode.UNAUTHORIZED
+        });
+      }
+      const userSubscription = await prisma.userSubscription.findUnique({
+        where: { userId: id }
+      });
+      const output = {...user, userSubscription: userSubscription};
       
       return output;
     });
