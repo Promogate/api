@@ -4,6 +4,7 @@ import { prisma } from "@/main/config";
 import { CreateRedirectorShortlink, RedirectorLink } from "@/domain/features";
 import { verifyToken } from "../middlewares";
 import { randomUUID } from "crypto";
+import { Request, Response } from "express";
 
 export class RedirectorController {
   constructor(
@@ -12,13 +13,13 @@ export class RedirectorController {
     redirectorLinkService: RedirectorLink
   ) {
 
-    httpServer.on("post", "/redirector/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/redirector/create", [verifyToken], async function (request: Request, response: Response) {
       try {
         const { id } = await prisma.redirector.create({
           data: {
-            title: body.title,
-            resources_id: body.resourcesId,
-            description: body.description,
+            title: request.body.title,
+            resources_id: request.body.resourcesId,
+            description: request.body.description,
             redirectorLink: randomUUID(),
             timesClicked: 0
           }
@@ -46,17 +47,17 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("post", "/redirector/:redirectorId/group/create", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("post", "/redirector/:redirectorId/group/create", [verifyToken], async function (request: Request, response: Response) {
       try {
         const result = await prisma.group.create({
           data: {
-            title: body.title,
-            destination_link: body.destinationLink,
-            limit: Number(body.limit),
-            members: Number(body.members),
+            title: request.body.title,
+            destination_link: request.body.destinationLink,
+            limit: Number(request.body.limit),
+            members: Number(request.body.members),
             redirector: {
               connect: {
-                id: params.params.redirectorId
+                id: request.params.redirectorId
               }
             }
           }
@@ -72,11 +73,11 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("get", "/redirector/find-by-id/:redirectorId", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/redirector/find-by-id/:redirectorId", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.redirector.findFirst({
           where: {
-            id: params.params.redirectorId
+            id: request.params.redirectorId
           }, include: {
             groups: true
           }
@@ -91,9 +92,9 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("get", "/redirector/:redirectorId", [], async function (params: any, body: any) {
+    httpServer.on("get", "/redirector/:redirectorId", [], async function (request: Request, response: Response) {
       try {
-        const output = await redirectorLinkService.execute({ redirectorId: params.params.redirectorId });
+        const output = await redirectorLinkService.execute({ redirectorId: request.params.redirectorId });
         return output;
       } catch (error: any) {
         throw new ErrorHandler({
@@ -104,10 +105,10 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("delete", "/redirector/delete/:redirectorId", [], async function (params: any, body: any) {
+    httpServer.on("delete", "/redirector/delete/:redirectorId", [], async function (request: Request, response: Response) {
       try {
         await prisma.redirector.delete({
-          where: { id: params.params.redirectorId }
+          where: { id: request.params.redirectorId }
         });
       } catch (error: any) {
         throw new ErrorHandler({
@@ -118,11 +119,11 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("put", "/redirector/update/:redirectorId", [], async function (params: any, body: any) {
+    httpServer.on("put", "/redirector/update/:redirectorId", [], async function (request: Request, response: Response) {
       try {
         await prisma.redirector.update({
-          where: { id: params.params.redirectorId },
-          data: body
+          where: { id: request.params.redirectorId },
+          data: request.body
         });
       } catch (error: any) {
         throw new ErrorHandler({
@@ -133,15 +134,15 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("put", "/redirector/group/:groupId", [], async function (params: any, body: any) {
+    httpServer.on("put", "/redirector/group/:groupId", [], async function (request: Request, response: Response) {
       try {
         await prisma.group.update({
-          where: { id: params.params.groupId },
+          where: { id: request.params.groupId },
           data: {
-            limit: body.limit,
-            members: body.members,
-            destination_link: body.destinationLink,
-            title: body.title
+            limit: request.body.limit,
+            members: request.body.members,
+            destination_link: request.body.destinationLink,
+            title: request.body.title
           }
         });
       } catch (error: any) {
@@ -153,10 +154,10 @@ export class RedirectorController {
       }
     });
 
-    httpServer.on("delete", "/redirector/group/:groupId", [], async function (params: any, body: any) {
+    httpServer.on("delete", "/redirector/group/:groupId", [], async function (request: Request, response: Response) {
       try {
         await prisma.group.delete({
-          where: { id: params.params.groupId }
+          where: { id: request.params.groupId }
         });
       } catch (error: any) {
         throw new ErrorHandler({

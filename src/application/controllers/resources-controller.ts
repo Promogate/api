@@ -3,7 +3,7 @@ import { HttpServer } from "@/infra/http";
 import { prisma } from "@/main/config";
 import { verifyToken } from "../middlewares";
 import { ErrorHandler, HttpStatusCode } from "../utils";
-import { Request } from "express";
+import { Request, Response } from "express";
 
 export class ResourcesController {
   constructor(
@@ -15,7 +15,7 @@ export class ResourcesController {
     updateOfferShowcaseStatus: UpdateOfferShowcaseStatus,
     updateOfferFeaturedStatus: UpdateOfferFeaturedStatus
   ) {
-    httpServer.on("get", "/resources/stores", [], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/stores", [], async function (request: Request, response: Response) {
       const output = await prisma.userProfile.findMany({
         select: {
           store_name: true,
@@ -24,17 +24,17 @@ export class ResourcesController {
       return output;
     });
 
-    httpServer.on("get", "/resources/offers/:store", [], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/offers/:store", [], async function (request: Request, response: Response) {
       // const output = await getOffersFromStore.execute(params);
       // return output;
     });
 
-    httpServer.on("get", "/resources/store/:store", [], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/store/:store", [], async function (request: Request, response: Response) {
       // const output = await getStoreData.execute(params);
       // return output;
     });
 
-    httpServer.on("get", "/resources/:resourceId/offer/:offerId", [], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/:resourceId/offer/:offerId", [], async function (request: Request, response: Response) {
       try {
         const offer = prisma.offer.findUnique({
           where: {
@@ -103,16 +103,16 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (request: Request, body: any) {
-      const output = await createOffer.execute({...body, resourceId: request.params.resourceId});
+    httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (request: Request, response: Response) {
+      const output = await createOffer.execute({...request.body, resourceId: request.params.resourceId});
       return output;
     });
 
-    httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.category.create({
           data: {
-            name: body.name,
+            name: request.body.name,
             resources_id: request.params.resourceId
           }
         });
@@ -128,11 +128,11 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("post", "/resources/category/:categoryId/subcategory/create", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("post", "/resources/category/:categoryId/subcategory/create", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.subCategory.create({
           data: {
-            name: body.name,
+            name: request.body.name,
             category_id: request.params.categoryId
           }
         });
@@ -147,7 +147,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/:resourceId/categories", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/:resourceId/categories", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.category.findMany({
           where: {
@@ -167,7 +167,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/:resourcesId/offers", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/:resourcesId/offers", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.offer.findMany({
           where: {
@@ -194,7 +194,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("get", "/resources/offer/:offerId", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/offer/:offerId", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.offer.findUnique({
           where: {
@@ -211,33 +211,33 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("put", "/resources/:resourceId/offer/:offerId/update", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("put", "/resources/:resourceId/offer/:offerId/update", [verifyToken], async function (request: Request, response: Response) {
       const output = await updateOffer.execute({
         offerId: request.params.offerId,
-        image: body.image,
-        title: body.title,
-        oldPrice: body.old_price,
-        price: body.price,
-        destinationLink: body.destination_link,
-        storeName: body.store_name,
-        expirationDate: body.expiration_date,
-        description: body.description,
+        image: request.body.image,
+        title: request.body.title,
+        oldPrice: request.body.old_price,
+        price: request.body.price,
+        destinationLink: request.body.destination_link,
+        storeName: request.body.store_name,
+        expirationDate: request.body.expiration_date,
+        description: request.body.description,
       });
       return output;
     });
 
-    httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (request: Request, response: Response) {
       const output = await updateOfferShowcaseStatus.execute({
-        is_on_showcase: body.is_on_showcase,
+        is_on_showcase: request.body.is_on_showcase,
         offer_id: request.params.offerId,
-        user_id: body.userId
+        user_id: request.body.userId
       });
       return output;
     });
 
-    httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (request: Request, response: Response) {
       const output = await updateOfferFeaturedStatus.execute({
-        is_featured: body.is_featured,
+        is_featured: request.body.is_featured,
         offer_id: request.params.offerId, //NEED TO EXTEND REQUEST TYPE
         user_id: request.params.user, //NEED TO EXTEND REQUEST TYPE
         role: request.params.role
@@ -245,13 +245,13 @@ export class ResourcesController {
       return output;
     });
 
-    httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.categoriesOnOffer.create({
           data: {
             resource_id: request.params.resourcesId,
             offer_id: request.params.offerId,
-            category_id: body.categoryId,
+            category_id: request.body.categoryId,
           }
         });
         return output;
@@ -264,7 +264,7 @@ export class ResourcesController {
       }
     });
 
-    httpServer.on("delete", "/resources/offer/:id", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("delete", "/resources/offer/:id", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.offer.delete({
           where: {
@@ -281,7 +281,7 @@ export class ResourcesController {
       }
     });
     
-    httpServer.on("get", "/resources/:resourcesId/redirectors", [verifyToken], async function (request: Request, body: any) {
+    httpServer.on("get", "/resources/:resourcesId/redirectors", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.redirector.findMany({
           where: {

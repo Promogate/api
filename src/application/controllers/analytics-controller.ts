@@ -3,17 +3,18 @@ import { HttpServer } from "@/infra/http";
 import { prisma } from "@/main/config";
 import { verifyToken } from "../middlewares";
 import { ErrorHandler, HttpStatusCode } from "../utils";
+import { Request, Response } from "express";
 
 export class AnalyticsController {
   constructor (
     httpServer: HttpServer,
     getProfile: IGetProfile
   ) {
-    httpServer.on("get", "/redirect/offer/with-query", [], async function (params: any, body: any) {
+    httpServer.on("get", "/redirect/offer/with-query", [], async function (request: Request, response: Response) {
       try {
         const output = await prisma.offer.findFirst({
           where: {
-            short_link: params.query.shortLink
+            short_link: request.query.shortLink as string
           },
           include: {
             resources: {
@@ -46,8 +47,8 @@ export class AnalyticsController {
       }
     });
 
-    httpServer.on("get", "/profile/:id", [verifyToken], async function (params: any, body: any) {
-      const output = await getProfile.execute(params);
+    httpServer.on("get", "/profile/:id", [verifyToken], async function (request: Request, response: Response) {
+      const output = await getProfile.execute({ id: request.params.id });
       return output;
     });
   }

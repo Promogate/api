@@ -18,43 +18,43 @@ export class AuthenticationController {
       return output;
     });
 
-    httpServer.on("post", "/users/signup", [], async function (params: any, body: any) {
-      const output = await createUserService.execute(body);
+    httpServer.on("post", "/users/signup", [], async function (request: Request, response: Response) {
+      const output = await createUserService.execute(request.body);
       return output;
     });
 
-    httpServer.on("post", "/users/:id/profile/create", [verifyToken], async function (params: any, body: any) {
-      const output = await createProfileService.execute({ ...body, userId: params.params.id });
+    httpServer.on("post", "/users/:id/profile/create", [verifyToken], async function (request: Request, response: Response) {
+      const output = await createProfileService.execute({ ...request.body, userId: request.params.id });
       return output;
     });
 
-    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (params: any, body: any) {
-      const loadedProfileByID = await prisma.userProfile.findUnique({ where: { id: params.params.id } });
-      if (loadedProfileByID?.store_name === body.store_name) {
+    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (request: Request, response: Response) {
+      const loadedProfileByID = await prisma.userProfile.findUnique({ where: { id: request.params.id } });
+      if (loadedProfileByID?.store_name === request.body.store_name) {
         const output = await prisma.userProfile.update({
           where: {
-            id: params.params.id
+            id: request.params.id
           },
           data: {
-            lomadee_source_id: body?.lomadeeSourceId,
-            store_name: body?.store_name,
-            store_name_display: body?.store_name_display,
-            store_image: body?.store_image,
+            lomadee_source_id: request.body?.lomadeeSourceId,
+            store_name: request.body?.store_name,
+            store_name_display: request.body?.store_name_display,
+            store_image: request.body?.store_image,
             social_media: {
               upsert: {
                 create: {
-                  facebook: body?.facebook,
-                  instagram: body?.instagram,
-                  whatsapp: body?.whatsapp,
-                  telegram: body?.telegram,
-                  twitter: body?.twitter,
+                  facebook: request.body?.facebook,
+                  instagram: request.body?.instagram,
+                  whatsapp: request.body?.whatsapp,
+                  telegram: request.body?.telegram,
+                  twitter: request.body?.twitter,
                 },
                 update: {
-                  facebook: body?.facebook,
-                  instagram: body?.instagram,
-                  whatsapp: body?.whatsapp,
-                  telegram: body?.telegram,
-                  twitter: body?.twitter,
+                  facebook: request.body?.facebook,
+                  instagram: request.body?.instagram,
+                  whatsapp: request.body?.whatsapp,
+                  telegram: request.body?.telegram,
+                  twitter: request.body?.twitter,
                 }
               }
             }
@@ -66,8 +66,8 @@ export class AuthenticationController {
 
         return output;
       }
-      if (body.store_name) {
-        const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: body.store_name } });
+      if (request.body.store_name) {
+        const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: request.body.store_name } });
         if (findStoreByName) {
           throw new ErrorHandler({
             name: "ProfileAlreadyExists",
@@ -78,28 +78,28 @@ export class AuthenticationController {
       }
       const output = await prisma.userProfile.update({
         where: {
-          id: params.params.id
+          id: request.params.id
         },
         data: {
-          lomadee_source_id: body?.lomadeeSourceId,
-          store_name: body?.store_name,
-          store_name_display: body?.store_name_display,
-          store_image: body?.store_image,
+          lomadee_source_id: request.body?.lomadeeSourceId,
+          store_name: request.body?.store_name,
+          store_name_display: request.body?.store_name_display,
+          store_image: request.body?.store_image,
           social_media: {
             upsert: {
               create: {
-                facebook: body?.facebook,
-                instagram: body?.instagram,
-                whatsapp: body?.whatsapp,
-                telegram: body?.telegram,
-                twitter: body?.twitter,
+                facebook: request.body?.facebook,
+                instagram: request.body?.instagram,
+                whatsapp: request.body?.whatsapp,
+                telegram: request.body?.telegram,
+                twitter: request.body?.twitter,
               },
               update: {
-                facebook: body?.facebook,
-                instagram: body?.instagram,
-                whatsapp: body?.whatsapp,
-                telegram: body?.telegram,
-                twitter: body?.twitter,
+                facebook: request.body?.facebook,
+                instagram: request.body?.instagram,
+                whatsapp: request.body?.whatsapp,
+                telegram: request.body?.telegram,
+                twitter: request.body?.twitter,
               }
             }
           }
@@ -112,9 +112,9 @@ export class AuthenticationController {
       return output;
     });
 
-    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (request: Request, response: Response) {
       try {
-        const userId = params.user;
+        const userId = request.params.user;
         const output = await prisma.user.findUnique({
           where: {
             id: userId
@@ -157,11 +157,11 @@ export class AuthenticationController {
       }
     });
 
-    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("put", "/profile/:id/update", [verifyToken], async function (request: Request, response: Response) {
       try {
         const output = await prisma.user.findUnique({
           where: {
-            id: params.user
+            id: request.params.user
           }, select: {
             id: true,
             name: true,
@@ -196,15 +196,15 @@ export class AuthenticationController {
       }
     });
 
-    httpServer.on("post", "/api-keys/create", [verifyToken], async function (params: any, body: any) {
-      const output = await createApiKey.execute(params);
+    httpServer.on("post", "/api-keys/create", [verifyToken], async function (request: Request, response: Response) {
+      const output = await createApiKey.execute(request.body);
       return output;
     });
 
-    httpServer.on("get", "/users/me/:id", [verifyToken], async function (params: any, body: any) {
+    httpServer.on("get", "/users/me/:id", [verifyToken], async function (request: Request, response: Response) {
       const output = await prisma.user.findFirst({
         where: {
-          id: params.params.id
+          id: request.params.id
         },
         select: {
           id: true,
