@@ -229,3 +229,32 @@ model UserSubscription {
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
+
+model LinkGroup {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  links Link[]
+}
+
+model Link {
+  id              String   @id @default(uuid())
+  image           String?
+  title           String
+  shortlink       String   @unique
+  destinationLink String
+  utmSource       String?
+  utmMedium       String?
+  utmCampaingName String?
+  utmTerm         String?
+  utmContent      String?
+  pixels          String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  LinkGroup   LinkGroup? @relation(fields: [linkGroupId], references: [id])
+  linkGroupId String?
+}
