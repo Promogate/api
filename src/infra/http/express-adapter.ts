@@ -25,7 +25,7 @@ export class ExpressAdapter implements HttpServer {
     this.app._router[method](url, [...middlewares], async function (req: Request, res: Response) {
       try {
         const output = await callback(req, res);
-        res.json(output).status(200).send();
+        return output;
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.BAD_REQUEST,
