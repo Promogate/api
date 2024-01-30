@@ -17,17 +17,17 @@ export class AuthenticationController {
   ) {
     httpServer.on("post", "/users/signin", [], async function (request: Request, response: Response) {
       const output = await signInService.execute(request.body);
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("post", "/users/signup", [], async function (request: Request, response: Response) {
       const output = await createUserService.execute(request.body);
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("post", "/users/:id/profile/create", [verifyToken], async function (request: Request, response: Response) {
       const output = await createProfileService.execute({ ...request.body, userId: request.params.id });
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("put", "/profile/:id/update", [verifyToken], async function (request: Request, response: Response) {
@@ -66,7 +66,7 @@ export class AuthenticationController {
           }
         });
 
-        return output;
+        return response.json(output).status(200).send();
       }
       if (request.body.store_name) {
         const findStoreByName = await prisma.userProfile.findUnique({ where: { store_name: request.body.store_name } });
@@ -111,7 +111,7 @@ export class AuthenticationController {
         }
       });
 
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("put", "/profile/:id/update", [verifyToken], async function (request: Request, response: Response) {
@@ -149,7 +149,7 @@ export class AuthenticationController {
           });
         }
 
-        return output;
+        return response.json(output).status(200).send();
       } catch {
         throw new ErrorHandler({
           name: "TokenNotFound",
@@ -188,7 +188,7 @@ export class AuthenticationController {
           });
         }
 
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           name: "Failed",
@@ -200,7 +200,7 @@ export class AuthenticationController {
 
     httpServer.on("post", "/api-keys/create", [verifyToken], async function (request: Request, response: Response) {
       const output = await createApiKey.execute(request.body);
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("get", "/users/me", [verifyToken], async function (request: Request & { user?: string }, response: Response) {
@@ -255,7 +255,7 @@ export class AuthenticationController {
         return output;
       }
       const output = { ...user, userSubscription: userSubscription };
-      return output;
+      return response.json(output).status(200).send();
     });
   }
 }

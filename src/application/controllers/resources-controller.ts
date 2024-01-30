@@ -21,17 +21,17 @@ export class ResourcesController {
           store_name: true,
         }
       });
-      return output;
+      response.json(output).status(200).send();
     });
 
     httpServer.on("get", "/resources/offers/:store", [], async function (request: Request, response: Response) {
       // const output = await getOffersFromStore.execute(params);
-      // return output;
+      // response.json(output).status(200).send();
     });
 
     httpServer.on("get", "/resources/store/:store", [], async function (request: Request, response: Response) {
       // const output = await getStoreData.execute(params);
-      // return output;
+      // response.json(output).status(200).send();
     });
 
     httpServer.on("get", "/resources/:resourceId/offer/:offerId", [], async function (request: Request, response: Response) {
@@ -88,7 +88,7 @@ export class ResourcesController {
 
           const output = await prisma.$transaction([offer, resource]);
 
-          return output[0];
+          return response.json(output[0]).status(200).send();
         }
 
         const output = await prisma.$transaction([offer]);
@@ -105,7 +105,7 @@ export class ResourcesController {
 
     httpServer.on("post", "/resources/:resourceId/offer/create", [verifyToken], async function (request: Request, response: Response) {
       const output = await createOffer.execute({...request.body, resourceId: request.params.resourceId});
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("post", "/resources/:resourceId/category/create", [verifyToken], async function (request: Request, response: Response) {
@@ -117,7 +117,7 @@ export class ResourcesController {
           }
         });
     
-        return output;
+        return response.json(output).status(200).send();
     
       } catch (error: any) {
         throw new ErrorHandler({
@@ -137,7 +137,7 @@ export class ResourcesController {
           }
         });
 
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -157,7 +157,7 @@ export class ResourcesController {
             sub_categories: true
           }
         });
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -184,7 +184,7 @@ export class ResourcesController {
             }
           }
         });
-        return output;
+        return response.json(output).status(200);
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -201,7 +201,7 @@ export class ResourcesController {
             id: request.params.offerId
           }
         });
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -223,7 +223,7 @@ export class ResourcesController {
         expirationDate: request.body.expiration_date,
         description: request.body.description,
       });
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("put", "/resources/offer/:offerId/update/showcase", [verifyToken], async function (request: Request, response: Response) {
@@ -232,7 +232,7 @@ export class ResourcesController {
         offer_id: request.params.offerId,
         user_id: request.body.userId
       });
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("put", "/resources/offer/:offerId/update/featured", [verifyToken], async function (request: Request, response: Response) {
@@ -242,7 +242,7 @@ export class ResourcesController {
         user_id: request.params.user, //NEED TO EXTEND REQUEST TYPE
         role: request.params.role
       });
-      return output;
+      return response.json(output).status(200).send();
     });
 
     httpServer.on("put", "/resources/:resourcesId/offer/:offerId/update/category", [verifyToken], async function (request: Request, response: Response) {
@@ -254,7 +254,7 @@ export class ResourcesController {
             category_id: request.body.categoryId,
           }
         });
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -271,7 +271,7 @@ export class ResourcesController {
             id: request.params.id
           }
         });
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
@@ -291,7 +291,7 @@ export class ResourcesController {
             groups: true
           }
         });
-        return output;
+        return response.json(output).status(200).send();
       } catch (error: any) {
         throw new ErrorHandler({
           statusCode: HttpStatusCode.INTERNAL_SERVER,
