@@ -4,17 +4,36 @@ export interface CreateLink {
 
 export namespace CreateLink {
   export type Input = {
-    destinationLink: string | string[];
+    destinationLink: string;
     title: string;
-    clicks: number;
     shortlink: string;
     type: string;
-    image?: string;
-    utm?: string;
-    pixels?: string;
-    brand?: string;
-    groupId?: string;
-    linkName?: string;
+    image: string;
+    clicks: number;
+    utm: {
+      source: string;
+      medium: string;
+      campaignName: string;
+      term: string;
+      content: string;
+    },
+    pixels: string[];
+    brand: string;
+    groupId: string;
+    linkName: string;
   };
-  export type Output = void;
+  export type Output = {
+    id: string;
+    destinationLink: string;
+    title: string;
+    shortlink: string;
+    type: string;
+    image: string;
+    clicks: number;
+    utm: string;
+    pixels: string;
+    brand: string;
+    groupId: string;
+    linkName: string;
+  }
 }
