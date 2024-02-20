@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   // provider = "cockroachdb"
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -25,9 +25,9 @@ model User {
 }
 
 model UserProfile {
-  id                   String           @id @default(uuid())
+  id                   String            @id @default(uuid())
   store_image          String
-  store_name           String           @unique
+  store_name           String            @unique
   store_name_display   String
   resources            Resources?
   analytics            Analytics?
@@ -36,7 +36,7 @@ model UserProfile {
   lomadee_source_id    String?
   admitad_verification String?
   payment_customer_id  String?
-  role                 Role             @default(FREE)
+  role                 Role              @default(FREE)
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @unique

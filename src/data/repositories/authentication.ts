@@ -49,7 +49,7 @@ export class AuthenticationRepository implements
             include: {
               social_media: true
             },
-          }
+          },
         }
       });
 
